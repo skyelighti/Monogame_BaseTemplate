@@ -1,6 +1,6 @@
-﻿using Microsoft.Xna.Framework;
+﻿using BaseTemplate.Game.BaseClasses;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using MonoGameLibrary.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;

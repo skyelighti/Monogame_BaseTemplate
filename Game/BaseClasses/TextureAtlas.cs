@@ -8,7 +8,7 @@ using System.Xml;
 using System.Xml.Linq;
 
 
-namespace MonoGameLibrary.Graphics;
+namespace BaseTemplate.Game.BaseClasses;
 
 public class TextureAtlas
 {

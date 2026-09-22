@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MonoGameLibrary.Graphics;
+namespace BaseTemplate.Game.BaseClasses;
 
 public class TextureRegion
 {

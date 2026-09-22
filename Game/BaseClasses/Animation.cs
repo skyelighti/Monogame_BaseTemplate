@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace MonoGameLibrary.Graphics;
+namespace BaseTemplate.Game.BaseClasses;
 
 public class Animation
 {
