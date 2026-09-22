@@ -1,10 +1,7 @@
-﻿using Homework2.Game;
-using Homework2.Game.GameObjects;
-using Homework2.Game.Managers;
+﻿using BaseTemplate.Game.BaseClasses;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using MonoGameLibrary.Graphics;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
@@ -18,7 +15,6 @@ public abstract class Scene
     List<GameObject> toRemove = new List<GameObject>();
     List<ICollidable> sceneColliders = new List<ICollidable>();
     public TextureAtlas atlas;
-    internal Player player;
     public SceneUI sceneUI { get; private set; }
 
     public void AddObject(GameObject obj)

@@ -103,6 +103,7 @@ public class CollisionManager
 
     public bool PixelPerfectCollision(ICollidable a, ICollidable b)
     {
+        //rework at future date
         // i could also combine w basic check, if in border then also run a pixel perfect check? 
         //should take two gameobject or sprites and check the overlap
         //only take into account the pixels that are overlapping and have a positive alpha value?
