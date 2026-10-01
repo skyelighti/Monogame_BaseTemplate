@@ -1,5 +1,4 @@
 ﻿using System;
-using System;
 using Microsoft.Xna.Framework;
 
 namespace BaseTemplate.Game.BaseClasses;

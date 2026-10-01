@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using MonoGameLibrary.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,7 +31,7 @@ public class GameObject
     {
         this.spriteName = spriteName;
         this.name = name;
-        sprite = owner.atlas.CreateSprite(spriteName);
+        sprite = new Sprite(owner.atlas.GetRegion(spriteName));
         ownerScene = owner;
     }
 

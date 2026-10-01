@@ -1,5 +1,6 @@
 ﻿using BaseTemplate.Game;
 using Gum;
+using Gum.Forms;
 using Gum.Forms.Controls;
 using Gum.Wireframe;
 using Microsoft.Xna.Framework;
@@ -8,8 +9,7 @@ using Microsoft.Xna.Framework.Input;
 using System;
 using BlendState = Microsoft.Xna.Framework.Graphics.BlendState;
 
-namespace Homework2
-{
+namespace BaseTemplate { 
     public class Game1 : Microsoft.Xna.Framework.Game
     {
         private GraphicsDeviceManager _graphics;
@@ -28,6 +28,10 @@ namespace Homework2
         {
             // TODO: Add your initialization logic here
             GumUI.Initialize(this);
+            MonoGameAndGum.Renderables.ShapeRenderer.Self.Initialize();
+            Gum.Wireframe.CustomSetPropertyOnRenderable.InMemoryFontCreator =
+                new KernSmith.Gum.KernSmithFontCreator(GraphicsDevice);
+            Gum.Expressions.GumExpressionService.Initialize();
             base.Initialize();
         }
 
@@ -57,7 +61,7 @@ namespace Homework2
             // TODO: Add your drawing code here
             main.Draw(_spriteBatch);
             _spriteBatch.End();
-            //GumUI.Draw();
+            GumUI.Draw();
             base.Draw(gameTime);
         }
     }

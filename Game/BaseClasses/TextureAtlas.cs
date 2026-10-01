@@ -15,20 +15,20 @@ public class TextureAtlas
     private Dictionary<string, TextureRegion> _regions;
 
     public Texture2D Texture { get; set; }
-    private Dictionary<string, Animation> _animations;
+    //private Dictionary<string, Animation> _animations;
     bool[] AlphaMask;
 
     public TextureAtlas()
     {
         _regions = new Dictionary<string, TextureRegion>();
-        _animations = new Dictionary<string, Animation>();
+        //_animations = new Dictionary<string, Animation>();
     }
 
     public TextureAtlas(Texture2D texture)
     {
         Texture = texture;
         _regions = new Dictionary<string, TextureRegion>();
-        _animations = new Dictionary<string, Animation>();
+        //_animations = new Dictionary<string, Animation>();
         CheckAlpha();
     }
 
@@ -38,18 +38,6 @@ public class TextureAtlas
         region.alphaMask = GetAlphaMask(x, y, width, height);
         _regions.Add(name, region);
     }
-    public void AddAnimation(string animationName, Animation animation)
-    {
-        _animations.Add(animationName, animation);
-    }
-    public Animation GetAnimation(string animationName)
-    {
-        return _animations[animationName];
-    }
-    public bool RemoveAnimation(string animationName)
-    {
-        return _animations.Remove(animationName);
-    }
     public TextureRegion GetRegion(string name)
     {
         return _regions[name];
@@ -58,16 +46,7 @@ public class TextureAtlas
     {
         return _regions.Remove(name);
     }
-    /// <summary>
-    /// Creates a new animated sprite using the animation from this texture atlas with the specified name.
-    /// </summary>
-    /// <param name="animationName">The name of the animation to use.</param>
-    /// <returns>A new AnimatedSprite using the animation with the specified name.</returns>
-    public AnimatedSprite CreateAnimatedSprite(string animationName)
-    {
-        Animation animation = GetAnimation(animationName);
-        return new AnimatedSprite(animation);
-    }
+
 
     public void Clear()
     {
@@ -86,9 +65,10 @@ public class TextureAtlas
 
                 int sheetIdx = sheetX + (sheetY * Texture.Width);
                 int resultIdx = j + (i * rect.Width);
-
                 AlphaArea[resultIdx] = AlphaMask[sheetIdx];
+
             }
+            //if error occuers here its cuz trying to make area larger than texture
         }
         return AlphaArea;
 
@@ -112,11 +92,6 @@ public class TextureAtlas
                 AlphaMask[i] = true;
             }
         }
-    }
-    public Sprite CreateSprite(string regionName)
-    {
-        TextureRegion region = GetRegion(regionName);
-        return new Sprite(region);
     }
 
 }
