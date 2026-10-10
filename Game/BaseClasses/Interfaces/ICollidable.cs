@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BaseTemplate.Game.BaseClasses.Layers;
 
 
 public interface ICollidable

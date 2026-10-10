@@ -26,20 +26,21 @@ public abstract class SceneUI
     }
     protected abstract void Init();
     //init/constructs all scene UI
-    public void ShowAllUI()
+    public void SetActive(bool state)
     {
-        //this should show all the UI objects
-        //this should is for scene loading
-        Root.AddToRoot();
-        //attaches to gum global root, which should show?
+        if (state)
+        {
+            Root.AddToRoot();
+        }
+        else
+        {
+            //this should show all the UI objects
+            //this should is for scene loading
+            Root.AddToRoot();
+            //attaches to gum global root, which should show?
+        }
     }
-    public void HideAllUI()
-    {
-        //this should hide all the UI objects
-        //mainly for scene unload
-        Root.RemoveFromRoot();
-        //detachs from global root
-    }
+
     public void ResetUI()
     {
         foreach (var child in Root.Visual.Children.ToArray())

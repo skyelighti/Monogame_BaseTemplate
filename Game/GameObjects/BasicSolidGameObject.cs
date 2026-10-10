@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using BaseTemplate.Game.BaseClasses.Layers;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using System;
 using System.Collections.Generic;
@@ -25,6 +26,12 @@ namespace BaseTemplate.Game.GameObjects
             }
         }
 
+        public bool IsTrigger { get; protected set; } = true;
+
+        public bool ColliderIsActive { get; protected set; } = true;
+
+        Layer ICollidable.layer { get;} = Layer.Default;
+
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
@@ -32,6 +39,16 @@ namespace BaseTemplate.Game.GameObjects
 
 
         public void OnCollision(ICollidable other)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void OnCollisionEnter(ICollidable other)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void OnCollisionExit(ICollidable other)
         {
             throw new NotImplementedException();
         }
