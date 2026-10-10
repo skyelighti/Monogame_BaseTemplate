@@ -1,4 +1,6 @@
-﻿using BaseTemplate.Game.BaseClasses;
+﻿using BaseTemplate.Game.BaseClasses.Assets;
+using Microsoft.Xna.Framework.Content;
+using RenderingLibrary.Content;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,10 +11,12 @@ public class SpriteLibrary
 {
     private Dictionary<string, TextureRegion> _regions;
     private Dictionary<string, Animation> _animations;
-    public SpriteLibrary()
+    private ContentLoader _contentLoader;
+    public SpriteLibrary(ContentManager content)
     {
         _animations = new Dictionary<string, Animation>();
         _regions = new Dictionary<string, TextureRegion>();
+        _contentLoader = new ContentLoader(content, this);
     }
     public void AddRegion(string name, TextureRegion region)
     {
@@ -52,5 +56,13 @@ public class SpriteLibrary
     {
         TextureRegion region = GetRegion(regionName);
         return new Sprite(region);
+    }
+    public void AddAtlas(string atlasName, TextureAtlas atlas)
+    {
+        foreach (var entry in atlas.Regions)
+        {
+            string spriteName = $"{atlasName}.{entry.Key}";
+            AddRegion(spriteName, entry.Value);
+        }
     }
 }

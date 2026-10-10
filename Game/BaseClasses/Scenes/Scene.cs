@@ -1,4 +1,4 @@
-﻿using BaseTemplate.Game.BaseClasses;
+﻿using BaseTemplate.Game.BaseClasses.Assets;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -16,15 +16,8 @@ public abstract class Scene
     List<ICollidable> sceneColliders = new List<ICollidable>();
     public TextureAtlas atlas;
     public SceneUI sceneUI { get; private set; }
+    public bool isActive { get; private set; } = false;
 
-    public void AddObject(GameObject obj)
-    {
-        if (!sceneObjects.Contains(obj))
-        {
-            sceneObjects.Add(obj);
-            UpdateColliders();
-        }
-    }
     public Scene(ContentManager content)
     { //, SceneUI sUI) {
         //idk
@@ -32,6 +25,9 @@ public abstract class Scene
     }
     public virtual void EnterScene()
     {
+        if (isActive) { return; }
+        isActive = true;
+        sceneUI?.ShowAllUI();
         //load scene UI
         foreach (GameObject g in sceneObjects)
         {
@@ -49,13 +45,29 @@ public abstract class Scene
     }
     public virtual void ExitScene()
     {
+        if (!isActive) { return; }
+        sceneUI?.HideAllUI();
         //unload Scene UI
         foreach (GameObject g in sceneObjects)
         {
             g.SetActive(false);
         }
         CollisionManager.Instance.RemoveColliderList(sceneColliders);
+        isActive = false;
     }
+
+    public void AddObject(GameObject obj)
+    {
+        if (!sceneObjects.Contains(obj))
+        {
+            sceneObjects.Add(obj);
+            if (obj is ICollidable)
+            {
+                AddCollider(obj as ICollidable);
+            }
+        }
+    }
+
     public void RemoveObject(GameObject obj)
     {
         if (sceneObjects.Contains(obj))
@@ -64,35 +76,47 @@ public abstract class Scene
             toRemove.Add(obj);
         }
     }
-    public void UpdateColliders()
+
+    public void AddCollider(ICollidable col)
     {
-        sceneColliders.Clear();
-        //empty slate, so removing is easy
-        foreach (GameObject o in sceneObjects)
+        if (!sceneColliders.Contains(col))
         {
-            if (o is ICollidable col && !sceneColliders.Contains(col))
+            sceneColliders.Add(col);
+            if (isActive)
             {
-                sceneColliders.Add(col);
+                CollisionManager.Instance.AddCollidable(col);
             }
         }
-        //refacto
     }
+
+    public void RemoveCollider(ICollidable col)
+    {
+        if (sceneColliders.Contains(col))
+        {
+            sceneColliders.Remove(col);
+            CollisionManager.Instance.RemoveCollider(col);
+        }
+    }
+
+
     public virtual void Update(GameTime gameTime)
     {
         foreach (GameObject g in sceneObjects)
         {
-            if (toRemove.Contains(g))
-            {
-                sceneObjects.Remove(g);
-                toRemove.Remove(g);
-                UpdateColliders();
-                continue;
-            }
             if (g.IsActive)
             {
                 g.Update(gameTime);
             }
         }
+        foreach (GameObject g in toRemove)
+        {
+            sceneObjects.Remove(g);
+            if (g is ICollidable)
+            {
+                RemoveCollider(g as ICollidable);
+            }
+        }
+        toRemove.Clear();
     }
     public virtual void Draw(SpriteBatch spriteBatch)
     {

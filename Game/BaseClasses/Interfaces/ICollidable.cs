@@ -12,6 +12,9 @@ public interface ICollidable
 {
     bool IsActive { get; }
     //pooling.... maybe new interface? but too fragmented
+    bool IsTrigger { get; }
+    bool ColliderIsActive { get; }
+    //idk seems useful might remove turn into trigger? 
     Rectangle BoxCollider { get; }
     //implement this in colliable gameobject class
     //public Rectangle BoxCollider
@@ -22,9 +25,11 @@ public interface ICollidable
     //    }
     //}
     public Transform transform { get; }
-    Sprite sprite { get; }
 
     void OnCollision(ICollidable other);
+    void OnCollisionEnter(ICollidable other);
+    void OnCollisionExit(ICollidable other);
     //each object can manage it's reaction to collisions
+    Layer layer { get; }
 }
 

@@ -1,4 +1,4 @@
-﻿using BaseTemplate.Game.BaseClasses;
+﻿using BaseTemplate.Game.BaseClasses.Assets;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;

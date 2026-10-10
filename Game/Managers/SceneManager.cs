@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using MonoGame.Extended.Screens;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,53 +27,18 @@ namespace BaseTemplate.Game.Managers
         public SceneManager(ContentManager content)
         {
             Instance = this;
-            SceneM.SetNumOfStates(3);
-            //SceneDict.Add(Scenes.StartScene, new StartScene(content));
-            //SceneDict.Add(Scenes.GameScene, new GameScene(content));
-            //SceneDict.Add(Scenes.EndScene, new EndScene(content));
-            //SceneM.SetStateFunctions(0, EnterStart, UpdateStart, ExitStart);
-            //SceneM.SetStateFunctions(1, EnterGame, UpdateGame, ExitGame);
-            //SceneM.SetStateFunctions(2, EnterEnd, UpdateEnd, ExitEnd);
+            //SceneM.SetNumOfStates(4);
+            //SceneDict.Add(SceneID.StartScene, new StartScene(content));
+            //SceneDict.Add(SceneID.GameScene, new GameScene(content));
+            //SceneDict.Add(SceneID.GameScene2, new GameScene2(content));
+            //SceneDict.Add(SceneID.EndScene, new EndScene(content));
+            //SceneM.SetStateFunctions(0, SceneDict[SceneID.StartScene].EnterScene, SceneDict[SceneID.StartScene].Update, SceneDict[SceneID.StartScene].ExitScene);
+            //SceneM.SetStateFunctions(1, SceneDict[SceneID.GameScene].EnterScene, SceneDict[SceneID.GameScene].Update, SceneDict[SceneID.GameScene].ExitScene);
+            //SceneM.SetStateFunctions(2, SceneDict[SceneID.GameScene2].EnterScene, SceneDict[SceneID.GameScene2].Update, SceneDict[SceneID.GameScene2].ExitScene);
+            //SceneM.SetStateFunctions(3, SceneDict[SceneID.EndScene].EnterScene, SceneDict[SceneID.EndScene].Update, SceneDict[SceneID.EndScene].ExitScene);
             //init stateMachine
             SceneM.SetState((int)Scenes.GameScene);
         }
-        void EnterStart()
-        {
-            SceneDict[Scenes.StartScene].EnterScene();
-        }
-        void UpdateStart(GameTime gameTime)
-        {
-            SceneDict[Scenes.StartScene].Update(gameTime);
-        }
-        void ExitStart()
-        {
-            SceneDict[Scenes.StartScene].ExitScene();
-        }
-        void EnterGame()
-        {
-            SceneDict[Scenes.GameScene].EnterScene();
-        }
-        void UpdateGame(GameTime gameTime)
-        {
-            SceneDict[Scenes.GameScene].Update(gameTime);
-        }
-        void ExitGame()
-        {
-            SceneDict[Scenes.GameScene].ExitScene();
-        }
-        void EnterEnd()
-        {
-            SceneDict[Scenes.EndScene].EnterScene();
-        }
-        void UpdateEnd(GameTime gameTime)
-        {
-            SceneDict[Scenes.EndScene].Update(gameTime);
-        }
-        void ExitEnd()
-        {
-            SceneDict[Scenes.EndScene].ExitScene();
-        }
-
         public void Update(GameTime gameTime)
         {
             SceneM.UpdateState(gameTime);

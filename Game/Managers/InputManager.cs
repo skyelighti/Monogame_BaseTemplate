@@ -1,4 +1,8 @@
-﻿using Microsoft.Xna.Framework;
+﻿using BaseTemplate.Game.Managers;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
+using System;
+using System.Collections.Generic;
 
 namespace MonoGameLibrary.Input;
 
@@ -13,6 +17,22 @@ public class InputManager
     /// Gets the state information of mouse input.
     /// </summary>
     public MouseInfo Mouse { get; private set; }
+    public event Action<GameAction> ActionPressed;
+    public event Action<GameAction> ActionReleased;
+    public event Action<GameAction> ActionKeyDown;
+
+    private readonly Dictionary<GameAction, List<Keys>> _actionKeys = new()
+    {
+        [GameAction.MoveUp] = new List<Keys> { Keys.W, Keys.Up },
+        [GameAction.MoveDown] = new List<Keys> { Keys.S, Keys.Down },
+        [GameAction.MoveLeft] = new List<Keys> { Keys.A, Keys.Left },
+        [GameAction.MoveRight] = new List<Keys> { Keys.D, Keys.Right },
+        [GameAction.Interact] = new List<Keys> { Keys.E },
+        [GameAction.ToggleInventory] = new List<Keys> { Keys.I },
+        [GameAction.Attack] = new List<Keys> { Keys.Space }
+        //ALLOW FOR MOUSE CLICKING LATER
+    };
+    //contents can still change. dict itself cannot.
 
     /// <summary>
     /// Creates a new InputManager.
@@ -31,9 +51,44 @@ public class InputManager
     {
         Keyboard.Update();
         Mouse.Update();
-
+        foreach (var binding in _actionKeys)
+        {
+            bool wasPressed = false;
+            bool isPressed = false;
+            foreach (var key in binding.Value)
+            {
+                if (Keyboard.PreviousState.IsKeyDown(key))
+                {
+                    wasPressed = true;
+                }
+                if (Keyboard.CurrentState.IsKeyDown(key))
+                {
+                    isPressed = true;
+                }
+            }
+            if (isPressed && !wasPressed)
+            {
+                ActionPressed?.Invoke(binding.Key);
+            }
+            else if (!isPressed && wasPressed)
+            {
+                ActionReleased?.Invoke(binding.Key);
+            }
+            if (isPressed)
+            {
+                ActionKeyDown?.Invoke(binding.Key);
+            }
+        }
+        //prevents double firing for input :P
     }
 
+    public void UpdateKeyBindings(GameAction action, List<Keys> newKeys)
+    {
+        if (_actionKeys.ContainsKey(action))
+        {
+            _actionKeys[action] = newKeys;
+        }
+    }
 
 
 }

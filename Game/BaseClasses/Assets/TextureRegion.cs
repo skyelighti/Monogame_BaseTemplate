@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BaseTemplate.Game.BaseClasses;
+namespace BaseTemplate.Game.BaseClasses.Assets;
 
 public class TextureRegion
 {

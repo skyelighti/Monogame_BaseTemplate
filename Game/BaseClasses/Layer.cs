@@ -1,0 +1,25 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace BaseTemplate.Game.BaseClasses
+{
+    public enum Layer
+    {
+        Default = 0,
+        Player = 1,
+        Ground = 2,
+        Obstacle = 3,
+        Enemy = 4,
+        Item = 5,
+        Exit =6
+        //does ui need a layermask? its already drawn seperately and gum handles collisions
+        //cannot go above 31
+    }
+    //bitmasks
+    // 1 << i sets the ith bit to 1, w zero indexing
+    // | is or, which combines bits
+    // & is and which compares bits
+}
