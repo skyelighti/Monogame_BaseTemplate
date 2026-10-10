@@ -8,7 +8,7 @@ using System.Xml;
 using System.Xml.Linq;
 
 
-namespace BaseTemplate.Game.BaseClasses.Assets;
+namespace GameBase.Assets;
 
 public class TextureAtlas
 {

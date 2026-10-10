@@ -1,10 +1,9 @@
-﻿using BaseTemplate.Game.Managers;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 
-namespace MonoGameLibrary.Input;
+namespace GameBase.Input;
 
 public class InputManager
 {

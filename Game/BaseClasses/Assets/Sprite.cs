@@ -1,5 +1,4 @@
-﻿using BaseTemplate.Game.BaseClasses.Assets;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -7,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-
+namespace GameBase.Assets;
 public class Sprite
 {
     /// <summary>

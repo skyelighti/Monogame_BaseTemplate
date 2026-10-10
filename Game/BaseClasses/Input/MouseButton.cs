@@ -1,5 +1,5 @@
 ﻿using System;
-namespace MonoGameLibrary.Input;
+namespace GameBase.Input;
 
 public enum MouseButton
 {

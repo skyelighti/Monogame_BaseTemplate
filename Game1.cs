@@ -1,4 +1,4 @@
-﻿using BaseTemplate.Game;
+﻿using GameBase;
 using Gum;
 using Gum.Forms;
 using Gum.Forms.Controls;

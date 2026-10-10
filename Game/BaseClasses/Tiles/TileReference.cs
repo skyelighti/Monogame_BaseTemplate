@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BaseTemplate.Game.BaseClasses.Tiles
+namespace GameBase.Tiles;
+
+public class TileReference
 {
-    public class TileReference
-    {
-        public string TilesetName { get; init; }
-        public int TileID { get; init; }
-    }
+    public string TilesetName { get; init; }
+    public int TileID { get; init; }
 }
+

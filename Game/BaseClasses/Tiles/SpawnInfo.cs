@@ -4,19 +4,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BaseTemplate.Game.BaseClasses.Tiles
-{
-    public class SpawnInfo
-    {
-        public string Type { get; }
-        public int Column { get; }
-        public int Row { get; }
+namespace GameBase.Tiles;
 
-        public SpawnInfo(string type, int column, int row)
-        {
-            Type = type;
-            Column = column;
-            Row = row;
-        }
+public class SpawnInfo
+{
+    public string Type { get; }
+    public int Column { get; }
+    public int Row { get; }
+
+    public SpawnInfo(string type, int column, int row)
+    {
+        Type = type;
+        Column = column;
+        Row = row;
     }
 }

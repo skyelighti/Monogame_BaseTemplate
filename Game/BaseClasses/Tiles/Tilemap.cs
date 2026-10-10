@@ -1,5 +1,4 @@
-﻿using BaseTemplate.Game.BaseClasses.Assets;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -7,8 +6,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Xml;
 using System.Xml.Linq;
+using GameBase.Assets;
+using GameBase;
 
-namespace BaseTemplate.Game.BaseClasses.Tiles;
+namespace GameBase.Tiles;
 
 public class Tilemap
 {

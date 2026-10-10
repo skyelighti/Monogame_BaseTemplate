@@ -6,8 +6,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using GameBase.Assets;
 
-
+namespace GameBase;
 public class GameObject
 {
 
@@ -23,6 +24,7 @@ public class GameObject
 
     public Scene ownerScene { get; protected set; }
     public bool ActiveOnSceneEnter = true;
+    public Layer layer { get; protected set; } = Layer.Default;
 
 
     public bool spriteVisible = true;

@@ -6,9 +6,8 @@ using Microsoft.Xna.Framework.Graphics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using BaseTemplate.Game.BaseClasses.Layers;
 
-
+namespace GameBase;
 public interface ICollidable
 {
     bool IsActive { get; }

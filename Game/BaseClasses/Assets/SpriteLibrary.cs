@@ -1,12 +1,13 @@
-﻿using BaseTemplate.Game.BaseClasses.Assets;
-using Microsoft.Xna.Framework.Content;
+﻿using Microsoft.Xna.Framework.Content;
 using RenderingLibrary.Content;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using GameBase;
 
+namespace GameBase.Assets;
 public class SpriteLibrary
 {
     private Dictionary<string, TextureRegion> _regions;

@@ -5,56 +5,56 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BaseTemplate.Game.BaseClasses
+
+namespace GameBase;
+
+public class Hitbox : ICollidable
 {
-    public class Hitbox : ICollidable
+    GameObject owner;
+    public bool IsActive => owner.IsActive;
+
+    public bool IsTrigger => true;
+
+    public bool ColliderIsActive { get; set; } = false;
+
+    public Rectangle BoxCollider => new Rectangle((int)transform.position.X, (int)transform.position.Y, (int)transform.scale.X, (int)transform.scale.Y);
+
+    public Transform transform { get; private set; }
+
+    public Layer layer => Layer.Default;
+    public Hitbox(GameObject o, Transform t)
     {
-        GameObject owner;
-        public bool IsActive => owner.IsActive;
+        owner = o;
+        transform = t;
+    }
 
-        public bool IsTrigger => true;
+    public void OnCollision(ICollidable other)
+    {
 
-        public bool ColliderIsActive { get; set; } = false;
+    }
 
-        public Rectangle BoxCollider => new Rectangle((int)transform.position.X, (int)transform.position.Y, (int)transform.scale.X, (int)transform.scale.Y);
-
-        public Transform transform { get; private set; }
-
-        public Layer layer => Layer.Default;
-        public Hitbox(GameObject o, Transform t)
+    public void OnCollisionEnter(ICollidable other)
+    {
+        if (other.layer == owner.layer)
         {
-            owner = o;
-            transform = t;
+            return;
         }
-
-        public void OnCollision(ICollidable other)
+        if (other.layer == Layer.Enemy || other.layer == Layer.Obstacle)
         {
-
-        }
-
-        public void OnCollisionEnter(ICollidable other)
-        {
-            if (other.layer == owner.layer)
+            if (other is IDamagable damagable)
             {
-                return;
-            }
-            if (other.layer == Layer.Enemy || other.layer == Layer.Obstacle)
-            {
-                if (other is IDamagable damagable)
-                {
-                    damagable.takeDamage(1);
-                }
+                damagable.takeDamage(1);
             }
         }
+    }
 
-        public void OnCollisionExit(ICollidable other)
-        {
+    public void OnCollisionExit(ICollidable other)
+    {
 
-        }
+    }
 
-        public void UpdateTransform(Transform t)
-        {
-            transform = t;
-        }
+    public void UpdateTransform(Transform t)
+    {
+        transform = t;
     }
 }

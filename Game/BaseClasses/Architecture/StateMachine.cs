@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-
+namespace GameBase;
 public class StateMachine
 {
     Dictionary<int, System.Action> enterStateFuncLookup = new Dictionary<int, System.Action>();

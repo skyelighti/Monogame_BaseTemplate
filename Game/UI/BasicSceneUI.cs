@@ -4,9 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BaseTemplate.Game.UI
+namespace GameBase;
+
+public class BasicSceneUI : SceneUI
 {
-    internal class BasicSceneUI
+    public BasicSceneUI(Scene s) : base(s)
     {
+    }
+
+    protected override void Init()
+    {
+        //all scene ui should be created here
     }
 }

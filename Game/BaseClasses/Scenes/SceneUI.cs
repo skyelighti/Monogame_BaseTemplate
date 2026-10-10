@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+namespace GameBase;
 
 //each scene should hold a reference to it's own UI, and handle loading and unloading
 public abstract class SceneUI

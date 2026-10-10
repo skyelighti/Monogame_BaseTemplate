@@ -1,5 +1,4 @@
-﻿using BaseTemplate.Game.BaseClasses.Architecture;
-using BaseTemplate.Game.BaseClasses.Items;
+﻿using GameBase.Items;
 using Microsoft.Xna.Framework.Content;
 using System;
 using System.Collections.Generic;
@@ -7,26 +6,25 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BaseTemplate.Game.GameObjects
+namespace GameBase;
+
+public class BasicItem : Item
 {
-    public class BasicItem : Item
+    public BasicItem(ContentManager content, string spriteName, string name, Scene owner) : base(content, spriteName, name, owner)
+    { 
+        //assign Info here
+    }
+    public override void Interact(GameObject player)
     {
-        public BasicItem(ContentManager content, string spriteName, string name, Scene owner) : base(content, spriteName, name, owner)
-        { 
-            //assign Info here
-        }
-        public override void Interact(GameObject player)
+        if (CanInteract)
         {
-            if (CanInteract)
-            {
-                //interact here.
-            }
+            //interact here.
         }
-        public override void OnCollisionEnter(ICollidable collidable)
-        {
-        }
-        public override void OnCollisionExit(ICollidable collidable)
-        {
-        }
+    }
+    public override void OnCollisionEnter(ICollidable collidable)
+    {
+    }
+    public override void OnCollisionExit(ICollidable collidable)
+    {
     }
 }

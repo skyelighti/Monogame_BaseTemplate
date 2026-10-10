@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-
+namespace GameBase;
 public class ObjectPool<T> where T : GameObject
 {
 

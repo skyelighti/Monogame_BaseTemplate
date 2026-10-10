@@ -3,15 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using GameBase.Assets;
 
-namespace BaseTemplate.Game.BaseClasses.Interfaces
+namespace GameBase;
+
+public interface IPixelCollidable : ICollidable
 {
-    public interface IPixelCollidable : ICollidable
-    {
-        //sprite becomes neccesary if we are testing for pixel perfect collision
-        Sprite sprite { get; }
-
-    }
-
+    //sprite becomes neccesary if we are testing for pixel perfect collision
+    Sprite sprite { get; }
 
 }
+

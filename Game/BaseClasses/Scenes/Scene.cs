@@ -1,5 +1,4 @@
-﻿using BaseTemplate.Game.BaseClasses.Assets;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -8,7 +7,9 @@ using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using GameBase.Assets;
 
+namespace GameBase;
 public abstract class Scene
 {
     List<GameObject> sceneObjects = new List<GameObject>();
@@ -27,7 +28,7 @@ public abstract class Scene
     {
         if (isActive) { return; }
         isActive = true;
-        sceneUI?.ShowAllUI();
+        sceneUI?.SetActive(true);
         //load scene UI
         foreach (GameObject g in sceneObjects)
         {
@@ -46,7 +47,7 @@ public abstract class Scene
     public virtual void ExitScene()
     {
         if (!isActive) { return; }
-        sceneUI?.HideAllUI();
+        sceneUI?.SetActive(false);
         //unload Scene UI
         foreach (GameObject g in sceneObjects)
         {
