@@ -14,10 +14,11 @@ public class BasicObjectUI
     //Init UI properties here
     Panel UIBar;
     //this is where the ui will live inside, mini canvas
-    public BasicObjectUI() { 
+    public BasicObjectUI() {
         //pass an owner reference
         //subscribe to owner state
         //intialize UI here
+        UIBar = new Panel();
     }
     public void SetActive(bool state) {
         if (state)

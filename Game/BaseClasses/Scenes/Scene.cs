@@ -16,8 +16,8 @@ public abstract class Scene
     List<GameObject> toRemove = new List<GameObject>();
     List<ICollidable> sceneColliders = new List<ICollidable>();
     public TextureAtlas atlas;
-    public SceneUI sceneUI { get; private set; }
-    public bool isActive { get; private set; } = false;
+    public SceneUI sceneUI { get; protected set; }
+    public bool isActive { get; protected set; } = false;
 
     public Scene(ContentManager content)
     { //, SceneUI sUI) {

@@ -37,9 +37,9 @@ public class Main
         // update everything else here as well?
         ScreenBounds = screenBounds;
         sceneManager.Update(gameTime);
+        Services.Input.Update(gameTime);
         CollisionManager.Instance.Update(gameTime);
         //UIManager.Update(gameTime);
-        Services.Input.Update(gameTime);
     }
     public void Draw(SpriteBatch spriteBatch)
     {

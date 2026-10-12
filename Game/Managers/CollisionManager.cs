@@ -12,6 +12,8 @@ public class CollisionManager
     public static CollisionManager Instance { get; private set; } = new();
     public List<ICollidable> CollidableObjects { get; private set; }
     //just have others add on init?
+    private HashSet<ICollidable> additionSet = new();
+    private HashSet<ICollidable> removalSet = new();
     float ascaleX;
     float ascaleY;
     float bscaleY;
@@ -37,7 +39,7 @@ public class CollisionManager
             for (int j = i + 1; j < CollidableObjects.Count; j++)
             {
                 if (!CollidableObjects[j].IsActive || !CollidableObjects[j].ColliderIsActive) { continue; }
-                if (CollidableObjects[i].BoxCollider.Intersects(CollidableObjects[j].BoxCollider))
+                if (CollidableObjects[i].BoxCollider.Intersects(CollidableObjects[j].BoxCollider) && (!removalSet.Contains(CollidableObjects[i]) && !removalSet.Contains(CollidableObjects[j])))
                 {
                     // Tile colliders use boxes; sprites can use the original pixel check.
                     bool collision = true;
@@ -87,14 +89,25 @@ public class CollisionManager
         var old = prevCollisions;
         prevCollisions = currCollisions;
         currCollisions = old;
+        foreach (var c in additionSet) {
+            CollidableObjects.Add(c);
+        }
+        foreach(var c in removalSet)
+        {
+            CollidableObjects.Remove(c);
+        }
+        removalSet.Clear();
+        additionSet.Clear();
     }
     public void AddCollidable(ICollidable col)
     {
-        CollidableObjects.Add(col);
+        additionSet.Add(col);
+        //CollidableObjects.Add(col);
     }
     public void RemoveCollider(ICollidable col)
     {
-        CollidableObjects.Remove(col);
+        removalSet.Add(col);
+        //CollidableObjects.Remove(col);
     }
     public void SeperateObjects(ICollidable a, ICollidable b)
     {
@@ -126,7 +139,7 @@ public class CollisionManager
         );
         foreach (ICollidable c in CollidableObjects)
         {
-            if (c == gameobject || !c.IsActive) { continue; }
+            if (c == gameobject || !c.IsActive || !c.ColliderIsActive) { continue; }
 
             //gameobject center, or else everything else is at the top le
 
@@ -166,14 +179,14 @@ public class CollisionManager
     {
         foreach (ICollidable c in cols)
         {
-            CollidableObjects.Add(c);
+            AddCollidable(c);
         }
     }
     public void RemoveColliderList(List<ICollidable> cols)
     {
         foreach (ICollidable c in cols)
         {
-            CollidableObjects.Remove(c);
+            RemoveCollider(c);
         }
 
     }
