@@ -8,6 +8,7 @@ namespace GameBase.Input;
 
 public enum InputActionMap
 {
+    //modify as needed
     Gameplay,
     Dialogue,
     Inventory

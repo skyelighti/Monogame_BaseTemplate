@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 
 namespace GameBase;
 
+/// <summary>
+/// Loads all outside content
+/// </summary>
 public class ContentLoader
 {
     public ContentLoader(ContentManager content, SpriteLibrary sprites)

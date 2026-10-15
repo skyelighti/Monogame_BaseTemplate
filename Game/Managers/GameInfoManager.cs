@@ -1,4 +1,5 @@
-﻿using GameBase.Dialogue;
+﻿using BaseTemplate.Game.Config;
+using GameBase.Dialogue;
 using GameBase.Items;
 using Microsoft.Xna.Framework.Content;
 using System;

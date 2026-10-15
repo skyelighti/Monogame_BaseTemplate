@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 namespace GameBase;
 public class StateMachine
 {
+    //do not modify/if any modifications are made reminder to commit to base asap
     Dictionary<int, System.Action> enterStateFuncLookup = new Dictionary<int, System.Action>();
     Dictionary<int, System.Action<GameTime>> updateStateFuncLookup = new Dictionary<int, System.Action<GameTime>>();
     Dictionary<int, System.Action> exitStateFuncLookup = new Dictionary<int, System.Action>();

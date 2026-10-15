@@ -7,7 +7,7 @@ using System.IO;
 using System.Xml;
 using System.Xml.Linq;
 using GameBase.Assets;
-using GameBase;
+using BaseTemplate.Game.Config;
 
 namespace GameBase.Tiles;
 

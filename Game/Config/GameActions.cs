@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GameBase.Input;
+namespace GameBase;
 
 public enum GameAction
 {
+    //modify as needed
     MoveUp,
     MoveDown,
     MoveLeft,
