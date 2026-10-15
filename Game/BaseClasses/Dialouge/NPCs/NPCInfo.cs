@@ -1,4 +1,4 @@
-﻿using BaseTemplate.Game.Config;
+﻿
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using System;

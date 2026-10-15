@@ -11,12 +11,6 @@ using GameBase;
 
 namespace GameBase;
 
-public enum SceneID
-{
-    //StartScene,
-    BasicGameScene
-    //EndScene
-}
 public class SceneManager
 {
     public static SceneManager Instance { get; private set; }

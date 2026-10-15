@@ -1,5 +1,4 @@
-﻿using GameBase.Input;
-using BaseTemplate.Game.UI;
+﻿using BaseTemplate.Game.UI;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections;

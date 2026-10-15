@@ -12,11 +12,16 @@ namespace GameBase;
 /// <summary>
 /// Loads all outside content
 /// </summary>
-public class ContentLoader
+public partial class ContentLoader
 {
+    //modify as needed
     public ContentLoader(ContentManager content, SpriteLibrary sprites)
     {
         //initalize all textures here. 
-        throw new NotImplementedException();
+        
+    }
+    public void Init(ContentManager content, SpriteLibrary sprites) {
+        //initalize any constants like maybe a placeholder texture?
+        GameSpecificInit(content, sprites);
     }
 }

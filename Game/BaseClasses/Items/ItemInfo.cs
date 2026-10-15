@@ -16,13 +16,6 @@ using ToolsUtilities;
 
 namespace GameBase.Items;
 
-public enum ItemType
-{
-    //useful for catagorizing item typing?
-    //not sure if redundant, but the core idea is maybe stacking items
-    Weapon,
-    Document
-}
 public class ItemInfo
 {
 

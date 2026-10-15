@@ -11,6 +11,7 @@ namespace GameBase;
 
 public static class Services
 {
+    //modify as needed
     //holds all the classes for services. 
     public static InputManager Input { get; private set; }
     public static SpriteLibrary Sprites { get; private set; }

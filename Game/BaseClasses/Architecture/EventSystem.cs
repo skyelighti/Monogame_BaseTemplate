@@ -1,4 +1,5 @@
-﻿using GameBase.Dialogue;
+﻿
+using GameBase.Dialogue;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,9 +7,12 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace GameBase;
-
-public static class EventSystem
+/// <summary>
+/// Event system, for events that should be able to be subscribed to from anywhere within the project
+/// </summary>
+public static partial class EventSystem
 {
+    //edit this as needed.
     public static event Action<string> OnInteract;
     public static event Action<string> OnPickup;
     public static event Action<DialogueInfo> OnDialogueComplete;
