@@ -12,8 +12,9 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace GameBase;
 
-public class GameInfoManager
+public partial class GameInfoManager
 {
+    //finish this tmmrw, but after each thing we should do a specific check for a hardcoded reaction? that gets handled by the game specific portion of this class.
     public Inventory playerInventory { get; } = new();
     public Dictionary<Character, int> npcDialogueProgress = new Dictionary<Character, int>();
     //public HashSet<string> collectedItems = new HashSet<string>();
@@ -84,22 +85,6 @@ public class GameInfoManager
     {
         interactedItems.Add(ID);
         collectedItems.Add(ID);
-        switch (ID)
-        {
-            case ("village_knife_01"):
-                AdvanceDialogue(Character.NPC2);
-                break;
-            case ("house_report_01"):
-                AdvanceDialogue(Character.NPC2);
-                break;
-        }
-        if (GetDialogueIndex(Character.NPC2) >= 2)
-        {
-            while (GetDialogueIndex(Character.NPC1) < 2)
-            {
-                AdvanceDialogue(Character.NPC1);
-            }
-        }
     }
     public int GetDialogueIndex(Character c)
     {
