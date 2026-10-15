@@ -5,10 +5,9 @@ mainly to speed up homework completion (aka copying my code from project a to pr
 will probably be updating pretty frequently as i figure things out
 
 ## TODO:
--  resetting frame idx when changing sprites
--  anim state machine? maybe
--  tileset & tilemaps
+-  Allow for mouse and keyboard input handling
+-  anim state machine? 
 -  particle system/sprite effects
 -  shaders!!
--  fix collider registration/deregistation when removed in middle of scene
--  updating/drawing stuff clearly & reserving stuff in pooling
+-  tilemap .tmx handling so i dont need to modify 
+-  attempt to integrate some stuff from monogame extended
