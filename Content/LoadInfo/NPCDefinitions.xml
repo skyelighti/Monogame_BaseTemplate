@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<NPCInfo>
+	<NPC>
+		<Character>NPCname</Character>
+		<Sprite>npcsprite.sprite</Sprite>
+		<DialogueIDs>
+			<ID>npc_line1</ID>
+			<ID>npc_line2</ID>
+		</DialogueIDs>
+	</NPC>
+
+</NPCInfo>

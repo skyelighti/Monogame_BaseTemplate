@@ -10,4 +10,5 @@ public interface IInteractable
 {
     public bool CanInteract { get; }
     public void Interact(GameObject player);
+    public string ID { get; }
 }

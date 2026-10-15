@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ItemInfo>
+	<Item>
+
+		<Name>ItemName</Name>
+		<ID>itemID</ID>
+		<Type>itemType</Type>
+		<Sprite>itematlas.sprite</Sprite>
+	</Item>
+</ItemInfo>

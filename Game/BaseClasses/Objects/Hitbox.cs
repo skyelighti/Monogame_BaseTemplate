@@ -20,6 +20,9 @@ public class Hitbox : ICollidable
     public Rectangle BoxCollider => new Rectangle((int)transform.position.X, (int)transform.position.Y, (int)transform.scale.X, (int)transform.scale.Y);
 
     public Transform transform { get; private set; }
+    public Action<ICollidable> CollisionEnter;
+    public Action<ICollidable> CollisionExit;
+    public Action<ICollidable> CollisionStay;
 
     public Layer layer => Layer.Default;
     public Hitbox(GameObject o, Transform t)
@@ -30,7 +33,7 @@ public class Hitbox : ICollidable
 
     public void OnCollision(ICollidable other)
     {
-
+        CollisionStay?.Invoke(other);
     }
 
     public void OnCollisionEnter(ICollidable other)
@@ -39,18 +42,12 @@ public class Hitbox : ICollidable
         {
             return;
         }
-        if (other.layer == Layer.Enemy || other.layer == Layer.Obstacle)
-        {
-            if (other is IDamagable damagable)
-            {
-                damagable.takeDamage(1);
-            }
-        }
+        CollisionEnter?.Invoke(other);
     }
 
     public void OnCollisionExit(ICollidable other)
     {
-
+        CollisionExit?.Invoke(other);
     }
 
     public void UpdateTransform(Transform t)

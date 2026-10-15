@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using GameBase.Assets;
 
 namespace GameBase;
+
 public class GameObject
 {
 
@@ -18,7 +19,7 @@ public class GameObject
     //readonly mainly for pooling
     private string spriteName;
     //getting sprite file/loading?
-    private string name;
+    public string name { get; protected set; }
     // identifier 
     public Sprite sprite { get; protected set; }
 
@@ -33,7 +34,7 @@ public class GameObject
     {
         this.spriteName = spriteName;
         this.name = name;
-        sprite = new Sprite(owner.atlas.GetRegion(spriteName));
+        sprite = Services.Sprites.CreateSprite(spriteName);
         ownerScene = owner;
     }
 

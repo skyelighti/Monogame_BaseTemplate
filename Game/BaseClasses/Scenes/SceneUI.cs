@@ -37,7 +37,7 @@ public abstract class SceneUI
         {
             //this should show all the UI objects
             //this should is for scene loading
-            Root.AddToRoot();
+            Root.RemoveFromRoot();
             //attaches to gum global root, which should show?
         }
     }

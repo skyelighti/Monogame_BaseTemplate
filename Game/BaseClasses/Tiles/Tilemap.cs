@@ -137,6 +137,22 @@ public class Tilemap
         }
     }
 
+    public IEnumerable<TileCollider> CreateColliders()
+    {
+        for (int row = 0; row < Rows; row++)
+        {
+            for (int column = 0; column < Columns; column++)
+            {
+                TileInfo tile = GetTile(column, row);
+                if (tile == null || (!tile.IsSolid && !tile.IsTrigger))
+                    continue;
+
+                var position = new Vector2(column * TileWidth, row * TileHeight);
+                yield return new TileCollider(tile, new Transform(position, 0f, Scale));
+            }
+        }
+    }
+
     public bool IsSolid(int column, int row)
     {
         if (column < 0 || column >= Columns || row < 0 || row >= Rows)

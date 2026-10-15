@@ -13,8 +13,8 @@ public enum Layer
     Ground = 2,
     Obstacle = 3,
     Enemy = 4,
-    Item = 5,
-    Exit =6
+    Interactable = 5,
+    Exit = 6
     //does ui need a layermask? its already drawn seperately and gum handles collisions
     //cannot go above 31
 }

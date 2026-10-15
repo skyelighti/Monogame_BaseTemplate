@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using GameBase.Input;
 using GameBase.Assets;
+using GameBase.Dialogue;
 using System;
 using System.Diagnostics;
 using System.Numerics;
@@ -16,6 +17,7 @@ public class Main
     public static Rectangle ScreenBounds;
     public static ContentManager contentManager { get; private set; }
     private SceneManager sceneManager;
+    public static MonoGame.Extended.OrthographicCamera camera;
 
     public Main(ContentManager content)
     {
@@ -24,9 +26,12 @@ public class Main
         var gameInfo = new GameInfoManager(content);
         var inputManager = new InputManager();
         //UIManager = new UIManager(content);
-        Services.Initalize(inputManager, sprites, gameInfo);
+        Services.Initalize(inputManager, sprites, gameInfo, new DialogueManager(inputManager));
         //simplify sprite loading? 
-        gameInfo.InitItemList();
+        gameInfo.InitItemList(content);
+        gameInfo.InitDialogueLines(content);
+        gameInfo.InitNPCDefinitions(content);
+        gameInfo.playerInventory.OnEnable();
 
         sceneManager = new SceneManager(content);
     }
@@ -38,6 +43,7 @@ public class Main
         ScreenBounds = screenBounds;
         sceneManager.Update(gameTime);
         Services.Input.Update(gameTime);
+        Services.Dialogue.Update(gameTime);
         CollisionManager.Instance.Update(gameTime);
         //UIManager.Update(gameTime);
     }

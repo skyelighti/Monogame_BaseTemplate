@@ -25,6 +25,12 @@ public class Transform
         scale = DefaultSpriteSize;
         //defaults
     }
+    public Transform(Vector2 p, Vector2 s)
+    {
+        position = p;
+        rotation = 0f;
+        scale = s;
+    }
     public Transform(Vector2 p, float r)
     {
         position = p;

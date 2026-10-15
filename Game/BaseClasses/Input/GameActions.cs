@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GameBase;
+namespace GameBase.Input;
 
 public enum GameAction
 {
@@ -14,5 +14,6 @@ public enum GameAction
     MoveRight,
     Interact,
     ToggleInventory,
-    Attack
+    Attack,
+    ProgressDialogue
 }

@@ -201,5 +201,7 @@ public class MouseInfo
         );
     }
 
-
+    public void ClearState() {
+        PreviousState = new MouseState();
+    }
 }

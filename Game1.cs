@@ -39,6 +39,7 @@ namespace BaseTemplate {
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             Main.ScreenBounds = GraphicsDevice.Viewport.Bounds;
+            Main.camera = new MonoGame.Extended.OrthographicCamera(GraphicsDevice);
             main = new Main(Content);
 
             // TODO: use this.Content to load your game content here
@@ -46,8 +47,6 @@ namespace BaseTemplate {
 
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
             GumUI.Update(gameTime);
             // TODO: Add your update logic here
             main.Update(gameTime, GraphicsDevice.Viewport.Bounds);
@@ -57,7 +56,7 @@ namespace BaseTemplate {
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.Black);
-            _spriteBatch.Begin(samplerState: SamplerState.PointClamp, blendState: BlendState.AlphaBlend);
+            _spriteBatch.Begin(samplerState: SamplerState.PointClamp, blendState: BlendState.AlphaBlend, transformMatrix: Main.camera.GetViewMatrix());
             // TODO: Add your drawing code here
             main.Draw(_spriteBatch);
             _spriteBatch.End();

@@ -11,6 +11,7 @@ namespace GameBase.Items;
 public abstract class Item : GameObject, ICollidable, IInteractable
 {
     public ItemInfo Info { get; protected set; }
+    public string ID { get; protected set; }
     public Rectangle BoxCollider
     {
         get
@@ -30,7 +31,7 @@ public abstract class Item : GameObject, ICollidable, IInteractable
 
     public Item(ContentManager content, string spriteName, string name, Scene owner) : base(content, spriteName, name, owner)
     {
-
+        layer = Layer.Interactable;
     }
 
     public abstract void Interact(GameObject player);

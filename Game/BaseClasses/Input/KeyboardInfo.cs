@@ -68,6 +68,9 @@ public class KeyboardInfo
     {
         return CurrentState.IsKeyUp(key) && PreviousState.IsKeyDown(key);
     }
-
+    public void ClearPreviousState() {
+        PreviousState = new KeyboardState();
+        //clear when changing input maps
+    }
 
 }

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<DialogueInfoList>
+	<DialogueInfo>
+		<Character>NPCName</Character>
+		<DialogueLines>
+			<Line>
+				<Name>NPCName</Name>
+				<Dialogue>dialougeline </Dialogue>
+				<Sprite>spriteatlas.sprite</Sprite>
+			</Line>
+		</DialogueLines>
+		<Advance>true</Advance>
+		<ID>npc_lineID</ID>
+	</DialogueInfo>
+</DialogueInfoList>

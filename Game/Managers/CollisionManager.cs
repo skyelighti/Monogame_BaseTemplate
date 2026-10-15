@@ -159,7 +159,7 @@ public class CollisionManager
         List<ICollidable> overlap = new List<ICollidable>();
         foreach (ICollidable c in CollidableObjects)
         {
-            if (!c.IsActive) { continue; }
+            if (!c.IsActive || !c.ColliderIsActive) { continue; }
 
             //gameobject center, or else everything else is at the top le
 

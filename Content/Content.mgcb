@@ -13,3 +13,12 @@
 
 #---------------------------------- Content ---------------------------------#
 
+#begin LoadInfo/DialogueList.xml
+/copy:LoadInfo/DialogueList.xml
+
+#begin LoadInfo/ItemDefinitions.xml
+/copy:LoadInfo/ItemDefinitions.xml
+
+#begin LoadInfo/NPCDefinitions.xml
+/copy:LoadInfo/NPCDefinitions.xml
+
