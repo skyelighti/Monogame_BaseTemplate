@@ -12,7 +12,7 @@ public partial class ContentLoader
 {
     //wow so reusable
     //me being intimidated by mason last year turns out to be actually useful
-    public void GameSpecificInit(ContentManager content, SpriteLibrary sprites) { 
+    partial void GameSpecificInit(ContentManager content, SpriteLibrary sprites) { 
         //game specific content goes here!!
     }
 }

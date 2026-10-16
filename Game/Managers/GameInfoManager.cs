@@ -15,6 +15,7 @@ namespace GameBase;
 public partial class GameInfoManager
 {
     //finish this tmmrw, but after each thing we should do a specific check for a hardcoded reaction? that gets handled by the game specific portion of this class.
+    //move all these managers into base classes after.
     public Inventory playerInventory { get; } = new();
     public Dictionary<Character, int> npcDialogueProgress = new Dictionary<Character, int>();
     //public HashSet<string> collectedItems = new HashSet<string>();

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace GameBase;
 
-public class GameSceneManager
+public partial class SceneManager
 {
     public SceneManager(ContentManager content)
     {
