@@ -11,7 +11,7 @@ namespace GameBase;
 public class BasicSolidGameObject : GameObject, ICollidable
 {
     //other interfaces like iinteractable can also be implemented here
-    public BasicSolidGameObject(ContentManager content, string spriteName, string name, Scene owner) : base(content, spriteName, name, owner)
+    public BasicSolidGameObject(string spriteName, Scene owner, string name = null) : base(spriteName, owner, name)
     {
         //update sprites, animated sprites and then size in here
 

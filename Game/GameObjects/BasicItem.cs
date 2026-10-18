@@ -10,7 +10,7 @@ namespace GameBase;
 
 public class BasicItem : Item
 {
-    public BasicItem(ContentManager content, string spriteName, string name, Scene owner) : base(content, spriteName, name, owner)
+    public BasicItem(string spriteName, Scene owner, string name = null) : base(spriteName, owner, name)
     { 
         //assign Info here
     }

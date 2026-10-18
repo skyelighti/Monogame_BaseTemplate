@@ -23,15 +23,10 @@ public class Main
     {
         contentManager = content;
         var sprites = new SpriteLibrary(content);
-        var gameInfo = new GameInfoManager(content);
-        var inputManager = new InputManager();
+        var gameD = new GameDefinitions(content);
         //UIManager = new UIManager(content);
-        Services.Initalize(inputManager, sprites, gameInfo, new DialogueManager(inputManager));
+        Services.Initalize( sprites, gameD, true, true);
         //simplify sprite loading? 
-        gameInfo.InitItemList(content);
-        gameInfo.InitDialogueLines(content);
-        gameInfo.InitNPCDefinitions(content);
-        gameInfo.playerInventory.OnEnable();
 
         sceneManager = new SceneManager(content);
     }
@@ -43,7 +38,7 @@ public class Main
         ScreenBounds = screenBounds;
         sceneManager.Update(gameTime);
         Services.Input.Update(gameTime);
-        Services.Dialogue.Update(gameTime);
+        Services.Dialogue?.Update(gameTime);
         CollisionManager.Instance.Update(gameTime);
         //UIManager.Update(gameTime);
     }

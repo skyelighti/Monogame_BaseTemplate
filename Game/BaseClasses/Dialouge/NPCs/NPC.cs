@@ -23,24 +23,21 @@ public class NPC : GameObject, ICollidable, IInteractable
     Layer ICollidable.layer { get; } = Layer.Interactable;
 
     public bool CanInteract { get; protected set; } = true;
-    NPCInfo npcInfo;
-
     public string ID => name;
 
     public Character character = Character.NPC1;
     readonly List<DialogueInfo> dialogueInfoList;
 
 
-    public NPC(ContentManager content, string spriteName, string name, Scene owner, NPCInfo info) : base(content, spriteName, name, owner)
+    public NPC(string spriteName, Scene owner, NPCInfo info, string name = null) : base(spriteName, owner, name)
     {
         //update sprites, animated sprites and then size in here
-        npcInfo = info;
-        character = npcInfo.character;
+        character = info.character;
         dialogueInfoList = new();
 
-        foreach (string id in npcInfo.dialogueIDOrder)
+        foreach (string id in info.dialogueIDOrder)
         {
-            dialogueInfoList.Add(Services.GameInfo.dialogueById[id]);
+            dialogueInfoList.Add(Services.GameDef.dialogueById[id]);
         }
 
     }
@@ -70,7 +67,7 @@ public class NPC : GameObject, ICollidable, IInteractable
         {
             EventSystem.NPCInteract(character);
             EventSystem.Interact(ID);
-            int index = Services.GameInfo.GetDialogueIndex(character);
+            int index = Services.GamePersistence.GetDialogueIndex(character);
             if (index < dialogueInfoList.Count)
             {
                 Services.Dialogue.DialogueSetup(dialogueInfoList[index]);

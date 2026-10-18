@@ -28,7 +28,7 @@ public abstract class Item : GameObject, ICollidable, IInteractable
     //should i have a data container for items? like a scriptable object? 
 
 
-    public Item(ContentManager content, string spriteName, string name, Scene owner) : base(content, spriteName, name, owner)
+    public Item(string spriteName, Scene owner, string name = null) : base(spriteName, owner, name)
     {
         layer = Layer.Interactable;
     }

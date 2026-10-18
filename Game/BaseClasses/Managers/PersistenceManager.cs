@@ -12,11 +12,10 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace GameBase;
 
-public partial class GameInfoManager
+public partial class PersistenceManager
 {
     //finish this tmmrw, but after each thing we should do a specific check for a hardcoded reaction? that gets handled by the game specific portion of this class.
     //move all these managers into base classes after.
-    public Inventory playerInventory { get; } = new();
     public Dictionary<Character, int> npcDialogueProgress = new Dictionary<Character, int>();
     //public HashSet<string> collectedItems = new HashSet<string>();
     //for item picksups probs wont be used here
@@ -24,10 +23,7 @@ public partial class GameInfoManager
     public HashSet<string> collectedItems = new HashSet<string>();
     public HashSet<string> completedDialogue = new HashSet<string>();
     public HashSet<Character> talkedToNPCs = new HashSet<Character>();
-    List<DialogueInfo> definitions;
-    public Dictionary<string, DialogueInfo> dialogueById { get; private set; } = new();
-    public Dictionary<Character, NPCInfo> npcByCharacter { get; } = new();
-    public GameInfoManager(ContentManager content)
+    public PersistenceManager()
     {
         EventSystem.OnDialogueComplete += DialogueComplete;
         EventSystem.OnInteract += HandleInteract;
@@ -40,26 +36,7 @@ public partial class GameInfoManager
         talkedToNPCs.Add(character);
     }
 
-    public void InitItemList(ContentManager content)
-    {
-        playerInventory.AddAllItemInfo(ItemInfo.FromFile(content, "LoadInfo/ItemDefinitions.xml"));
-        //populate inventorylist items
-    }
-    public void InitDialogueLines(ContentManager content)
-    {
-        definitions = DialogueInfo.FromFile(content, "LoadInfo/DialogueList.xml");
-        foreach (DialogueInfo info in definitions)
-        {
-            dialogueById.Add(info.ID, info);
-        }
-    }
-    public void InitNPCDefinitions(ContentManager content)
-    {
-        foreach (NPCInfo info in NPCInfo.FromFile(content, "LoadInfo/NPCDefinitions.xml"))
-        {
-            npcByCharacter.Add(info.character, info);
-        }
-    }
+
 
     public void Reset()
     {
@@ -67,6 +44,7 @@ public partial class GameInfoManager
         interactedItems.Clear();
         completedDialogue.Clear();
         talkedToNPCs.Clear();
+        collectedItems.Clear();
     }
     void DialogueComplete(DialogueInfo dInfo)
     {

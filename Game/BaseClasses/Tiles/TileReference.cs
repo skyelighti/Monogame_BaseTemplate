@@ -10,5 +10,9 @@ public class TileReference
 {
     public string TilesetName { get; init; }
     public int TileID { get; init; }
+    public TileReference(string name, int ID) {
+        TilesetName = name;
+        TileID = ID;
+    }
 }
 

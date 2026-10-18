@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Tilemap>
+    <Tileset>
+        <name>DesertRuins</name>
+        <tileWidth>16</tileWidth>
+		<tileHeight>16</tileHeight>
+        <sprite>Sprites/desert-ruins</sprite>
+    </Tileset>
+
+    <Tiles>
+        21 50 23 34 34 21 50 23 34
+        35 34 33 34 34 35 34 39 34
+        35 34 49 50 51 51 34 55 34
+        37 34 34 34 34 34 34 39 34
+        35 34 17 54 66 66 66 50 23
+        37 34 49 51 34 34 34 34 33
+        35 34 34 34 34 17 19 34 33
+        53 18 18 18 18 55 35 38 33
+        34 34 34 34 34 34 53 18 55
+    </Tiles>
+    <SolidTiles>
+        17 18 19 21 23 33 35 37 39 49 50 51 53 54 55 66 38
+    </SolidTiles>
+	<TriggerTiles>
+		38
+	</TriggerTiles>
+    <TileLayers>
+        <Layer name="Ground">17 18 19 21 23 33 35 37 39 49 50 51 53 54 55 66</Layer>
+        <Layer name="Exit">38</Layer>
+    </TileLayers>
+
+    <Spawns>
+        <Spawn type="Player" column="1" row="1" />
+        <Spawn type="Sword" column="1" row="2" />
+        <Spawn type="Enemy" column="2" row="3" />
+    </Spawns>
+
+</Tilemap>

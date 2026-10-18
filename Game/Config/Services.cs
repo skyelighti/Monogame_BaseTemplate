@@ -15,15 +15,28 @@ public static class Services
     //holds all the classes for services. 
     public static InputManager Input { get; private set; }
     public static SpriteLibrary Sprites { get; private set; }
-    public static GameInfoManager GameInfo { get; private set; }
+    public static PersistenceManager GamePersistence { get; private set; }
     public static DialogueManager Dialogue { get; private set; }
+    public static Inventory PlayerInventory { get; private set; }
+    public static GameDefinitions GameDef { get; private set; }
 
-    public static void Initalize(InputManager input, SpriteLibrary sprites, GameInfoManager gameI, DialogueManager dManager)
+    public static void Initalize( SpriteLibrary sprites, GameDefinitions gameD, bool enableItems, bool enableDialogue)
     {
-        Input = input;
+        Input = new InputManager();
         Sprites = sprites;
-        GameInfo = gameI;
-        Dialogue = dManager;
+        GamePersistence = new PersistenceManager();
+        GameDef = gameD;
+        if (enableItems) {
+            PlayerInventory = new Inventory();
+            gameD.InitItemList();
+            PlayerInventory.OnEnable();
+        }
+        if (enableDialogue) {
+            Dialogue = new DialogueManager(Input);
+            gameD.InitDialogueLines();
+            gameD.InitNPCDefinitions();
+        }
+
     }
 
 }

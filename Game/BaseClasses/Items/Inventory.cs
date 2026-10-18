@@ -9,9 +9,7 @@ namespace GameBase.Items;
 public class Inventory
 {
     public List<ItemInfo> items { get; private set; } = new();
-    public static Dictionary<string, ItemInfo> itemList = new();
-    //stores item definitions
-    //convert to dict later - add dupes?
+
     public Action OnInvUpdate;
     InventoryUI invUI;
     public Inventory()
@@ -40,21 +38,12 @@ public class Inventory
     {
         Services.Input.ActionPressed += InventoryToggle;
     }
-    public void AddAllItemInfo(List<ItemInfo> infos)
-    {
-        foreach (ItemInfo info in infos)
-        {
-            itemList[info.ID] = info;
-        }
-    }
+
     public ItemInfo GetItem(ItemInfo info)
     {
         return items.Contains(info) ? info : null;
     }
-    public ItemInfo GetItemFromDict(string info)
-    {
-        return itemList[info];
-    }
+
     public void AddItem(ItemInfo info)
     {
         if (!items.Contains(info))

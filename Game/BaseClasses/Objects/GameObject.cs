@@ -17,8 +17,6 @@ public class GameObject
 
     public bool IsActive { get; private set; } = true;
     //readonly mainly for pooling
-    private string spriteName;
-    //getting sprite file/loading?
     public string name { get; protected set; }
     // identifier 
     public Sprite sprite { get; protected set; }
@@ -30,9 +28,8 @@ public class GameObject
 
     public bool spriteVisible = true;
     float invisibilityTimer = 0f;
-    public GameObject(ContentManager content, string spriteName, string name, Scene owner)
+    public GameObject(string spriteName, Scene owner, string name = null)
     {
-        this.spriteName = spriteName;
         this.name = name;
         sprite = Services.Sprites.CreateSprite(spriteName);
         ownerScene = owner;
