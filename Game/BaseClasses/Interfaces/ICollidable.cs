@@ -31,5 +31,6 @@ public interface ICollidable
     void OnCollisionExit(ICollidable other);
     //each object can manage it's reaction to collisions
     Layer layer { get; }
+    GameObject owner { get; }
 }
 

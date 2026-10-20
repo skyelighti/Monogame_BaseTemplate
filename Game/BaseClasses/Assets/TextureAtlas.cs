@@ -2,7 +2,9 @@
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using RenderingLibrary.Graphics;
+using System.Collections;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.IO;
 using System.Xml;
 using System.Xml.Linq;
@@ -14,6 +16,8 @@ public class TextureAtlas
 {
     private Dictionary<string, TextureRegion> _regions;
     public IReadOnlyDictionary<string, TextureRegion> Regions => _regions;
+    List<TextureRegion> _regionsByIndex = new();
+    public int RegionCount => _regionsByIndex.Count;
 
     public Texture2D Texture { get; set; }
     //private Dictionary<string, Animation> _animations;
@@ -38,20 +42,33 @@ public class TextureAtlas
         TextureRegion region = new TextureRegion(Texture, x, y, width, height);
         region.alphaMask = GetAlphaMask(x, y, width, height);
         _regions.Add(name, region);
+        _regionsByIndex.Add(region);
+    }
+    public TextureRegion GetTextureRegion(int index) {
+        return _regionsByIndex[index];
     }
     public TextureRegion GetRegion(string name)
     {
         return _regions[name];
     }
+    public int GetIndexOfRegion(string name) {
+        if (!_regions.ContainsKey(name)) { return -1; }
+        return _regionsByIndex.IndexOf(_regions[name]);
+    }
     public bool RemoveRegion(string name)
     {
-        return _regions.Remove(name);
+        if (!_regions.ContainsKey(name)) { return false; }
+        TextureRegion region = _regions[name];
+        _regionsByIndex.Remove(region);
+        _regions.Remove(name);
+        return true;
     }
 
 
     public void Clear()
     {
         _regions.Clear();
+        _regionsByIndex.Clear();
     }
     public bool[] GetAlphaMask(int x, int y, int width, int height)
     {

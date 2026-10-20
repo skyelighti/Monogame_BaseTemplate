@@ -11,7 +11,6 @@ public class TileCollider : ICollidable
 {
     public TileInfo TileInfo { get; private set; }
 
-
     public Rectangle BoxCollider => CalculateBounds();
 
     public Transform transform { get; }
@@ -26,6 +25,8 @@ public class TileCollider : ICollidable
     {
         get { return TileInfo.layer; }
     }
+
+    public GameObject owner => null;
 
     public TileCollider(TileInfo tileInfo, Transform transform)
     {

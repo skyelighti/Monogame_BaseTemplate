@@ -5,7 +5,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GameBase;
 public class Transform
 {
     public Vector2 position;

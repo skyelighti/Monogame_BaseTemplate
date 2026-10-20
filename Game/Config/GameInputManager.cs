@@ -10,30 +10,30 @@ namespace GameBase.Input;
 public partial class InputManager
 {
     //everything here is going to change game to game. everything else in input manager should stay the same
-    private readonly Dictionary<GameAction, List<Keys>> _actionKeys = new()
+    private readonly Dictionary<GameAction, List<InputBinding>> _actionKeys = new()
     {
-        [GameAction.MoveUp] = new List<Keys> { Keys.W, Keys.Up },
-        [GameAction.MoveDown] = new List<Keys> { Keys.S, Keys.Down },
-        [GameAction.MoveLeft] = new List<Keys> { Keys.A, Keys.Left },
-        [GameAction.MoveRight] = new List<Keys> { Keys.D, Keys.Right },
-        [GameAction.Interact] = new List<Keys> { Keys.E },
-        [GameAction.ToggleInventory] = new List<Keys> { Keys.I },
-        [GameAction.Attack] = new List<Keys> { Keys.Space }
+        [GameAction.MoveUp] = new List<InputBinding> { new InputBinding(Keys.W), new InputBinding(Keys.Up) },
+        [GameAction.MoveDown] = new List<InputBinding> { new InputBinding(Keys.S), new InputBinding(Keys.Down) },
+        [GameAction.MoveLeft] = new List<InputBinding> { new InputBinding(Keys.A), new InputBinding(Keys.Left) },
+        [GameAction.MoveRight] = new List<InputBinding> { new InputBinding(Keys.D), new InputBinding(Keys.Right) },
+        [GameAction.Interact] = new List<InputBinding> { new InputBinding(Keys.E) },
+        [GameAction.ToggleInventory] = new List<InputBinding> { new InputBinding(Keys.I) },
+        [GameAction.Attack] = new List<InputBinding> { new InputBinding(Keys.Space), new InputBinding(MouseButton.Left)}
         //ALLOW FOR MOUSE CLICKING LATER
     };
     //contents can still change. dict itself cannot.
 
-    private readonly Dictionary<GameAction, List<Keys>> _dialogueKeys = new()
+    private readonly Dictionary<GameAction, List<InputBinding>> _dialogueKeys = new()
     {
-        [GameAction.ProgressDialogue] = new List<Keys> { Keys.Space, Keys.Enter },
+        [GameAction.ProgressDialogue] = new List<InputBinding> { new InputBinding(Keys.Space), new InputBinding(Keys.Enter) },
         //ALLOW FOR MOUSE CLICKING LATER
     };
-    private readonly Dictionary<GameAction, List<Keys>> _inventoryKeys = new()
+    private readonly Dictionary<GameAction, List<InputBinding>> _inventoryKeys = new()
     {
-        [GameAction.ToggleInventory] = new List<Keys> { Keys.I, Keys.Escape }
+        [GameAction.ToggleInventory] = new List<InputBinding> { new InputBinding(Keys.I), new InputBinding(Keys.Escape) }
     };
 
-    readonly Dictionary<InputActionMap, Dictionary<GameAction, List<Keys>>> ActionMap = new();
+    readonly Dictionary<InputActionMap, Dictionary<GameAction, List<InputBinding>>> ActionMap = new();
 
     public void InitActionMaps() {
         ActionMap[InputActionMap.Gameplay] = _actionKeys;

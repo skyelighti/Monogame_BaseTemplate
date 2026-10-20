@@ -8,7 +8,9 @@ using System.Threading.Tasks;
 
 namespace GameBase;
 /// <summary>
-/// Event system, for events that should be able to be subscribed to from anywhere within the project
+/// Event system, for events that should be able to be subscribed to from anywhere within the project, like a system-wide annoucement.
+/// This is also a partial class, so if there are any game specific events that aren't applicable to the template as a whole, i can keep them seperate
+/// The goal of anything and everything within baseclasses is that once im doing with architecture, i dont have to touch them ever again when im making a game.
 /// </summary>
 public static partial class EventSystem
 {

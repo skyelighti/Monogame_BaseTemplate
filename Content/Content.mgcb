@@ -13,6 +13,48 @@
 
 #---------------------------------- Content ---------------------------------#
 
+#begin Assets/Grass.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/processorParam:Version=3.8.5.1
+/build:Assets/Grass.png
+
+#begin Assets/placeholder.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/processorParam:Version=3.8.5.1
+/build:Assets/placeholder.png
+
+#begin Assets/PlayerSpritesheet.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/processorParam:Version=3.8.5.1
+/build:Assets/PlayerSpritesheet.png
+
+#begin AtlasInfo/PlayerAtlas.xml
+/copy:AtlasInfo/PlayerAtlas.xml
+
 #begin LoadInfo/DialogueList.xml
 /copy:LoadInfo/DialogueList.xml
 
@@ -21,4 +63,10 @@
 
 #begin LoadInfo/NPCDefinitions.xml
 /copy:LoadInfo/NPCDefinitions.xml
+
+#begin LoadInfo/SpriteSheetAnimations.xml
+/copy:LoadInfo/SpriteSheetAnimations.xml
+
+#begin LoadInfo/TileMap1.xml
+/copy:LoadInfo/TileMap1.xml
 

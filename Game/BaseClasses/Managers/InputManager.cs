@@ -51,20 +51,24 @@ public partial class InputManager
         var startmap = inputActionMap;
         foreach (var binding in ActionMap[startmap])
         {
-            bool wasPressed = false;
-            bool isPressed = false;
-            foreach (var key in binding.Value)
-            {
-                if (Keyboard.PreviousState.IsKeyDown(key))
-                {
-                    wasPressed = true;
+            bool justPressed = false;
+            bool justReleased = false;
+            bool isDown = false;
+            foreach ( InputBinding b in binding.Value) {
+                if (b.WasJustPressed(Keyboard, Mouse)) {
+                    justPressed = true;
                 }
-                if (Keyboard.CurrentState.IsKeyDown(key))
+                else if (b.WasJustReleased(Keyboard, Mouse))
                 {
-                    isPressed = true;
+                    justReleased = true;
                 }
+                if (b.IsDown(Keyboard,Mouse))
+                {
+                    isDown = true;
+                }
+                
             }
-            if (isPressed && !wasPressed)
+            if (justPressed)
             {
                 ActionPressed?.Invoke(binding.Key);
                 if (inputActionMap != startmap)
@@ -72,7 +76,7 @@ public partial class InputManager
                     return;
                 }
             }
-            else if (!isPressed && wasPressed)
+            if (justReleased && !isDown)
             {
                 ActionReleased?.Invoke(binding.Key);
                 if (inputActionMap != startmap)
@@ -80,7 +84,7 @@ public partial class InputManager
                     return;
                 }
             }
-            if (isPressed)
+            if (isDown)
             {
                 ActionKeyDown?.Invoke(binding.Key);
                 if (inputActionMap != startmap)
@@ -88,15 +92,17 @@ public partial class InputManager
                     return;
                 }
             }
+
+
         }
         //prevents double firing for input :P
     }
 
-    public void UpdateKeyBindings(InputActionMap map, GameAction action, List<Keys> newKeys)
+    public void UpdateKeyBindings(InputActionMap map, GameAction action, List<InputBinding> newBindings)
     {
         if (ActionMap[map].ContainsKey(action))
         {
-            ActionMap[map][action] = new List<Keys>(newKeys);
+            ActionMap[map][action] = new List<InputBinding>(newBindings);
         }
     }
 

@@ -10,21 +10,20 @@ namespace GameBase;
 
 public class PickupItem : Item
 {
+    public string InstanceID { get; }
+
     public PickupItem(ItemInfo info, string instanceId, Scene owner) : base(info.spriteName, owner, info.name)
     { 
         Info = info;
-        ID = instanceId;
+        InstanceID = instanceId;
     }
-    public override void Interact(GameObject player)
+    public override void OnInteract(GameObject player)
     {
-        if (CanInteract)
-        {
-            Services.PlayerInventory.AddItem(Info);
-            CanInteract = false;
-            ActiveOnSceneEnter = false;
-            SetActive(false);
-            EventSystem.Pickup(ID);
-        }
+        Services.PlayerInventory.AddItem(Info);
+        interact.SetCanInteract(false);
+        ActiveOnSceneEnter = false;
+        SetActive(false);
+        EventSystem.Pickup(InstanceID);
     }
     public override void OnCollisionEnter(ICollidable collidable)
     {

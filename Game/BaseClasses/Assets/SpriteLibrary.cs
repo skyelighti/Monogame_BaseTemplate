@@ -6,16 +6,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using GameBase;
+using GameBase.Animations;
 
 namespace GameBase.Assets;
 public class SpriteLibrary
 {
     private Dictionary<string, TextureRegion> _regions;
-    private Dictionary<string, Animation> _animations;
+    private Dictionary<string, SpriteSheet> _spriteSheets = new();
     private ContentLoader _contentLoader;
     public SpriteLibrary(ContentManager content)
     {
-        _animations = new Dictionary<string, Animation>();
+        _spriteSheets = new Dictionary<string, SpriteSheet>();
         _regions = new Dictionary<string, TextureRegion>();
         _contentLoader = new ContentLoader(content, this);
     }
@@ -31,27 +32,27 @@ public class SpriteLibrary
     {
         return _regions.Remove(name);
     }
-    public void AddAnimation(string animationName, Animation animation)
+    public void AddSpriteSheet(string sheetName, SpriteSheet sheet)
     {
-        _animations.Add(animationName, animation);
+        _spriteSheets.Add(sheetName, sheet);
     }
-    public Animation GetAnimation(string animationName)
+    public SpriteSheet GetSpriteSheet(string sheetName)
     {
-        return _animations[animationName];
+        return _spriteSheets[sheetName];
     }
-    public bool RemoveAnimation(string animationName)
+    public bool RemoveSpriteSheet(string sheetName)
     {
-        return _animations.Remove(animationName);
+        return _spriteSheets.Remove(sheetName);
     }
     /// <summary>
     /// Creates a new animated sprite using the animation from this texture atlas with the specified name.
     /// </summary>
     /// <param name="animationName">The name of the animation to use.</param>
     /// <returns>A new AnimatedSprite using the animation with the specified name.</returns>
-    public AnimatedSprite CreateAnimatedSprite(string animationName)
+    public AnimatedSprite CreateAnimatedSprite(string sheetName, string animationName)
     {
-        Animation animation = GetAnimation(animationName);
-        return new AnimatedSprite(animation);
+        SpriteSheet sheet = GetSpriteSheet(sheetName);
+        return new AnimatedSprite(sheet, animationName);
     }
     public Sprite CreateSprite(string regionName)
     {

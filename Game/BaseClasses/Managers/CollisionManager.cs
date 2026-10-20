@@ -49,6 +49,10 @@ public class CollisionManager
                     }
                     if (collision)
                     {
+                        if (CollidableObjects[i].owner != null && CollidableObjects[i].owner == CollidableObjects[j].owner)
+                        {
+                            continue;
+                        }
                         currCollisions.Add((CollidableObjects[i], CollidableObjects[j]));
 
                         CollidableObjects[i].OnCollision(CollidableObjects[j]);
@@ -140,6 +144,10 @@ public class CollisionManager
         foreach (ICollidable c in CollidableObjects)
         {
             if (c == gameobject || !c.IsActive || !c.ColliderIsActive) { continue; }
+            if (gameobject.owner != null && gameobject.owner == c.owner)
+            {
+                continue;
+            }
 
             //gameobject center, or else everything else is at the top le
 
@@ -259,6 +267,10 @@ public class CollisionManager
         float finaldist = xDist;
         foreach (ICollidable col in CollidableObjects)
         {
+            if (obj.owner != null && obj.owner == col.owner)
+            {
+                continue;
+            }
             if (col == obj || !col.IsActive || !col.ColliderIsActive || col.IsTrigger || obj.IsTrigger) { continue; }
             bool vertOverlap = (obj.BoxCollider.Top < col.BoxCollider.Bottom && obj.BoxCollider.Bottom > col.BoxCollider.Top);
             if (!vertOverlap) { continue; }

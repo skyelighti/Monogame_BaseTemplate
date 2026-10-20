@@ -10,16 +10,14 @@ namespace GameBase;
 
 public class BasicItem : Item
 {
+    //still need to set when the interaction is valid though. 
     public BasicItem(string spriteName, Scene owner, string name = null) : base(spriteName, owner, name)
     { 
         //assign Info here
     }
-    public override void Interact(GameObject player)
+    public override void OnInteract(GameObject player)
     {
-        if (CanInteract)
-        {
-            //interact here.
-        }
+        //checking for if an interact is valid is already handled by the component
     }
     public override void OnCollisionEnter(ICollidable collidable)
     {

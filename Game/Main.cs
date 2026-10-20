@@ -25,7 +25,7 @@ public class Main
         var sprites = new SpriteLibrary(content);
         var gameD = new GameDefinitions(content);
         //UIManager = new UIManager(content);
-        Services.Initalize( sprites, gameD, true, true);
+        Services.Initalize( sprites, gameD, true, false);
         //simplify sprite loading? 
 
         sceneManager = new SceneManager(content);

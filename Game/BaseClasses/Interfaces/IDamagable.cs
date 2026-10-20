@@ -15,4 +15,5 @@ public interface IDamagable
     //class implements how damage works
     // maybe also add a ui thing, where it should have a method to update UI?
     public event Action DmgTaken;
+    public event Action Death;
 }
