@@ -73,5 +73,10 @@ public class ObjectPool<T> where T : GameObject
         }
         //so other functions can iterate through 
     }
+    public void ResetPool() {
+        foreach (T obj in objPool) {
+            obj.SetActive(false);
+        }
+    }
 
 }

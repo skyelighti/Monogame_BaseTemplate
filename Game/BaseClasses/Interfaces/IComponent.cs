@@ -10,6 +10,5 @@ namespace GameBase;
 public interface IComponent
 {
     GameObject owner { get; }
-    bool IsActive { get; }
     void Update(GameTime gameTime);
 }

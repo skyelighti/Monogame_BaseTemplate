@@ -63,7 +63,7 @@ public class StateMachine
         }
         //think i need to modify the update function for gameTime
     }
-    public void SetExitStataeFunc(int state, System.Action func)
+    public void SetExitStateFunc(int state, System.Action func)
     {
         if (ValidState(state))
         {

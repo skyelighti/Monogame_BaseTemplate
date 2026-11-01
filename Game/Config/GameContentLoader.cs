@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework.Content;
 using System.Linq;
@@ -15,6 +15,6 @@ public partial class ContentLoader
     partial void GameSpecificInit(ContentManager content, SpriteLibrary sprites)
     {
         //game specific content goes here!!
-        SpriteSheetAnimationBuilder.FromFile(content, "LoadInfo/SpriteSheetAnimations.xml", sprites);
+        SpriteSheetAnimationBuilder.FromFile(content, "LoadInfo/SpriteSheetAnimations.json", sprites);
     }
 }

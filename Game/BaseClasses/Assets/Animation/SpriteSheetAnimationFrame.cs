@@ -8,11 +8,11 @@ namespace GameBase.Animations;
 
 public class SpriteSheetAnimationFrame : IAnimationFrame
 {
-    public int AtlasFrame { get;}
+    public TextureRegion Region { get; }
 
     public TimeSpan Duration { get;}
-    public SpriteSheetAnimationFrame(int index, TimeSpan duration) {
-        AtlasFrame = index;
+    public SpriteSheetAnimationFrame(TextureRegion region, TimeSpan duration) {
+        Region = region;
         Duration = duration;
     
     }

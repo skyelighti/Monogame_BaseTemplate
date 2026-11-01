@@ -8,19 +8,22 @@ namespace  GameBase.Animations;
 
 public class SpriteSheet
 {
-    Dictionary<string, SpriteSheetAnimation> _animations = new();
-    string Name;
+    public string Name { get; private set; }
     TextureAtlas textureAtlas;
+    public int frameHeight { get; }
+    public int frameWidth { get; }
 
-    public SpriteSheet(string name, TextureAtlas atlas) {
+    public int regionCount => textureAtlas.RegionCount;
+    public int columns { get; }
+    public int rows { get; }
+
+    public SpriteSheet(string name, TextureAtlas atlas, int frameH, int frameW, int cols, int rows) {
         textureAtlas = atlas;
         Name = name;
-    }
-    public void AddAnimation(SpriteSheetAnimation anim) {
-        _animations.Add(anim.name, anim);
-    }
-    public SpriteSheetAnimation GetAnimation(string name) {
-        return _animations[name];
+        frameHeight = frameH;
+        frameWidth = frameW;
+        columns = cols;
+        this.rows = rows;
     }
     public Sprite CreateSprite(int regionIndex)
     {

@@ -19,7 +19,11 @@ public abstract class Item : GameObject
     //should i have a data container for items? like a scriptable object? 
 
 
-    public Item(string spriteName, Scene owner, string name = null) : base(spriteName, owner, name)
+    public Item(string spriteName, Scene owner, string name = null) : this(Services.Sprites.CreateSprite(spriteName), owner, name)
+    {
+    }
+
+    public Item(Sprite sprite, Scene owner, string name = null) : base(sprite, owner, name)
     {
         layer = Layer.Interactable;
 
@@ -29,10 +33,10 @@ public abstract class Item : GameObject
         var i = new InteractableComponent(this);
         interact = i;
         AddComponent(i);
-        hb.CollisionStay += OnCollision;
-        hb.CollisionEnter += OnCollisionEnter;
-        hb.CollisionExit += OnCollisionExit;
-        i.Interacted += OnInteract;
+        hitbox.CollisionStay += OnCollision;
+        hitbox.CollisionEnter += OnCollisionEnter;
+        hitbox.CollisionExit += OnCollisionExit;
+        interact.Interacted += OnInteract;
     }
     public virtual void OnInteract(GameObject obj) { 
         //checking for interaction is already handled by the component
@@ -46,5 +50,12 @@ public abstract class Item : GameObject
     public virtual void OnCollisionExit(ICollidable col)
     {
     }
-
+    public override void OnDestroy()
+    {
+        hitbox.CollisionStay -= OnCollision;
+        hitbox.CollisionEnter -= OnCollisionEnter;
+        hitbox.CollisionExit -= OnCollisionExit;
+        interact.Interacted -= OnInteract;
+        base.OnDestroy();
+    }
 }

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace GameBase;
 public interface ICollidable
 {
-    bool IsActive { get; }
+    bool activeSelf { get; }
     //pooling.... maybe new interface? but too fragmented
     bool IsTrigger { get; }
     bool ColliderIsActive { get; }

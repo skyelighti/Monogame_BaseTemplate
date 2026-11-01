@@ -64,8 +64,8 @@
 #begin LoadInfo/NPCDefinitions.xml
 /copy:LoadInfo/NPCDefinitions.xml
 
-#begin LoadInfo/SpriteSheetAnimations.xml
-/copy:LoadInfo/SpriteSheetAnimations.xml
+#begin LoadInfo/SpriteSheetAnimations.json
+/copy:LoadInfo/SpriteSheetAnimations.json
 
 #begin LoadInfo/TileMap1.xml
 /copy:LoadInfo/TileMap1.xml

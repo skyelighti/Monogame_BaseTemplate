@@ -26,7 +26,8 @@ public class GameProgressionManager
     {
     }
 
-    public void HandlePickup(string ID) { 
+    public void HandlePickup(ItemInfo info, string ID) { 
+        //store and increment score here
     
     }
     public void HandleNPCInteract(Character character) { 

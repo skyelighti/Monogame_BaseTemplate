@@ -8,25 +8,29 @@ namespace GameBase;
 
 public class DamageComponent : Component, IDamagable
 {
-    public (int curr, int max) health { get; private set; }
+    public (int curr, int max) health => (data.current, data.max);
+    HealthData data;
     public event Action DmgTaken;
     public event Action Death;
     public event Action Heal;
-    public DamageComponent(int hp, GameObject o) : base(o)
+    public DamageComponent(HealthData data, GameObject o) : base(o)
     {
-        health = (hp, hp);
+        this.data = data;
+    }
+    public DamageComponent(int hp, GameObject o): this(new HealthData(hp), o)
+    {
     }
 
     public void takeDamage(int dmg)
     {
-        if (health.curr <= 0 || dmg < 0 || dmg == 0) { return; }
+        if (!activeSelf||health.curr <= 0 || dmg < 0 || dmg == 0) { return; }
         if (health.curr - dmg <= 0)
         {
-            health = (0, health.max);
+            data.SetCurrent(0);
             Death?.Invoke();
         }
         else {
-            health = (health.curr - dmg, health.max);
+            data.SetCurrent(data.current - dmg);
         }
         DmgTaken?.Invoke();
     }
@@ -35,11 +39,11 @@ public class DamageComponent : Component, IDamagable
         if (health.curr <= 0 || hp < 0|| hp == 0) { return; }
         if (health.curr + hp >= health.max)
         {
-            health = (health.max, health.max);
+            data.SetCurrent(data.max);
         }
         else
         {
-            health = (health.curr + hp, health.max);
+            data.SetCurrent(data.current + hp);
         }
         Heal?.Invoke();
     }

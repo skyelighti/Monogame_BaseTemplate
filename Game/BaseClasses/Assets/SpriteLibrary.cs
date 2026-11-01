@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using GameBase;
 using GameBase.Animations;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace GameBase.Assets;
 public class SpriteLibrary
@@ -14,6 +15,7 @@ public class SpriteLibrary
     private Dictionary<string, TextureRegion> _regions;
     private Dictionary<string, SpriteSheet> _spriteSheets = new();
     private ContentLoader _contentLoader;
+    Dictionary<string, IAnimation> animations = new();
     public SpriteLibrary(ContentManager content)
     {
         _spriteSheets = new Dictionary<string, SpriteSheet>();
@@ -51,8 +53,8 @@ public class SpriteLibrary
     /// <returns>A new AnimatedSprite using the animation with the specified name.</returns>
     public AnimatedSprite CreateAnimatedSprite(string sheetName, string animationName)
     {
-        SpriteSheet sheet = GetSpriteSheet(sheetName);
-        return new AnimatedSprite(sheet, animationName);
+        IAnimation animation = GetAnimation($"{sheetName}.{animationName}");
+        return new AnimatedSprite(animation);
     }
     public Sprite CreateSprite(string regionName)
     {
@@ -66,5 +68,22 @@ public class SpriteLibrary
             string spriteName = $"{atlasName}.{entry.Key}";
             AddRegion(spriteName, entry.Value);
         }
+    }
+
+    public TextureAtlas LoadSprite(ContentManager content, string assetLocation, string name) {
+        Texture2D texture = content.Load<Texture2D>(assetLocation);
+        TextureAtlas atlas = new TextureAtlas(texture);
+        atlas.AddRegion(name, 0, 0 , texture.Width, texture.Height);
+        AddRegion(name, atlas.GetRegion(name));
+        return atlas;
+    }
+    public void AddAnimation(string name, IAnimation animation)
+    {
+        animations.Add(name, animation);
+    }
+
+    public IAnimation GetAnimation(string name)
+    {
+        return animations[name];
     }
 }

@@ -7,6 +7,7 @@ using System.IO;
 using System.Xml;
 using System.Xml.Linq;
 using GameBase.Assets;
+using System.Net.Sockets;
 
 namespace GameBase.Tiles;
 
@@ -14,6 +15,7 @@ public class Tilemap
 {
     private readonly Dictionary<string, Tileset> _tileset = new();
     private readonly TileReference[] _tiles;
+    Dictionary<int, AnimationController> tileAnimations = new();
 
     /// <summary>
     /// Gets the total number of rows in this tilemap.
@@ -125,7 +127,16 @@ public class Tilemap
             TileReference tileReference = _tiles[i];
             if (tileReference == null)
                 continue;
-            TextureRegion tile = _tileset[tileReference.TilesetName].GetTile(tileReference.TileID).Region;
+            TextureRegion tile;
+            if (tileAnimations.ContainsKey(i))
+            {
+                var controller = tileAnimations[i];
+                var frame = controller.Animation.Frames[controller.CurrentFrame];
+                tile = frame.Region;
+            }
+            else {
+                tile = _tileset[tileReference.TilesetName].GetTile(tileReference.TileID).Region;
+            }
 
             int x = i % Columns;
             int y = i / Columns;
@@ -165,6 +176,29 @@ public class Tilemap
         return _tileset[tileReference.TilesetName].IsSolid(tileReference.TileID);
     }
 
+    public void SetAnimation(int tileIdx, string animationName)
+    {
+        Tileset ts = _tileset[_tiles[tileIdx].TilesetName];
+        SpriteSheet sheet = ts.sheet;
+        if (animationName == null) {
+            return;
+        }
+        IAnimation animation = Services.Sprites.GetAnimation($"{sheet.Name}.{animationName}");
+        if (animation != null)
+        {
+            if (!tileAnimations.ContainsKey(tileIdx)) {
+                tileAnimations[tileIdx] = new AnimationController();
+            }
+            tileAnimations[tileIdx].ChangeAnimation(animation);
+            tileAnimations[tileIdx].Play();
+        }
 
+    }
+
+    public void Update(GameTime gameTime) {
+        foreach (AnimationController x in tileAnimations.Values) {
+            x.Update(gameTime);
+        }
+    }
 
 }

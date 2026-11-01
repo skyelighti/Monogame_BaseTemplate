@@ -29,7 +29,6 @@ public class AnimationController: IAnimationController
     public int FrameCount => Animation?.FrameCount ?? 0;
     //if animation isnt null gets frame count, otherwise 0
 
-    private IAnimation pendingAnimation;
     public event Action<IAnimationController, AnimationEventTrigger> OnAnimationEvent;
 
     public void ChangeAnimation(IAnimation animation)
@@ -40,6 +39,7 @@ public class AnimationController: IAnimationController
         SetFrame(direction == 1 ? 0 : FrameCount - 1);
         //need to copy playback settings
     }
+
     public void SetSpeed(double speed) {
         if (speed >= 0) {
             Speed = speed;
@@ -55,10 +55,7 @@ public class AnimationController: IAnimationController
             OnAnimationEvent?.Invoke(this, AnimationEventTrigger.FrameBegin);
         }
     }
-    public void RequestAnimation(IAnimation animation)
-    {
-        pendingAnimation = animation;
-    }
+
     public bool Pause()
     {
         if (!IsAnimating) { 

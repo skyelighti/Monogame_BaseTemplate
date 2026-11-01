@@ -20,7 +20,7 @@ public class InteractableComponent : Component, IInteractable
 
     public void Interact(GameObject player)
     {
-        if (!IsActive || !CanInteract)
+        if (!activeSelf || !CanInteract)
         {
             return;
         }

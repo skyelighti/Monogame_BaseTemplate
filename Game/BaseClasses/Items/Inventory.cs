@@ -9,34 +9,15 @@ namespace GameBase.Items;
 public class Inventory
 {
     public List<ItemInfo> items { get; private set; } = new();
+    public int currencyCount { get; private set; } = 0;
 
     public Action OnInvUpdate;
-    InventoryUI invUI;
     public Inventory()
     {
-        invUI = new InventoryUI(this);
-    }
-    public void InventoryToggle(GameAction action)
-    {
-        if (action == GameAction.ToggleInventory)
-        {
-            if (Services.Input.inputActionMap == InputActionMap.Gameplay)
-            {
-                //open inventory
-                invUI.SetActive(true);
-                Services.Input.UpdateActionMap(InputActionMap.Inventory);
-            }
-            else if (Services.Input.inputActionMap == InputActionMap.Inventory)
-            {
-                //close inventory
-                invUI.SetActive(false);
-                Services.Input.UpdateActionMap(InputActionMap.Gameplay);
-            }
-        }
     }
     public void OnEnable()
     {
-        Services.Input.ActionPressed += InventoryToggle;
+        //Services.Input.ActionPressed += InventoryToggle;
     }
 
     public ItemInfo GetItem(ItemInfo info)
@@ -46,6 +27,12 @@ public class Inventory
 
     public void AddItem(ItemInfo info)
     {
+        if (info.GetProperty<CurrencyInfo>() != null) {
+            currencyCount += info.GetProperty<CurrencyInfo>().amt;
+            OnInvUpdate?.Invoke();
+            return;
+        }
+        //this needs refactoring
         if (!items.Contains(info))
         {
             items.Add(info);
@@ -54,6 +41,7 @@ public class Inventory
     }
     public void ResetInventory()
     {
+        currencyCount = 0;
         items.Clear();
         OnInvUpdate?.Invoke();
     }

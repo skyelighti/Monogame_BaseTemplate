@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace GameBase;
 
-public abstract class Component : IComponent
+public abstract class Component : IComponent, IObject
 {
     public GameObject owner { get; protected set; }
 
-    public bool IsActive => enabled && owner.IsActive;
+    public bool activeSelf => enabled && owner.IsActive;
     protected bool enabled = true;
     protected Component(GameObject o)
     {
@@ -22,8 +22,10 @@ public abstract class Component : IComponent
     {
         
     }
-    public virtual bool SetActive(bool state) {
+    public virtual void SetActive(bool state) {
         enabled = state;
-        return IsActive;
+    }
+    public virtual void OnDestroy() { 
+        //all subscription cleanup belongs here. 
     }
 }

@@ -66,5 +66,13 @@ public class NPC : GameObject
     public void OnCollisionExit(ICollidable col)
     {
     }
+    public override void OnDestroy()
+    {
+        hitbox.CollisionStay -= OnCollision;
+        hitbox.CollisionEnter -= OnCollisionEnter;
+        hitbox.CollisionExit -= OnCollisionExit;
+        interact.Interacted -= OnInteract;
 
+        base.OnDestroy();
+    }
 }

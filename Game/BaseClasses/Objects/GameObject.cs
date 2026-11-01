@@ -10,7 +10,7 @@ using GameBase.Assets;
 using System.Diagnostics;
 namespace GameBase;
 
-public class GameObject
+public class GameObject : IObject
 {
     public TransformComponent transformC { get; }
     public Transform transform => transformC.transform;
@@ -23,13 +23,19 @@ public class GameObject
     public Sprite sprite => spriteC.sprite;
     public Scene ownerScene { get; protected set; }
     public bool ActiveOnSceneEnter = true;
-    public Layer layer { get; protected set; } = Layer.Default; 
+    public Layer layer { get; protected set; } = Layer.Default;
+
+    public bool activeSelf => IsActive;
+
     private readonly List<IComponent> components = new();
 
 
     //public bool spriteVisible = true;
     //float invisibilityTimer = 0f;
-    public GameObject(string spriteName, Scene owner, string name = null)
+    public GameObject(string spriteName, Scene owner, string name = null): this(Services.Sprites.CreateSprite(spriteName), owner, name)
+    { 
+    }
+    public GameObject(Sprite sprite, Scene owner, string name = null)
     {
 
         var trans = new TransformComponent(Vector2.Zero, 0, new Vector2(64, 64), this);
@@ -37,7 +43,7 @@ public class GameObject
         components.Add(trans);
 
         this.name = name;
-        var s = new SpriteComponent(spriteName, this);
+        var s = new SpriteComponent(sprite, this);
         spriteC = s;
         components.Add(spriteC);
         ownerScene = owner;
@@ -51,7 +57,7 @@ public class GameObject
         //collision handler
         foreach (IComponent component in components)
         {
-            if (component.IsActive)
+            if (component is IObject o && o.activeSelf)
             {
                 component.Update(gameTime);
             }
@@ -90,7 +96,7 @@ public class GameObject
 
     }
 
-    public void Draw(SpriteBatch spriteBatch)
+    public virtual void Draw(SpriteBatch spriteBatch)
     {
 
         // first rect draws location and size, second rectangle is spritesheet location and size, color is tinting
@@ -137,5 +143,11 @@ public class GameObject
         }
 
         return c;
+    }
+    public virtual void OnDestroy() {
+        //object subscription clean up here.
+        foreach (Component c in components) {
+            c.OnDestroy();
+        }
     }
 }

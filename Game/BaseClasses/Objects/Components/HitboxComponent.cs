@@ -72,13 +72,17 @@ public class HitboxComponent : Component, ICollidable
     {
         return hitbox.SetTrigger(state);
     }
-    public override bool SetActive(bool state)
+    public override void SetActive(bool state)
     {
         hitbox.SetActive(state);
-        return base.SetActive(state);
+        base.SetActive(state);
     }
     public bool SetColliderActive(bool state)
     {
         return hitbox.SetColliderActive(state);
+    }
+    public void SetBounds(Rectangle bounds)
+    {
+        hitbox.SetBounds(bounds);
     }
 }

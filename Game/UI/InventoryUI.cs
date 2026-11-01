@@ -110,6 +110,24 @@ public class InventoryUI
         }
     }
 
+    // Moved from the old Inventory model to retain the template's UI bindings.
+    public void InventoryToggle(GameAction action)
+    {
+        if (action == GameAction.ToggleInventory)
+        {
+            if (Services.Input.inputActionMap == InputActionMap.Gameplay)
+            {
+                SetActive(true);
+                Services.Input.UpdateActionMap(InputActionMap.Inventory);
+            }
+            else if (Services.Input.inputActionMap == InputActionMap.Inventory)
+            {
+                SetActive(false);
+                Services.Input.UpdateActionMap(InputActionMap.Gameplay);
+            }
+        }
+    }
+
     public void SetActive(bool state)
     {
         if (state)

@@ -5,17 +5,18 @@ namespace GameBase.Animations;
 
 public class AnimatedSprite : Sprite
 {
-    private SpriteSheet spriteSheet;
     private IAnimation pendingAnimation;
+    private Vector2 offSet = Vector2.Zero;
 
     public AnimationController Controller { get; }
 
-    public AnimatedSprite(SpriteSheet sheet, string animationName)
+
+
+    public AnimatedSprite(IAnimation anim)
     {
-        spriteSheet = sheet;
         Controller = new AnimationController();
 
-        Controller.ChangeAnimation(sheet.GetAnimation(animationName));
+        Controller.ChangeAnimation(anim);
         Controller.Play();
 
         UpdateRegion();
@@ -24,27 +25,31 @@ public class AnimatedSprite : Sprite
     {
         IAnimationFrame frame = Controller.Animation.Frames[Controller.CurrentFrame];
 
-        Region = spriteSheet.GetTextureRegion(frame.AtlasFrame);
+        Region = frame.Region;
     }
 
-    public void RequestAnimation(string animationName)
-    {
-        pendingAnimation = spriteSheet.GetAnimation(animationName);
-    }
 
     public override void Update(GameTime gameTime)
     {
-        Controller.Update(gameTime);
+        
 
         if (pendingAnimation != null)
         {
             IAnimation nextAnimation = pendingAnimation;
             pendingAnimation = null;
+            DrawOffset = offSet;
 
             Controller.ChangeAnimation(nextAnimation);
             Controller.Play();
         }
+        Controller.Update(gameTime);
 
         UpdateRegion();
+    }
+    public void RequestAnimation(IAnimation animation, Vector2 offset = default)
+    {
+        if (animation == null) { return; }
+        pendingAnimation = animation;
+        offSet = offset;
     }
 }

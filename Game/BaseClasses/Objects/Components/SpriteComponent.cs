@@ -18,7 +18,11 @@ public class SpriteComponent : Component
         sprite = Services.Sprites.CreateSprite(spriteName);
         UpdateSize((int)owner.transform.scale.X,(int)owner.transform.scale.Y);
     }
-
+    public SpriteComponent(Sprite sprite, GameObject o) : base(o)
+    {
+        this.sprite = sprite;
+        UpdateSize((int)owner.transform.scale.X, (int)owner.transform.scale.Y);
+    }
     public void HideFor(float seconds)
     {
         invisibilityTimer = seconds;
@@ -39,11 +43,11 @@ public class SpriteComponent : Component
                 spriteVisible = true;
             }
         }
-        if (!IsActive) { return; }
+        if (!activeSelf) { return; }
         sprite.Update(gameTime);
     }
     public void Draw(SpriteBatch spriteBatch) {
-        if (IsActive && spriteVisible)
+        if (activeSelf && spriteVisible)
         {
             sprite.Draw(spriteBatch, owner.transform.position);
         }

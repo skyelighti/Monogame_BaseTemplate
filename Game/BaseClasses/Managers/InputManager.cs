@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 
 namespace GameBase.Input;
 
@@ -21,7 +22,7 @@ public partial class InputManager
     public event Action<GameAction> ActionReleased;
     public event Action<GameAction> ActionKeyDown;
     public InputActionMap inputActionMap { get; private set; } = InputActionMap.Gameplay;
-    public event Action<InputActionMap> OnInputMapChange;
+    public event Action<InputActionMap> InputMapChanged;
 
       /// <summary>
     /// Creates a new InputManager.
@@ -38,7 +39,7 @@ public partial class InputManager
     public void UpdateActionMap(InputActionMap map)
     {
         inputActionMap = map;
-        OnInputMapChange?.Invoke(map);
+        InputMapChanged?.Invoke(map);
     }
     /// <summary>
     /// Updates the state information for the keyboard, mouse, and gamepad inputs.

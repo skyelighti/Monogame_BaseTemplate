@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using GameBase.Assets;
+using Microsoft.Xna.Framework;
 namespace GameBase.Tiles;
 
 public class Tileset
@@ -34,7 +35,7 @@ public class Tileset
     /// Gets the total number of tiles in this tileset.
     /// </summary>
     public int Count { get; }
-
+    public SpriteSheet sheet { get; }
     /// <summary>
     /// Creates a new tileset based on the given texture region with the specified
     /// tile width and height.
@@ -42,25 +43,25 @@ public class Tileset
     /// <param name="textureRegion">The texture region that contains the tiles for the tileset.</param>
     /// <param name="tileWidth">The width of each tile in the tileset.</param>
     /// <param name="tileHeight">The height of each tile in the tileset.</param>
-    public Tileset(string name, TextureRegion textureRegion, int tileWidth, int tileHeight)
+    public Tileset(string name, SpriteSheet sheet)
     {
         Name = name;
-        TileWidth = tileWidth;
-        TileHeight = tileHeight;
-        Columns = textureRegion.Width / tileWidth;
-        Rows = textureRegion.Height / tileHeight;
+        TileWidth = sheet.frameWidth;
+        TileHeight = sheet.frameHeight;
+
+        Columns = sheet.columns;
+        Rows = sheet.rows;
         Count = Columns * Rows;
+        this.sheet = sheet;
 
         // Create the texture regions that make up each individual tile
         _tiles = new TileInfo[Count];
 
         for (int i = 0; i < Count; i++)
         {
-            int x = i % Columns * tileWidth;
-            int y = i / Columns * tileHeight;
             _tiles[i] = new TileInfo
             {
-                Region = new TextureRegion(textureRegion.Texture, textureRegion.SourceRectangle.X + x, textureRegion.SourceRectangle.Y + y, tileWidth, tileHeight),
+                Region = sheet.GetTextureRegion(i),
                 IsSolid = false
             };
         }
@@ -94,6 +95,16 @@ public class Tileset
             IsTrigger = _tiles[tileID].IsTrigger,
             layer = _tiles[tileID].layer,
             CollisionBounds = _tiles[tileID].CollisionBounds
+        };
+    }
+    public void SetCollisionBounds(int tileID, Rectangle rect) {
+        _tiles[tileID] = new TileInfo
+        {
+            Region = _tiles[tileID].Region,
+            IsSolid = _tiles[tileID].IsSolid,
+            IsTrigger = _tiles[tileID].IsTrigger,
+            layer = _tiles[tileID].layer,
+            CollisionBounds = rect
         };
     }
 

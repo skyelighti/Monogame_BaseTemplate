@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Content;
 using SharpCompress.Common;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection.Metadata;
@@ -26,6 +27,7 @@ public class ItemInfo
     public Sprite sprite { get; private set; }
     public string ID { get; private set; }
     public string spriteName { get; }
+    public List<IItemProperty> ItemProperties { get; private set; } = new();
     public ItemInfo(ItemType type, string n, Sprite s, string id, string spriteName = null)
     {
         itemType = type;
@@ -59,6 +61,44 @@ public class ItemInfo
     }
     // you should be able to load iteminfo from files i think? 
 
+
+    public void AddProperty(IItemProperty p)
+    {
+        if (!ItemProperties.Contains(p))
+        {
+            ItemProperties.Add(p);
+        }
+        else
+        {
+            Debug.WriteLine("component owner is not correct, or already added.");
+        }
+    }
+    public T GetProperty<T>() where T : class
+    {
+        foreach (IItemProperty property in ItemProperties)
+        {
+            if (property is T match)
+            {
+                return match;
+            }
+        }
+
+        return null;
+    }
+    public List<T> GetProperties<T>() where T : class
+    {
+        List<T> p = new();
+        foreach (IItemProperty property in ItemProperties)
+        {
+            if (property is T match)
+            {
+                p.Add(match);
+            }
+        }
+
+        return p;
+    }
+
     public static List<ItemInfo> FromFile(ContentManager content, string filename)
     {
         List<ItemInfo> itemDefs = new();
@@ -71,12 +111,47 @@ public class ItemInfo
             {
                 string name = (string)itemElement.Element("Name");
                 string type = (string)itemElement.Element("Type");
+                XElement icon = itemElement.Element("Icon");
                 string sprite = (string)itemElement.Element("Sprite");
                 string id = (string)itemElement.Element("ID");
 
                 ItemType t = (ItemType)Enum.Parse(typeof(ItemType), type);
-                Sprite s = Services.Sprites.CreateSprite(sprite);
+                Sprite s;
+
+                if (sprite != null)
+                {
+                    s = Services.Sprites.CreateSprite(sprite);
+                }
+                else
+                {
+                    string sheetName = (string)icon.Attribute("sheet");
+                    int frame = (int)icon.Attribute("frame");
+
+                    s = Services.Sprites.GetSpriteSheet(sheetName).CreateSprite(frame);
+                }
                 var x = new ItemInfo(t, name, s, id, sprite);
+
+                XElement propertiesElement = itemElement.Element("Properties");
+
+                if (propertiesElement != null)
+                {
+                    XElement currencyElement = propertiesElement.Element("Currency");
+
+                    if (currencyElement != null)
+                    {
+                        int amount = (int)currencyElement.Attribute("amount");
+                        x.AddProperty(new CurrencyInfo(amount));
+                    }
+
+                    XElement weaponElement = propertiesElement.Element("Weapon");
+
+                    if (weaponElement != null)
+                    {
+                        int amount = (int)weaponElement.Attribute("amount");
+                        x.AddProperty(new WeaponInfo(amount));
+                    }
+                }
+
                 itemDefs.Add(x);
             }
         }

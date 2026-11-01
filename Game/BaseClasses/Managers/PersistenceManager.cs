@@ -60,8 +60,9 @@ public partial class PersistenceManager
     {
         interactedItems.Add(ID);
     }
-    void HandlePickup(string ID)
+    void HandlePickup(ItemInfo info, string ID)
     {
+        if (string.IsNullOrEmpty(ID)) { return; }
         interactedItems.Add(ID);
         collectedItems.Add(ID);
     }

@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net9.0</TargetFramework>
@@ -15,7 +15,7 @@
     <None Remove="Icon.bmp" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\LoadInfo\SpriteSheetAnimations.xml" />
+    <Content Include="Content\LoadInfo\SpriteSheetAnimations.json" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Icon.ico">

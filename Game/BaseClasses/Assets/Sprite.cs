@@ -21,6 +21,7 @@ public class Sprite
     /// Default value is Color.White
     /// </remarks>
     public Color Color { get; set; } = Color.White;
+    public Vector2 DrawOffset { get; set; } = Vector2.Zero;
 
     public Transform transform { get; set; } = new Transform(Vector2.Zero, 0.0f, Vector2.One);
     //position = origin = 0
@@ -70,7 +71,7 @@ public class Sprite
     }
     public void Draw(SpriteBatch spriteBatch, Vector2 position)
     {
-        Region.Draw(spriteBatch, position, Color, transform.rotation, transform.position, transform.scale, Effects, LayerDepth);
+        Region.Draw(spriteBatch, position + DrawOffset, Color, transform.rotation, transform.position, transform.scale, Effects, LayerDepth);
     }
     public virtual void Update(GameTime gameTime)
     {

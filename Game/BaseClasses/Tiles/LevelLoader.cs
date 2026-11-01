@@ -29,13 +29,9 @@ public static class LevelLoader
 
                 foreach (XElement set in root.Elements("Tileset")) {
                     string n = (string)set.Element("name");
-                    int tWidth = (int)set.Element("tileWidth");
-                    int tHeight = (int)set.Element("tileHeight");
-                    //Easily get the ID by copy and pasting from the original TMX file i think :P
-
-                    TextureRegion s = Services.Sprites.GetRegion((string)set.Element("sprite"));
+                    SpriteSheet s = Services.Sprites.GetSpriteSheet((string)set.Element("sheet"));
                     
-                    Tileset tileSet = new Tileset(n, s, tWidth, tHeight);
+                    Tileset tileSet = new Tileset(n, s);
                     //creates the base tileset
                     tileSetDict[n] = tileSet;
                     tileSetsByID[nextFirstID] = tileSet;
@@ -76,6 +72,17 @@ public static class LevelLoader
                             Tileset ts = tileSetDict[t.TilesetName];
                             ts.SetLayer(t.TileID, layer);
                         }
+                    }
+                }
+                foreach (XElement customcol in root.Elements("TileColliders").Elements("Tile"))
+                {
+                    int colnum = (int)customcol.Attribute("id");
+                    TileReference t = GetTile(colnum, tileSetsByID);
+                    if (t != null)
+                    {
+                        Tileset ts = tileSetDict[t.TilesetName];
+                        Rectangle r = new Rectangle((int)customcol.Attribute("x"), (int)customcol.Attribute("y"), (int)customcol.Attribute("width"), (int)customcol.Attribute("height"));
+                        ts.SetCollisionBounds(t.TileID, r);
                     }
                 }
 
