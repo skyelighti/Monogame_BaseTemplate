@@ -19,6 +19,7 @@ public class HitboxComponent : Component, ICollidable
     public Rectangle BoxCollider => hitbox.BoxCollider;
 
     public Layer layer => hitbox.layer;
+    bool isStatic;
 
     public Transform transform => transformComponent.transform;
     public event Action<ICollidable> CollisionEnter
@@ -39,18 +40,19 @@ public class HitboxComponent : Component, ICollidable
         remove { hitbox.CollisionStay -= value; }
     }
 
-    public HitboxComponent(TransformComponent t, GameObject o) : base(o)
-    {
-        transformComponent = t;
-        var hb = new Hitbox(transformComponent.transform, o);
-        hitbox = hb;
-    }
-    public HitboxComponent(GameObject o): base(o)
+    public HitboxComponent(GameObject o, bool isStatic = false): base(o)
     {
         owner = o;
         var hb = new Hitbox(o);
         hitbox = hb;
-        transformComponent = o.GetComponent<TransformComponent>();
+        this.isStatic = isStatic;
+    }
+
+    public override void Connect()
+    {
+        base.Connect();
+        transformComponent = owner.GetComponent<TransformComponent>();
+        owner.ownerScene.AddCollider(this, isStatic);
     }
 
     public void OnCollision(ICollidable other)
@@ -84,5 +86,10 @@ public class HitboxComponent : Component, ICollidable
     public void SetBounds(Rectangle bounds)
     {
         hitbox.SetBounds(bounds);
+    }
+    public override void OnDestroy()
+    {
+        owner.ownerScene.RemoveCollider(this);
+        base.OnDestroy();
     }
 }

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace GameBase;
 
-public class SpriteComponent : Component
+public class SpriteComponent : Component, IUpdatable, IDrawable
 {
     public bool spriteVisible = true;
     float invisibilityTimer = 0f;
@@ -32,9 +32,8 @@ public class SpriteComponent : Component
         spriteVisible = state;
         return state;
     }
-    public override void Update(GameTime gameTime)
+    public void Update(GameTime gameTime)
     {
-        base.Update(gameTime);
         if (!spriteVisible)
         {
             invisibilityTimer -= (float)gameTime.ElapsedGameTime.TotalSeconds;

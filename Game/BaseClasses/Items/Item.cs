@@ -27,7 +27,7 @@ public abstract class Item : GameObject
     {
         layer = Layer.Interactable;
 
-        var hb = new HitboxComponent(GetComponent<TransformComponent>(), this);
+        var hb = new HitboxComponent( this);
         hitbox = hb;
         AddComponent(hb);
         var i = new InteractableComponent(this);

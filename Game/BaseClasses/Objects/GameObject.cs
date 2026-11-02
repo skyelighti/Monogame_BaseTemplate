@@ -1,13 +1,15 @@
-﻿using Microsoft.Xna.Framework;
+﻿using GameBase.Assets;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using MonoGame.Extended.Timers;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using GameBase.Assets;
-using System.Diagnostics;
 namespace GameBase;
 
 public class GameObject : IObject
@@ -27,8 +29,17 @@ public class GameObject : IObject
 
     public bool activeSelf => IsActive;
 
-    private readonly List<IComponent> components = new();
+    private List<IComponent> components = new();
 
+    private List<IUpdatable> updatecomponentsToAdd = new();
+    private List<IUpdatable> updatecomponentsToRemove = new();
+    private List<IDrawable> drawcomponentsToAdd = new();
+    private List<IDrawable> drawcomponentsToRemove = new();
+    private List<IUpdatable> updateComponents = new();
+    private List<IDrawable> drawComponents = new();
+    bool inited = false;
+
+    //finish in class
 
     //public bool spriteVisible = true;
     //float invisibilityTimer = 0f;
@@ -40,28 +51,41 @@ public class GameObject : IObject
 
         var trans = new TransformComponent(Vector2.Zero, 0, new Vector2(64, 64), this);
         transformC = trans;
-        components.Add(trans);
+        AddComponent(transformC);
 
         this.name = name;
         var s = new SpriteComponent(sprite, this);
         spriteC = s;
-        components.Add(spriteC);
+        AddComponent(spriteC);
         ownerScene = owner;
-
+        inited = false;
     }
 
+    public virtual void Init()
+    {
+        if (inited) return;
+        //initialize components here
+        ProcessComponents();
+        foreach (IComponent component in components)
+        {
+            component.Connect();
+        }
+        inited = true;
+    }
 
     public virtual void Update(GameTime gameTime)
     {
         //whereever handles updates should check if each gameobject is active before updating them
         //collision handler
-        foreach (IComponent component in components)
+
+        foreach (IUpdatable component in updateComponents)
         {
             if (component is IObject o && o.activeSelf)
             {
                 component.Update(gameTime);
             }
         }
+        ProcessComponents();
     }
     public void UpdateName(string newName)
     {
@@ -102,7 +126,13 @@ public class GameObject : IObject
         // first rect draws location and size, second rectangle is spritesheet location and size, color is tinting
 
         //should the object that inherits from this handle draw? or should the base handle?
-        spriteC.Draw(spriteBatch);
+        foreach (IDrawable component in drawComponents)
+        {
+            if ( component is IObject o && o.activeSelf)
+            {
+                component.Draw(spriteBatch);
+            }
+        }
     }
 
     public void SetActive(bool state)
@@ -114,9 +144,19 @@ public class GameObject : IObject
         if (c.owner == this && !components.Contains(c))
         {
             components.Add(c);
-        }
-        else {
-            Debug.WriteLine("component owner is not correct, or already added.");
+            if (c is IUpdatable)
+            {
+                updatecomponentsToAdd.Add(c as IUpdatable);
+
+            }
+            if (c is IDrawable)
+            {
+                drawcomponentsToAdd.Add(c as IDrawable);
+            }
+            if(inited)
+            {
+                c.Connect();
+            }
         }
     }
     public T GetComponent<T>() where T : class
@@ -148,6 +188,47 @@ public class GameObject : IObject
         //object subscription clean up here.
         foreach (Component c in components) {
             c.OnDestroy();
+        }
+    }
+    public void RemoveComponent(IComponent c)
+    {
+        if (components.Contains(c))
+        {
+            if (c is IUpdatable)
+            {
+                updatecomponentsToRemove.Add(c as IUpdatable);
+            }
+            if (c is IDrawable)
+            {
+                drawcomponentsToRemove.Add(c as IDrawable);
+  
+            }
+            (c as IObject).OnDestroy();
+            (c as IObject).SetActive(false);
+            components.Remove(c);
+        }
+    }
+
+    public void ProcessComponents() {
+        if (updatecomponentsToAdd.Count > 0)
+        {
+            updateComponents.AddRange(updatecomponentsToAdd);
+            updatecomponentsToAdd.Clear();
+        }
+        if (updatecomponentsToRemove.Count > 0)
+        {
+            updateComponents.RemoveAll(updatecomponentsToRemove.Contains);
+            updatecomponentsToRemove.Clear();
+        }
+        if (drawcomponentsToAdd.Count > 0)
+        {
+            drawComponents.AddRange(drawcomponentsToAdd);
+            drawcomponentsToAdd.Clear();
+        }
+        if (drawcomponentsToRemove.Count > 0)
+        {
+            drawComponents.RemoveAll(drawcomponentsToRemove.Contains);
+            drawcomponentsToRemove.Clear();
         }
     }
 }

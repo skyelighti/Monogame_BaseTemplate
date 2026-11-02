@@ -18,14 +18,14 @@ public abstract class Component : IComponent, IObject
         owner = o;
     }
 
-    public virtual void Update(GameTime gameTime)
-    {
-        
-    }
     public virtual void SetActive(bool state) {
         enabled = state;
     }
     public virtual void OnDestroy() { 
         //all subscription cleanup belongs here. 
+    }
+    public virtual void Connect()
+    {
+        //all subscription setup belongs here. 
     }
 }

@@ -15,7 +15,7 @@ public class BasicSolidGameObject : GameObject
     public BasicSolidGameObject(string spriteName, Scene owner, string name = null) : base(spriteName, owner, name)
     {
         //update sprites, animated sprites and then size in here
-        var hb = new HitboxComponent(GetComponent<TransformComponent>(), this);
+        var hb = new HitboxComponent(this);
         hitbox = hb;
         AddComponent(hb);
         hb.CollisionStay += OnCollision;

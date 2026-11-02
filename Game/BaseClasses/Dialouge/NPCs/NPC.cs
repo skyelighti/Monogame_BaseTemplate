@@ -26,7 +26,7 @@ public class NPC : GameObject
         dialogueInfoList = new();
         layer = Layer.Interactable;
 
-        var hb = new HitboxComponent(GetComponent<TransformComponent>(), this);
+        var hb = new HitboxComponent(this);
         hitbox = hb;
         AddComponent(hb);
         hb.CollisionStay += OnCollision;

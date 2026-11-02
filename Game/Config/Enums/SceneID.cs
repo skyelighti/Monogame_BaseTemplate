@@ -9,6 +9,6 @@ namespace GameBase;
 public enum SceneID
 {
     //StartScene,
-    BasicGameScene
+    GameScene
     //EndScene
 }

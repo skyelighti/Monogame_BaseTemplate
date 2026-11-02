@@ -10,16 +10,17 @@ using GameBase.Tiles;
 
 namespace GameBase;
 
-public class BasicGameScene : Scene
+public class GameScene : Scene
 {
     private readonly Tilemap ground;
     List<ICollidable> tileColliders = new();
     public IReadOnlyList<SpawnInfo> Spawns { get; }
+
     //
 
     //private readonly Player player;
     // references to a tilemap & player if we using either
-    public BasicGameScene(ContentManager content) : base(content)
+    public GameScene(ContentManager content) : base(content)
     {
         //load level here. 
         LevelData level = LevelLoader.LoadLevelData(content, "TileMap1.xml");

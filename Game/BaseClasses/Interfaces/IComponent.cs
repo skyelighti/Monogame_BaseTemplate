@@ -10,5 +10,6 @@ namespace GameBase;
 public interface IComponent
 {
     GameObject owner { get; }
-    void Update(GameTime gameTime);
+
+    public void Connect();
 }

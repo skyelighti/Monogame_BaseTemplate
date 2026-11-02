@@ -20,6 +20,7 @@ public abstract class Scene
     public TextureAtlas atlas;
     public SceneUI sceneUI { get; protected set; }
     public bool isActive { get; protected set; } = false;
+    
 
     public Scene(ContentManager content)
     { //, SceneUI sUI) {
@@ -80,7 +81,7 @@ public abstract class Scene
 
     public void AddCollider(ICollidable col, bool isStatic = false)
     {
-        if (!sceneColliders.Contains(col))
+        if (!sceneColliders.Contains(col)&& !staticSceneColliders.Contains(col))
         {
             if (isStatic)
             {
@@ -99,7 +100,7 @@ public abstract class Scene
 
     public void RemoveCollider(ICollidable col)
     {
-        if (sceneColliders.Contains(col))
+        if (sceneColliders.Contains(col) || staticSceneColliders.Contains(col))
         {
             sceneColliders.Remove(col);
             staticSceneColliders.Remove(col);
@@ -120,27 +121,12 @@ public abstract class Scene
         foreach (GameObject g in toRemove)
         {
             sceneObjects.Remove(g);
-            if (g.GetComponents<ICollidable>() != null)
-            {
-                var cols = g.GetComponents<ICollidable>();
-                g.OnDestroy();
-                foreach (IComponent c in cols)
-                {
-                    RemoveCollider(c as ICollidable);
-                }
-            }
+            g.OnDestroy();
         }
         toRemove.Clear();
         foreach ((GameObject, bool) obj in toAdd) {
+            obj.Item1.Init();
             sceneObjects.Add(obj.Item1);
-            if (obj.Item1.GetComponents<ICollidable>() != null)
-            {
-                var cols = obj.Item1.GetComponents<ICollidable>();
-                foreach (IComponent c in cols)
-                {
-                    AddCollider(c as ICollidable, obj.Item2);
-                }
-            }
         }
         toAdd.Clear();
     }
@@ -157,4 +143,6 @@ public abstract class Scene
     public virtual void ResetScene() { 
     //reset everything
     }
+
+    
 }

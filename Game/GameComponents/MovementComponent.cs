@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace GameBase;
 
-public abstract class MovementComponent : Component
+public abstract class MovementComponent : Component, IUpdatable
 {
     public Vector2 lastDir { get; private set; } = Directions.Down;
     public bool left { get; protected set; } = false;
@@ -26,7 +26,7 @@ public abstract class MovementComponent : Component
         // enemies should pick a direction to move in, and then move until they hit a wall? chose a new direction, remove last direction from pool, unless there is no other way?
         //A* pathfinding? 
     }
-    public override void Update(GameTime gameTime)
+    public void Update(GameTime gameTime)
     {
         if (!left && !right && !up && !down) {
             //nothing is pressed
@@ -58,7 +58,6 @@ public abstract class MovementComponent : Component
         }
         lastDir = new Vector2(x, y);
         CollisionManager.Instance.Move(lastDir * speed * (float)gameTime.ElapsedGameTime.TotalSeconds, owner.GetComponent<ICollidable>(), onlyCollideWithTiles);
-        base.Update(gameTime);
     }
     public void SetFacing(Vector2 direction)
     {
