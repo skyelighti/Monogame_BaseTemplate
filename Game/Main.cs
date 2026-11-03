@@ -18,6 +18,8 @@ public class Main
     public static ContentManager contentManager { get; private set; }
     private SceneManager sceneManager;
     public static MonoGame.Extended.OrthographicCamera camera;
+    private bool saveRequested;
+    private bool loadRequested;
 
     public Main(ContentManager content)
     {
@@ -29,22 +31,71 @@ public class Main
         //simplify sprite loading? 
 
         sceneManager = new SceneManager(content);
+        Services.Input.ActionPressed += OnActionPressed;
     }
     //load textures and atlas here for right now? maybe a dedicated asset loader?
     //maybe implement a statemaachine for game state? :P extra work to do if i hate reading!!
     public void Update(GameTime gameTime, Rectangle screenBounds)
     {
-        // update everything else here as well?
         ScreenBounds = screenBounds;
-        sceneManager.Update(gameTime);
+
         Services.Input.Update(gameTime);
+
+        if (loadRequested)
+        {
+            loadRequested = false;
+            saveRequested = false;
+
+            LoadGame();
+            return;
+        }
+
+        sceneManager.Update(gameTime);
         Services.Dialogue?.Update(gameTime);
         CollisionManager.Instance.Update(gameTime);
-        //UIManager.Update(gameTime);
+
+        if (saveRequested)
+        {
+            saveRequested = false;
+            SaveGame();
+        }
     }
     public void Draw(SpriteBatch spriteBatch)
     {
         sceneManager.Draw(spriteBatch);
         //UIManager.Draw(spriteBatch);
+    }
+
+    private void SaveGame()
+    {
+        SaveData save = sceneManager.CaptureState();
+
+        Services.GamePersistence.CaptureState(save);
+        Services.GamePersistence.WriteSave(save);
+    }
+
+
+    private void LoadGame()
+    {
+        if (!Services.GamePersistence.HasSave())
+        {
+            return;
+        }
+
+        SaveData save = Services.GamePersistence.ReadSave();
+
+        Services.GamePersistence.RestoreState(save);
+        sceneManager.RestoreState(save);
+    }
+    private void OnActionPressed(GameAction action)
+    {
+        if (action == GameAction.Save)
+        {
+            saveRequested = true;
+        }
+        else if (action == GameAction.Load)
+        {
+            loadRequested = true;
+        }
     }
 }

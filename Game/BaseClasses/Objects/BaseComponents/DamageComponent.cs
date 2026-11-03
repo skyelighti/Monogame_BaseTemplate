@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GameBase;
 
-public class DamageComponent : Component, IDamagable
+public class DamageComponent : Component, IDamagable, IPersistent
 {
     public (int curr, int max) health => (data.current, data.max);
     HealthData data;
@@ -46,5 +46,15 @@ public class DamageComponent : Component, IDamagable
             data.SetCurrent(data.current + hp);
         }
         Heal?.Invoke();
+    }
+
+    public void CaptureState(GameObjectSaveData data)
+    {
+        data.Health = health.curr;
+    }
+
+    public void RestoreState(GameObjectSaveData sdata)
+    {
+        data.SetCurrent((int)sdata.Health);
     }
 }

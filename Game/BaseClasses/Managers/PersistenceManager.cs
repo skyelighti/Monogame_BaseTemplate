@@ -5,10 +5,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Metadata;
-using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.IO;
+using System.Text.Json;
 
 namespace GameBase;
 
@@ -23,6 +24,9 @@ public partial class PersistenceManager
     public HashSet<string> collectedItems = new HashSet<string>();
     public HashSet<string> completedDialogue = new HashSet<string>();
     public HashSet<Character> talkedToNPCs = new HashSet<Character>();
+    public HealthData PlayerHealth { get; } = new HealthData(6);
+    private string SavePath => "save.json";
+
     public PersistenceManager()
     {
         EventSystem.OnDialogueComplete += DialogueComplete;
@@ -89,5 +93,63 @@ public partial class PersistenceManager
         {
             npcDialogueProgress[c] = 1;
         }
+    }
+
+
+
+    public void WriteSave(SaveData data)
+    {
+
+        string json = JsonSerializer.Serialize(data, new JsonSerializerOptions{WriteIndented = true});
+        File.WriteAllText(SavePath, json);
+    }
+    public bool HasSave()
+    {
+        return File.Exists(SavePath);
+    }
+    public SaveData ReadSave()
+    {
+        string json = File.ReadAllText(SavePath);
+
+        SaveData data = JsonSerializer.Deserialize<SaveData>(json);
+
+        if (data == null)
+        {
+            throw new InvalidDataException("The save file contains no save data.");
+        }
+
+        return data;
+    }
+
+    public void CaptureState(SaveData save)
+    {
+        save.interactedItems = new HashSet<string>(interactedItems);
+        save.collectedItems = new HashSet<string>(collectedItems);
+        save.completedDialogue = new HashSet<string>(completedDialogue);
+        save.talkedToNPCs = new HashSet<Character>(talkedToNPCs);
+
+        save.npcDialogueProgress =
+            new Dictionary<Character, int>(npcDialogueProgress);
+
+        save.Currency = Services.PlayerInventory.currencyCount;
+
+        save.InventoryItemIds = Services.PlayerInventory.items.Select(item => item.ID).ToList();
+    }
+
+    public void RestoreState(SaveData save)
+    {
+        Reset();
+
+        interactedItems.UnionWith(save.interactedItems);
+        collectedItems.UnionWith(save.collectedItems);
+        completedDialogue.UnionWith(save.completedDialogue);
+        talkedToNPCs.UnionWith(save.talkedToNPCs);
+
+        foreach (var entry in save.npcDialogueProgress)
+        {
+            npcDialogueProgress.Add(entry.Key, entry.Value);
+        }
+
+        Services.PlayerInventory.RestoreState(save.InventoryItemIds,save.Currency);
     }
 }

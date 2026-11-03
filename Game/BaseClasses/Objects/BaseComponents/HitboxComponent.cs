@@ -18,7 +18,7 @@ public class HitboxComponent : Component, ICollidable
 
     public Rectangle BoxCollider => hitbox.BoxCollider;
 
-    public Layer layer => hitbox.layer;
+    public Layer layer => owner.layer;
     bool isStatic;
 
     public Transform transform => transformComponent.transform;

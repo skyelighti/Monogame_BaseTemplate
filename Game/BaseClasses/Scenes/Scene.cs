@@ -26,6 +26,7 @@ public abstract class Scene
     { //, SceneUI sUI) {
         //idk
         //sceneUI = sUI;
+        CreateUnsavedObjects();
     }
     public virtual void EnterScene()
     {
@@ -118,19 +119,31 @@ public abstract class Scene
                 g.Update(gameTime);
             }
         }
-        foreach (GameObject g in toRemove)
-        {
-            sceneObjects.Remove(g);
-            g.OnDestroy();
-        }
+        ProcessObj();
+    }
+
+    public void ProcessObj()
+    {
+        List<GameObject> removing = new List<GameObject>(toRemove);
         toRemove.Clear();
-        foreach (GameObject obj in toAdd)
+
+        foreach (GameObject obj in removing)
+        {
+            if (sceneObjects.Contains(obj))
+            {
+                sceneObjects.Remove(obj);
+                obj.OnDestroy();
+            }
+        }
+
+        List<GameObject> adding = new List<GameObject>(toAdd);
+        toAdd.Clear();
+
+        foreach (GameObject obj in adding)
         {
             obj.Init();
             sceneObjects.Add(obj);
         }
-
-        toAdd.Clear();
     }
     public virtual void Draw(SpriteBatch spriteBatch)
     {
@@ -145,6 +158,73 @@ public abstract class Scene
     public virtual void ResetScene() { 
     //reset everything
     }
+    private void ClearObjects()
+    {
+        while (toAdd.Count > 0 || toRemove.Count > 0)
+        {
+            ProcessObj();
+        }
 
-    
+        List<GameObject> oldObjects = new List<GameObject>(sceneObjects);
+
+        foreach (GameObject obj in oldObjects)
+        {
+            obj.SetActive(false);
+        }
+        foreach (GameObject obj in oldObjects)
+        {
+            obj.OnDestroy();
+        }
+
+        sceneObjects.Clear();
+        toAdd.Clear();
+        toRemove.Clear();
+    }
+    public List<GameObjectSaveData> CaptureState()
+    {
+        List<GameObjectSaveData> records = new();
+        foreach (GameObject sobj in sceneObjects)
+        {
+            if(sobj.GetComponent<PersistenceComponent>() != null)
+            {
+                GameObjectSaveData saveData = sobj.GetComponent<PersistenceComponent>().CaptureState();
+                records.Add(saveData);
+            }
+        }
+        return records;
+    }
+
+    public void RestoreState(IEnumerable<GameObjectSaveData> records)
+    {
+        List<GameObjectSaveData> savedObjects =new List<GameObjectSaveData>(records);
+        ClearObjects();
+        CreateUnsavedObjects();
+        List<GameObject> restoredObjects = new List<GameObject>();
+
+        foreach (GameObjectSaveData data in savedObjects)
+        {
+            GameObject obj = Prefabs.CreateFromSave(this, data);
+
+            AddObject(obj);
+            restoredObjects.Add(obj);
+        }
+        while (toAdd.Count > 0 || toRemove.Count > 0)
+        {
+            ProcessObj();
+        }
+        for (int i = 0; i < restoredObjects.Count; i++)
+        {
+            GameObject obj = restoredObjects[i];
+            GameObjectSaveData data = savedObjects[i];
+            PersistenceComponent persistence = obj.GetComponent<PersistenceComponent>();
+            persistence.RestoreState(data);
+        }
+        OnObjectsRestored();
+    }
+    protected virtual void CreateUnsavedObjects()
+    {
+    }
+    protected virtual void OnObjectsRestored()
+    {
+    }
 }

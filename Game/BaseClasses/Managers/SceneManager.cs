@@ -29,4 +29,26 @@ public partial class SceneManager
         SceneDict[(SceneID)SceneM.CurrentState].Draw(spriteBatch);
         //update shouldnt know draw spritebatchinfo
     }
+
+    public void RestoreState(SaveData data)
+    {
+        SceneM.SetState((int)data.currentScene);
+        SceneM.ApplyPendingTransition();
+        Scene scene = SceneDict[data.currentScene];
+        scene.ProcessObj();
+        scene.RestoreState(data.Objects);
+    }
+    public SaveData CaptureState()
+    {
+        SceneID sceneId = (SceneID)SceneM.CurrentState;
+        Scene scene = SceneDict[sceneId];
+
+        scene.ProcessObj();
+
+        return new SaveData
+        {
+            currentScene = sceneId,
+            Objects = scene.CaptureState()
+        };
+    }
 }

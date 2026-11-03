@@ -61,4 +61,18 @@ public class Inventory
         items.Remove(info);
         OnInvUpdate?.Invoke();
     }
+
+    public void RestoreState(IEnumerable<string> itemIds, int currency)
+    {
+        items.Clear();
+
+        foreach (string id in itemIds)
+        {
+            ItemInfo info = Services.GameDef.GetItemFromDict(id);
+            items.Add(info);
+        }
+
+        currencyCount = currency;
+        OnInvUpdate?.Invoke();
+    }
 }

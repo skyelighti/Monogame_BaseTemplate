@@ -81,20 +81,12 @@ public class StateMachine
 
     public void UpdateState(GameTime gameTime)
     {
-        if (currentState != nextState)
-        {
-            if (currentState >= 0)
-            {
-                exitStateFuncLookup[currentState]();
-            }
-            enterStateFuncLookup[nextState]();
-            currentState = nextState;
-        }
+        ApplyPendingTransition();
+
         if (currentState >= 0)
         {
             updateStateFuncLookup[currentState](gameTime);
-            //updates current stage;
-        }
+        }//updates current stage;
     }
 
     private bool ValidState(int state)
@@ -109,5 +101,20 @@ public class StateMachine
             throw new ArgumentOutOfRangeException(nameof(state), state,
             "Not a valid state.");
         }
+    }
+    public void ApplyPendingTransition()
+    {
+        if (currentState == nextState || nextState < 0)
+        {
+            return;
+        }
+
+        if (currentState >= 0)
+        {
+            exitStateFuncLookup[currentState]();
+        }
+
+        enterStateFuncLookup[nextState]();
+        currentState = nextState;
     }
 }

@@ -11,10 +11,12 @@ namespace GameBase;
 public class PickupItem : Item
 {
     public string InstanceID { get; }
+    public bool RememberCollection { get; }
 
-    public PickupItem(GameObject owner, ItemInfo info, string instanceId) : base(owner, info)
+    public PickupItem(GameObject owner, ItemInfo info, string instanceId, bool rememberCollection = false) : base(owner, info)
     {
         InstanceID = instanceId;
+        RememberCollection = rememberCollection;
     }
 
     public override void Connect()
@@ -30,7 +32,7 @@ public class PickupItem : Item
         interact.SetCanInteract(false);
         owner.ActiveOnSceneEnter = false;
         owner.SetActive(false);
-        EventSystem.Pickup(Info, InstanceID);
+        EventSystem.Pickup(Info,RememberCollection ? InstanceID : null);
     }
     public override void OnCollisionExit(ICollidable collidable)
     {

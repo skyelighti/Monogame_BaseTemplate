@@ -18,7 +18,9 @@ public partial class InputManager
         [GameAction.MoveRight] = new List<InputBinding> { new InputBinding(Keys.D), new InputBinding(Keys.Right) },
         [GameAction.Interact] = new List<InputBinding> { new InputBinding(Keys.E) },
         [GameAction.ToggleInventory] = new List<InputBinding> { new InputBinding(Keys.I) },
-        [GameAction.Attack] = new List<InputBinding> { new InputBinding(Keys.Space), new InputBinding(MouseButton.Left)}
+        [GameAction.Attack] = new List<InputBinding> { new InputBinding(Keys.Space), new InputBinding(MouseButton.Left)},
+        [GameAction.Save] = new List<InputBinding>{new InputBinding(Keys.O)},
+        [GameAction.Load] = new List<InputBinding>{new InputBinding(Keys.P)}
         //ALLOW FOR MOUSE CLICKING LATER
     };
     //contents can still change. dict itself cannot.

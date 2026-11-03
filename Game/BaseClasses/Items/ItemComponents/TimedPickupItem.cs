@@ -7,13 +7,23 @@ using System.Threading.Tasks;
 
 namespace GameBase;
 
-public class TimedPickupItem : PickupItem, IUpdatable
+public class TimedPickupItem : PickupItem, IUpdatable, IPersistent
 {
     float lifecycle;
     public TimedPickupItem(float lifecycle, ItemInfo info, string instanceId, GameObject owner) : base(owner, info, instanceId)
     {
         this.lifecycle = lifecycle;
 
+    }
+
+    public void CaptureState(GameObjectSaveData data)
+    {
+        data.RemainingLifetime = lifecycle;
+    }
+
+    public void RestoreState(GameObjectSaveData data)
+    {
+        lifecycle = (float)data.RemainingLifetime;
     }
 
     public void Update(GameTime gameTime)
@@ -27,4 +37,5 @@ public class TimedPickupItem : PickupItem, IUpdatable
             owner.ownerScene.RemoveObject(owner);
         }
     }
+
 }

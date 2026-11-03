@@ -16,5 +16,7 @@ public enum GameAction
     Interact,
     ToggleInventory,
     Attack,
-    ProgressDialogue
+    ProgressDialogue,
+    Save,
+    Load
 }

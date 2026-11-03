@@ -58,14 +58,18 @@ public class Bullet : Component, IUpdatable
         
         
     }
-    void OnCollisionEnter(ICollidable col) {
-
-        if (!activeSelf || col.owner == shooter) { return; }
+    void OnCollisionEnter(ICollidable col)
+    {
+        if (!activeSelf || col.owner == shooter) { return;}
         if (col.layer == Layer.Player)
         {
-            col.owner.GetComponent<IDamagable>().takeDamage(dmgAmt);
+            IDamagable damageable = col.owner.GetComponent<IDamagable>();
+            if (damageable != null)
+            {
+                damageable.takeDamage(dmgAmt);
+            }
         }
-        SetActive(false);
+        owner.SetActive(false);
     }
     public override void OnDestroy()
     {

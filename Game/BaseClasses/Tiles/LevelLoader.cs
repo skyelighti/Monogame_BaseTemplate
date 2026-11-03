@@ -127,7 +127,10 @@ public static class LevelLoader
             string t = (string)spawn.Attribute("type");
             int column = int.Parse((string)spawn.Attribute("column"));
             int row = int.Parse((string)spawn.Attribute("row"));
-            var s = new SpawnInfo(t, column, row);
+            string definition = (string)spawn.Attribute("definition");
+            string id = (string)spawn.Attribute("id");
+
+            var s = new SpawnInfo(t, column, row, definition, id);
             spawns.Add(s);
 
         }

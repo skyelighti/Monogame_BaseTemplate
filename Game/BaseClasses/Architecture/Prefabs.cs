@@ -76,4 +76,21 @@ public static partial class Prefabs
         gameObject.AddComponent(new HitboxComponent(gameObject, IsStatic));
         return gameObject;
     }
+    public static GameObject CreateFromSave(Scene scene, GameObjectSaveData data) {
+        GameObject obj;
+
+        switch (data.PrefabId)
+        {
+            case "test":
+                obj = CreateSolid(scene,Services.Sprites.CreateSprite("placeholder"),new Vector2(data.X, data.Y));
+                obj.AddComponent(new DamageComponent(6, obj));
+                break;
+
+            default:
+                throw new InvalidOperationException("Unknown prefab ID: " + data.PrefabId);
+        }
+        obj.AddComponent(new PersistenceComponent(obj,data.PrefabId, data.InstanceId));
+
+        return obj;
+    }
 }

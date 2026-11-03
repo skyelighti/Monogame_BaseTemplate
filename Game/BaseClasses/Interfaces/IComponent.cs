@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace GameBase;
 
-public interface IComponent
+public interface IComponent : IObject
 {
     GameObject owner { get; }
 

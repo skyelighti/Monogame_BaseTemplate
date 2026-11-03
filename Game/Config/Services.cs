@@ -20,14 +20,13 @@ public static class Services
     public static Inventory PlayerInventory { get; private set; }
     public static InventoryUI PlayerInventoryUI { get; private set; }
     public static GameDefinitions GameDef { get; private set; }
-    public static HealthData PlayerHealth { get; private set; }
+   
 
     public static void Initalize( SpriteLibrary sprites, GameDefinitions gameD, bool enableItems, bool enableDialogue)
     {
         Input = new InputManager();
         Sprites = sprites;
         GamePersistence = new PersistenceManager();
-        PlayerHealth = new HealthData(6);
         GameDef = gameD;
         if (enableItems) {
             PlayerInventory = new Inventory();
