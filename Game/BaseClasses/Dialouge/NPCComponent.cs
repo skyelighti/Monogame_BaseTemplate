@@ -10,7 +10,7 @@ using System.Xml.Linq;
 
 namespace GameBase.Dialogue;
 
-public class NPC : GameObject
+public class NPCComponent : Component
 {
 
     public Character character = Character.NPC1;
@@ -19,24 +19,11 @@ public class NPC : GameObject
     public InteractableComponent interact;
 
 
-    public NPC(string spriteName, Scene owner, NPCInfo info, string name = null) : base(spriteName, owner, name)
+    public NPCComponent(GameObject owner, NPCInfo info) : base( owner)
     {
         //update sprites, animated sprites and then size in here
         character = info.character;
         dialogueInfoList = new();
-        layer = Layer.Interactable;
-
-        var hb = new HitboxComponent(this);
-        hitbox = hb;
-        AddComponent(hb);
-        hb.CollisionStay += OnCollision;
-        hb.CollisionEnter += OnCollisionEnter;
-        hb.CollisionExit += OnCollisionExit;
-
-        var i = new InteractableComponent(this);
-        interact = i;
-        AddComponent(interact);
-        interact.Interacted += OnInteract;
 
         foreach (string id in info.dialogueIDOrder)
         {
@@ -44,8 +31,20 @@ public class NPC : GameObject
         }
 
     }
+
+    public override void Connect()
+    {
+        base.Connect();
+        hitbox = owner.GetComponent<HitboxComponent>();
+        hitbox.CollisionStay += OnCollision;
+        hitbox.CollisionEnter += OnCollisionEnter;
+        hitbox.CollisionExit += OnCollisionExit;
+
+        interact = owner.GetComponent<InteractableComponent>();
+        interact.Interacted += OnInteract;
+    }
     public void OnInteract(GameObject obj) {
-        if (interact.CanInteract)
+        if (activeSelf && interact.CanInteract)
         {
             EventSystem.NPCInteract(character);
             EventSystem.Interact(interact.ID);

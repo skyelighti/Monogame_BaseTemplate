@@ -48,6 +48,7 @@ public class SpriteComponent : Component, IUpdatable, IDrawable
     public void Draw(SpriteBatch spriteBatch) {
         if (activeSelf && spriteVisible)
         {
+            sprite.transform.rotation = owner.transform.rotation;
             sprite.Draw(spriteBatch, owner.transform.position);
         }
     }

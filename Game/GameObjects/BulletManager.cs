@@ -13,16 +13,16 @@ public class BulletManager
     Scene owner;
     string spriteName;
     int size;
-    ObjectPool<Bullet> bulletPool;
+    ObjectPool<GameObject> bulletPool;
     public BulletManager(Scene owner, string spriteName, int size = 8) {
         this.owner = owner;
         this.spriteName = spriteName;
         this.size = size;
-       bulletPool = new ObjectPool<Bullet>(20, CreateBullet);
+       bulletPool = new ObjectPool<GameObject>(20, CreateBullet);
     }
 
-    Bullet CreateBullet() {
-        Bullet bullet = new Bullet(spriteName, owner);
+    GameObject CreateBullet() {
+        GameObject bullet = Prefabs.CreateBullet(owner, Services.Sprites.CreateSprite(spriteName), Vector2.Zero);
 
         bullet.UpdateSize(size, size);
         bullet.ActiveOnSceneEnter = false;
@@ -34,11 +34,11 @@ public class BulletManager
 
     public void Fire(Vector2 direction,GameObject shooter, Rectangle roomBounds)
     {
-        Bullet bullet = bulletPool.GetPooledObj();
+        GameObject bullet = bulletPool.GetPooledObj();
 
         if (bullet == null) { return; }
 
-        bullet.Launch( direction, shooter, roomBounds);
+        bullet.GetComponent<Bullet>().Launch( direction, shooter, roomBounds);
     }
     public void Clear()
     {

@@ -7,16 +7,16 @@ using System.Threading.Tasks;
 
 namespace GameBase;
 
-public class TimedPickupItem : PickupItem
+public class TimedPickupItem : PickupItem, IUpdatable
 {
     float lifecycle;
-    public TimedPickupItem(float lifecycle, ItemInfo info, string instanceId, Scene owner) : base(info, instanceId, owner)
+    public TimedPickupItem(float lifecycle, ItemInfo info, string instanceId, GameObject owner) : base(owner, info, instanceId)
     {
         this.lifecycle = lifecycle;
 
     }
 
-    public override void Update(GameTime gameTime)
+    public void Update(GameTime gameTime)
     {
         if (!activeSelf) { return; }
         if (lifecycle >= 0)
@@ -24,8 +24,7 @@ public class TimedPickupItem : PickupItem
             lifecycle -= (float)gameTime.ElapsedGameTime.TotalSeconds;
         }
         else {
-            ownerScene.RemoveObject(this);
+            owner.ownerScene.RemoveObject(owner);
         }
-        base.Update(gameTime);
     }
 }

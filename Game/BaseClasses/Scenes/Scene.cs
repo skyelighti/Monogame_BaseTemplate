@@ -14,7 +14,7 @@ public abstract class Scene
 {
     List<GameObject> sceneObjects = new List<GameObject>();
     List<GameObject> toRemove = new List<GameObject>();
-    List<(GameObject, bool)> toAdd = new List<(GameObject,bool)>();
+    List<GameObject> toAdd = new();
     List<ICollidable> sceneColliders = new List<ICollidable>();
     List<ICollidable> staticSceneColliders = new();
     public TextureAtlas atlas;
@@ -64,9 +64,9 @@ public abstract class Scene
 
     public void AddObject(GameObject obj, bool isStatic = false)
     {
-        if (!sceneObjects.Contains(obj))
+        if (!sceneObjects.Contains(obj) && !toAdd.Contains(obj))
         {
-            toAdd.Add((obj, isStatic));
+            toAdd.Add(obj);
         }
     }
 
@@ -124,10 +124,12 @@ public abstract class Scene
             g.OnDestroy();
         }
         toRemove.Clear();
-        foreach ((GameObject, bool) obj in toAdd) {
-            obj.Item1.Init();
-            sceneObjects.Add(obj.Item1);
+        foreach (GameObject obj in toAdd)
+        {
+            obj.Init();
+            sceneObjects.Add(obj);
         }
+
         toAdd.Clear();
     }
     public virtual void Draw(SpriteBatch spriteBatch)

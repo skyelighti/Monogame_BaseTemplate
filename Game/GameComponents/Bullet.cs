@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace GameBase;
 
-public class Bullet : GameObject
+public class Bullet : Component, IUpdatable
 {
     public Vector2 dir;
     public float speed = 50f;
@@ -17,37 +17,35 @@ public class Bullet : GameObject
     float timer = 0f;
     HitboxComponent hitbox;
     Rectangle roomBounds;
-    public Bullet(string spriteName, Scene owner, string name = null) : this(Services.Sprites.CreateSprite(spriteName), owner, name)
+    ICollidable collidable;
+    public Bullet(GameObject owner) : base(owner)
     {
-  
-    }
 
-    public Bullet(Sprite sprite, Scene owner, string name = null) : base(sprite, owner, name)
+    }
+    public override void Connect()
     {
-        layer = Layer.EnemyAtk;
-        hitbox = new HitboxComponent(this);
+        base.Connect();
+        hitbox = owner.GetComponent<HitboxComponent>();
         hitbox.CollisionEnter += OnCollisionEnter;
         hitbox.SetTrigger(true);
-        AddComponent(hitbox);
-
+        collidable = owner.GetComponent<ICollidable>();
     }
-
     public void Launch(Vector2 direction, GameObject shooter, Rectangle bounds) {
         dir = direction;
         speed = Random.Shared.Next(40, 61);
         this.shooter = shooter;
         roomBounds = bounds;
-        transform.position = shooter.transform.position;
+        owner.transform.position = shooter.transform.position;
         timer = 0f;
-        SetActive(true);
+        owner.SetActive(true);
     }
-    public override void Update(GameTime gameTime)
+    public void Update(GameTime gameTime)
     {
         if (!activeSelf) { return; }
 
-        CollisionManager.Instance.Move(dir * speed * (float)gameTime.ElapsedGameTime.TotalSeconds, this.GetComponent<ICollidable>());
+        CollisionManager.Instance.Move(dir * speed * (float)gameTime.ElapsedGameTime.TotalSeconds, collidable);
         if (!roomBounds.Contains(hitbox.BoxCollider)) {
-            SetActive(false);
+            owner.SetActive(false);
             return;
         }
         if (timer <= lifetime) {
@@ -55,9 +53,8 @@ public class Bullet : GameObject
         }
         if(timer >= lifetime)
         {
-            SetActive(false);
+            owner.SetActive(false);
         }
-        base.Update(gameTime);
         
         
     }

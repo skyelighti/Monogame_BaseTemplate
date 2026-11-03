@@ -15,12 +15,18 @@ public class NPCInfo
 {
     public Character character;
     public string spriteName { get; }
+    public string sheetName { get; }
+    public string animationName { get; }
     public List<string> dialogueIDOrder = new();
 
-    public NPCInfo(Character c, List<string> order, string spriteName = null)
+
+
+    public NPCInfo(Character c, List<string> order, string spriteName = null, string sheetName = null, string animationName = null)
     {
         character = c;
         this.spriteName = spriteName;
+        this.sheetName = sheetName;
+        this.animationName = animationName;
         dialogueIDOrder = order;
     }
 
@@ -37,12 +43,14 @@ public class NPCInfo
                 string c = (string)npcElement.Element("Character");
                 Character ch = (Character)Enum.Parse(typeof(Character), c);
                 string spriteName = ((string)npcElement.Element("Sprite"))?.Trim();
+                string sheetName = ((string)npcElement.Element("SpriteSheet"))?.Trim();
+                string animationName = ((string)npcElement.Element("Animation"))?.Trim();
                 List<string> idList = new();
                 foreach (XElement ID in npcElement.Element("DialogueIDs").Elements("ID"))
                 {
                     idList.Add(((string)ID).Trim());
                 }
-                npcDefs.Add(new NPCInfo(ch, idList, spriteName));
+                npcDefs.Add(new NPCInfo(ch, idList, spriteName, sheetName, animationName));
             }
         }
 

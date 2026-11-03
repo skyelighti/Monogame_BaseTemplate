@@ -12,10 +12,14 @@ public class PickupItem : Item
 {
     public string InstanceID { get; }
 
-    public PickupItem(ItemInfo info, string instanceId, Scene owner) : base(new Sprite(info.sprite.Region), owner, info.name)
-    { 
-        Info = info;
+    public PickupItem(GameObject owner, ItemInfo info, string instanceId) : base(owner, info)
+    {
         InstanceID = instanceId;
+    }
+
+    public override void Connect()
+    {
+        base.Connect();
         hitbox.SetTrigger(true);
     }
 
@@ -24,8 +28,8 @@ public class PickupItem : Item
         if (collidable.layer != Layer.Player || !activeSelf) { return; }
         Services.PlayerInventory.AddItem(Info);
         interact.SetCanInteract(false);
-        ActiveOnSceneEnter = false;
-        SetActive(false);
+        owner.ActiveOnSceneEnter = false;
+        owner.SetActive(false);
         EventSystem.Pickup(Info, InstanceID);
     }
     public override void OnCollisionExit(ICollidable collidable)

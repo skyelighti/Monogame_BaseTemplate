@@ -112,12 +112,27 @@ public class GameObject : IObject
         //updates gameobject location x and y direction
         transform.position = new Vector2(x, y);
     }
+    public void UpdateLocation(Vector2 pos)
+    {
+        //updates gameobject location x and y direction
+        transform.position = pos;
+    }
+    public void UpdateRotation(float r)
+    {
+        //updates gameobject rotation
+        transform.rotation = r;
+    }
     public void UpdateSize(int x, int y)
     {
         transform.scale = new Vector2(x, y);
         //updates gameobject pixel size
         spriteC.UpdateSize(x, y);
 
+    }
+
+    public void UpdateLayer(Layer newLayer)
+    {
+        layer = newLayer;
     }
 
     public virtual void Draw(SpriteBatch spriteBatch)
