@@ -5,7 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace  GameBase.Animations;
-
+/// <summary>
+/// class for spritesheets, contains the basic information for frames 
+/// mainly used within settup
+/// </summary>
 public class SpriteSheet
 {
     public string Name { get; private set; }

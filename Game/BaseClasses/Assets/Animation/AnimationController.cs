@@ -7,6 +7,10 @@ using System.Threading.Tasks;
 
 namespace GameBase.Animations;
 
+/// <summary>
+/// animation controller, implements Ianimationcontroller
+///can set specific animation params here
+/// </summary>
 public class AnimationController: IAnimationController
 {
     public bool IsPaused { get; private set; }
@@ -29,8 +33,16 @@ public class AnimationController: IAnimationController
     public int FrameCount => Animation?.FrameCount ?? 0;
     //if animation isnt null gets frame count, otherwise 0
 
+    /// <summary>
+    /// subscribe and unsubscribe as needed. This broadcasts various stages in the animation, so sorting for the specific animation trigger is often needed
+    /// </summary>
     public event Action<IAnimationController, AnimationEventTrigger> OnAnimationEvent;
-
+    
+    /// <summary>
+    /// this handles all the animation changing stuff. 
+    /// however, to change anims call requestanim on animated sprite, so it can clear after update
+    /// </summary>
+    /// <param name="animation"></param>
     public void ChangeAnimation(IAnimation animation)
     {
         if (animation == null) { return; }
@@ -39,12 +51,21 @@ public class AnimationController: IAnimationController
         SetFrame(direction == 1 ? 0 : FrameCount - 1);
         //need to copy playback settings
     }
-
+    /// <summary>
+    /// sets animation speed when playing
+    /// defaults at 1, can change to slow or fast forwards anim
+    /// does not support reversing animations, use is reversed for that
+    /// </summary>
+    /// <param name="speed"></param>
     public void SetSpeed(double speed) {
         if (speed >= 0) {
             Speed = speed;
         }
     }
+    /// <summary>
+    /// sets the current frame of the animation playing
+    /// </summary>
+    /// <param name="index"></param>
     public void SetFrame(int index)
     {
         if (Animation == null) { return; }
@@ -56,6 +77,10 @@ public class AnimationController: IAnimationController
         }
     }
 
+    /// <summary>
+    /// pausing the currently playing animation, to resume call unpause
+    /// </summary>
+    /// <returns>true if paused, false if is already paused or no animation </returns>
     public bool Pause()
     {
         if (!IsAnimating) { 
@@ -66,7 +91,12 @@ public class AnimationController: IAnimationController
         IsPaused = true;
         return true;
     }
-
+    /// <summary>
+    /// takes an overload for whether to reset frame duration when pausing
+    /// to unpause call unpause, not play
+    /// </summary>
+    /// <param name="resetFrameDuration"></param>
+    /// <returns>true if paused, false if is already paused or cannot pause cuz no anim</returns>
     public bool Pause(bool resetFrameDuration)
     {
     
@@ -78,13 +108,21 @@ public class AnimationController: IAnimationController
 
         return true;
     }
-
+    /// <summary>
+    /// plays an animation from from the first frame
+    /// </summary>
+    /// <returns>false if no animaation or no frames, true is playing</returns>
     public bool Play()
     {
         int startingFrame = IsReversed ? FrameCount - 1 : 0;
         return Play(startingFrame);
     }
 
+    /// <summary>
+    /// plays an animation from a certain frame
+    /// </summary>
+    /// <param name="startingFrame"> frame to start from</param>
+    /// <returns>true if playing is possible & it played, false otherwise</returns>
     public bool Play(int startingFrame)
     {
         if (Animation == null || FrameCount == 0) { return false; }
@@ -94,14 +132,20 @@ public class AnimationController: IAnimationController
         SetFrame(startingFrame);
         return true;
     }
-
+     
+    /// <summary>
+    /// Resets the entire animation, returning to the starting frame.
+    /// </summary>
     public void Reset()
     {
         Stop();
         direction = IsReversed ? -1 : 1;
         SetFrame(IsReversed ? FrameCount - 1 : 0);
     }
-
+    /// <summary>
+    /// advances to the next frame if possible
+    /// </summary>
+    /// <returns>returns false if not possible, and true if possible</returns>
     public bool NextFrame() {
         if (Animation == null) { return false; }
         int nextF = CurrentFrame + direction;
@@ -150,6 +194,10 @@ public class AnimationController: IAnimationController
 
     }
 
+    /// <summary>
+    /// On animation complete, this resets the animation and triggers animationcompleted
+    /// </summary>
+    /// <returns>true</returns>
     public bool Complete() {
         isPlaying = false;
         IsPaused = false;
@@ -159,6 +207,12 @@ public class AnimationController: IAnimationController
         return true;
     }
 
+    /// <summary>
+    /// stops the current animation. does not allow for unpause or pause to be called after stop
+    /// to start anim again, call play
+    /// leaves the current frame as is when stopped
+    /// </summary>
+    /// <returns>true</returns>
     public bool Stop()
     {
         if (!isPlaying && !IsPaused) { return true; }
@@ -169,6 +223,10 @@ public class AnimationController: IAnimationController
 
     }
 
+    /// <summary>
+    /// unpauses the current animation if it paused
+    /// </summary>
+    /// <returns>returns true if can unpause, false if cannot</returns>
     public bool Unpause()
     {
         if (!isPlaying || !IsPaused)
@@ -180,6 +238,12 @@ public class AnimationController: IAnimationController
         return true;
     }
 
+    /// <summary>
+    /// unpauses the current animation, has an overload to advance to the next frame
+    /// otherwise can just call unpause
+    /// </summary>
+    /// <param name="advanceToNextFrame">bool, true if need to advanced to the next frame</param>
+    /// <returns>true if is possible and can do it, otherwise false</returns>
     public bool Unpause(bool advanceToNextFrame)
     {
         if (!isPlaying || !IsPaused)
