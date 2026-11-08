@@ -15,23 +15,60 @@ namespace GameBase;
 public static partial class EventSystem
 {
     //edit this as needed.
-    public static event Action<string> OnInteract;
-    public static event Action<ItemInfo, string> OnPickup;
-    public static event Action<DialogueInfo> OnDialogueComplete;
-    public static event Action<Character> OnNPCInteract;
-    //global events that the GameInfoManager can like subscribe to, so a reference isnt needed.
-    public static void Interact(string ID) {
-        OnInteract?.Invoke(ID);
+    /// <summary>
+    /// on interact, interactable component calls iirc, passes the instance id?
+    /// mainly for persitance, is called every time an interactable is interacted with
+    /// </summary>
+    public static event Action<string> Interact;
+    /// <summary>
+    /// for pickup item, runs when the item is picked up, passes the item info and instance id
+    /// </summary>
+    public static event Action<ItemInfo, string> Pickup;
+
+    /// <summary>
+    /// runs when a dialouge segment gets completed, passes the dialogue info
+    /// mainly for incrementing and processing when the next bit of dialouge gets triggered, or when the dialouge is fully completed
+    /// </summary>
+    public static event Action<DialogueInfo> DialogueComplete;
+    /// <summary>
+    /// runs when the NPC is interacted with. this is mainly for tracking when an NPC is interacted with for the first time
+    /// could be somewhat redundant but i think it's nice to have if i need something specific
+    /// </summary>
+    public static event Action<Character> NPCInteract;
+    //global events that the GameInfoManager can like subscribe to, so a reference isnt needed
+
+    /// <summary>
+    /// call this when needing to trigger a global event for OnInteract
+    /// </summary>
+    /// <param name="ID"> pass the instance id or null through, depending if you want to record a specific item pickup or not</param>
+    public static void OnInteract(string ID) {
+        Interact?.Invoke(ID);
     }
-    public static void Pickup(ItemInfo info, string ID)
+
+    /// <summary>
+    /// call this when wanting to trigger a global event for pickup
+    /// </summary>
+    /// <param name="info">item info, what was just picked up</param>
+    /// <param name="ID">instance ID, for tracking</param>
+    public static void OnPickup(ItemInfo info, string ID)
     {
-        OnPickup?.Invoke(info, ID);
+        Pickup?.Invoke(info, ID);
     }
-    public static void DialogueComplete(DialogueInfo dialogueInfo)
+
+    /// <summary>
+    /// call this when triggering a global event for dialouge complete
+    /// </summary>
+    /// <param name="dialogueInfo"> dialouge info, so like what segement just got finished</param>
+    public static void OnDialogueComplete(DialogueInfo dialogueInfo)
     {
-        OnDialogueComplete?.Invoke(dialogueInfo);
+        DialogueComplete?.Invoke(dialogueInfo);
     }
-    public static void NPCInteract(Character c) {
-        OnNPCInteract?.Invoke(c);
+
+    /// <summary>
+    /// call this when triggering a global event for NPC nteract
+    /// </summary>
+    /// <param name="c">which character was just interacted with?</param>
+    public static void OnNPCInteract(Character c) {
+        NPCInteract?.Invoke(c);
     }
 }

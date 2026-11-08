@@ -43,11 +43,11 @@ public class NPCComponent : Component
         interact = owner.GetComponent<InteractableComponent>();
         interact.Interacted += OnInteract;
     }
+
     public void OnInteract(GameObject obj) {
         if (activeSelf && interact.CanInteract)
         {
-            EventSystem.NPCInteract(character);
-            EventSystem.Interact(interact.ID);
+            EventSystem.OnNPCInteract(character);
             int index = Services.GamePersistence.GetDialogueIndex(character);
             if (index < dialogueInfoList.Count)
             {

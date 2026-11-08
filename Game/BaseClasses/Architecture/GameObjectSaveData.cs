@@ -8,7 +8,18 @@ namespace GameBase;
 
 public class GameObjectSaveData
 {
+    /// <summary>
+    /// Basic information needed for each gameobject when saving and loading a scene
+    /// </summary>
+
+
+    /// <summary> 
+    /// I should convert to a GUID, but is chill rn, this is for storing eaach specific instance
+    /// </summary>
     public string InstanceId { get; set; }
+    /// <summary>
+    /// this is for like prefab type, so the game knows what to build, ex enemy, player, etc.
+    /// </summary>
     public string PrefabId { get; set; }
 
     public bool IsActive { get; set; } = true;
@@ -25,3 +36,4 @@ public class GameObjectSaveData
     //bullet
 
 }
+

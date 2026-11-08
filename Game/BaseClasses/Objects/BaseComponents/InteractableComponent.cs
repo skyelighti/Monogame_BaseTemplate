@@ -18,6 +18,11 @@ public class InteractableComponent : Component, IInteractable
     {
     }
 
+    /// <summary>
+    /// lets player handle the interaction or allows other components to subscribe and handle how the player handles the interaction
+    /// also invokes global interaciton id
+    /// </summary>
+    /// <param name="player"></param>
     public void Interact(GameObject player)
     {
         if (!activeSelf || !CanInteract)
@@ -26,6 +31,7 @@ public class InteractableComponent : Component, IInteractable
         }
 
         Interacted?.Invoke(player);
+        EventSystem.OnInteract(ID);
     }
     public void SetCanInteract(bool state)
     {

@@ -28,13 +28,17 @@ public class PickupItem : Item
     public override void OnCollisionEnter(ICollidable collidable)
     {
         if (collidable.layer != Layer.Player || !activeSelf) { return; }
+        Pickup();
+    }
+    public override void OnCollisionExit(ICollidable collidable)
+    {
+    }
+
+    public void Pickup() {
         Services.PlayerInventory.AddItem(Info);
         interact.SetCanInteract(false);
         owner.ActiveOnSceneEnter = false;
         owner.SetActive(false);
-        EventSystem.Pickup(Info,RememberCollection ? InstanceID : null);
-    }
-    public override void OnCollisionExit(ICollidable collidable)
-    {
+        EventSystem.OnPickup(Info, RememberCollection ? InstanceID : null);
     }
 }

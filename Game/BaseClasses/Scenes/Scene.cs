@@ -26,7 +26,6 @@ public abstract class Scene
     { //, SceneUI sUI) {
         //idk
         //sceneUI = sUI;
-        CreateUnsavedObjects();
     }
     public virtual void EnterScene()
     {

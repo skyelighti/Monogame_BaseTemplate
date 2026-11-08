@@ -47,7 +47,7 @@ public class DialogueManager
         if (temptxt == null)
         {
             dialogueUI.SetActive(false);
-            EventSystem.DialogueComplete(dinfo);
+            EventSystem.OnDialogueComplete(dinfo);
             Services.Input.UpdateActionMap(InputActionMap.Gameplay);
             return;
         }

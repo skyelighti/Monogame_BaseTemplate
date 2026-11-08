@@ -12,25 +12,25 @@ namespace GameBase;
 public class GameProgressionManager
 {
     public GameProgressionManager() {
-        EventSystem.OnDialogueComplete += DialogueComplete;
-        EventSystem.OnInteract += HandleInteract;
-        EventSystem.OnPickup += HandlePickup;
-        EventSystem.OnNPCInteract += HandleNPCInteract;
+        EventSystem.DialogueComplete += OnComplete;
+        EventSystem.Interact += OnInteract;
+        EventSystem.Pickup += OnPickup;
+        EventSystem.NPCInteract += OnNPCInteract;
     }
 
-    public void DialogueComplete(DialogueInfo dInfo) { 
+    public void OnComplete(DialogueInfo dInfo) { 
         //i can parse for the specific dialouge ID and character here, and do case specific handling? 
         //this might get really really freaking bloated 
     }
-    public void HandleInteract(string ID)
+    public void OnInteract(string ID)
     {
     }
 
-    public void HandlePickup(ItemInfo info, string ID) { 
+    public void OnPickup(ItemInfo info, string ID) { 
         //store and increment score here
     
     }
-    public void HandleNPCInteract(Character character) { 
+    public void OnNPCInteract(Character character) { 
     
     }
 }

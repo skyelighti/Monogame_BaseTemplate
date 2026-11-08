@@ -29,13 +29,13 @@ public partial class PersistenceManager
 
     public PersistenceManager()
     {
-        EventSystem.OnDialogueComplete += DialogueComplete;
-        EventSystem.OnInteract += HandleInteract;
-        EventSystem.OnPickup += HandlePickup;
-        EventSystem.OnNPCInteract += HandleNPCInteract;
+        EventSystem.DialogueComplete += OnComplete;
+        EventSystem.Interact += OnInteract;
+        EventSystem.Pickup += OnPickup;
+        EventSystem.NPCInteract += OnNPCInteract;
     }
 
-    private void HandleNPCInteract(Character character)
+    private void OnNPCInteract(Character character)
     {
         talkedToNPCs.Add(character);
     }
@@ -50,7 +50,7 @@ public partial class PersistenceManager
         talkedToNPCs.Clear();
         collectedItems.Clear();
     }
-    void DialogueComplete(DialogueInfo dInfo)
+    void OnComplete(DialogueInfo dInfo)
     {
         //add to completed dialogue
         //have this pass the dialogue info instead
@@ -60,11 +60,11 @@ public partial class PersistenceManager
             AdvanceDialogue(dInfo.character);
         }
     }
-    void HandleInteract(string ID)
+    void OnInteract(string ID)
     {
         interactedItems.Add(ID);
     }
-    void HandlePickup(ItemInfo info, string ID)
+    void OnPickup(ItemInfo info, string ID)
     {
         if (string.IsNullOrEmpty(ID)) { return; }
         interactedItems.Add(ID);

@@ -8,8 +8,22 @@ using GameBase.Dialogue;
 
 namespace GameBase;
 
+/// <summary>
+/// This class is split partially to hold creation for items & thier respective components. Game specific assemble belongs in Game Prefabs
+/// </summary>
 public static partial class Prefabs
 {
+
+    /// <summary>
+    /// making a generic gameobject w no components, can be added/modified later
+    /// </summary>
+    /// <param name="owner">scene that owns this gameobject, important to have becausue scene manages activation </param>
+    /// <param name="sprite">visual representation, can be animated sprite or sprite class? init/create before creation</param>
+    /// <param name="layer">what layer does this object belong to?</param>
+    /// <param name="position">where in the scene is this gameobject</param>
+    /// <param name="size">how big is the game object, use pixel size within game world</param>
+    /// <param name="rotation"> float, for rotating the sprite</param>
+    /// <returns></returns>
     public static GameObject CreateGameObject(Scene owner, Sprite sprite, Layer layer, Vector2 position, Vector2 size, float rotation)
     {
         GameObject obj = new GameObject(sprite, owner);
@@ -20,27 +34,68 @@ public static partial class Prefabs
         obj.UpdateSize((int)size.X, (int)size.Y);
         return obj;
     }
+    /// <summary>
+    /// creates gameobject with a spritename & not a sprite. use if do not need anim sprite immediately
+    /// </summary>
+    /// <param name="owner">scene owner</param>
+    /// <param name="spritename"> name of sprite, make sure its registered first w sprite library</param>
+    /// <param name="layer">layer of the object created</param>
+    /// <param name="position">pos of the sprite in the game world</param>
+    /// <param name="size">use pixels with the sprite, in the gameworld</param>
+    /// <returns></returns>
     public static GameObject CreateGameObject(Scene owner, string spritename, Layer layer, Vector2 position, Vector2 size)
     {
-        return CreateGameObject(owner, Services.Sprites.CreateSprite(spritename), layer, position, size, 0f);
+        return CreateGameObject(owner, Services.Sprites.CreateSprite(spritename), layer, position, size, defaultrotation);
     }
-
+    /// <summary>
+    /// creates sprite with an inital size of 16 x 16 for 2d game, use createGameObject w the size overload if 16 x 16 is too small or modify for purposes
+    /// takes a string, use sprite overload if anim is immediately needed
+    /// </summary>
+    /// <param name="owner"></param>
+    /// <param name="spritename"></param>
+    /// <param name="layer"></param>
+    /// <param name="position"></param>
+    /// <returns></returns>
     public static GameObject CreateGameObject(Scene owner, string spritename, Layer layer, Vector2 position)
     {
-        return CreateGameObject(owner, Services.Sprites.CreateSprite(spritename), layer, position, new Vector2(16,16), 0f);
+        return CreateGameObject(owner, Services.Sprites.CreateSprite(spritename), layer, position, new Vector2(defaultSize, defaultSize), defaultrotation);
     }
-
+    /// <summary>
+    /// creates w init sprite for game, no intial rotation, use overload if rotation is needed
+    /// </summary>
+    /// <param name="owner"></param>
+    /// <param name="sprite"></param>
+    /// <param name="layer"></param>
+    /// <param name="position"></param>
+    /// <param name="size"></param>
+    /// <returns></returns>
     public static GameObject CreateGameObject(Scene owner, Sprite sprite, Layer layer, Vector2 position, Vector2 size)
     {
         return CreateGameObject(owner, sprite, layer, position, size, 0f);
     }
 
+    /// <summary>
+    /// creates with no intial rotation or size, takes in a sprite, use other overloads depending on need
+    /// </summary>
+    /// <param name="owner"></param>
+    /// <param name="sprite"></param>
+    /// <param name="layer"></param>
+    /// <param name="position"></param>
+    /// <returns></returns>
     public static GameObject CreateGameObject(Scene owner, Sprite sprite, Layer layer, Vector2 position)
     {
-        return CreateGameObject(owner, sprite, layer, position, new Vector2(16, 16), 0f);
+        return CreateGameObject(owner, sprite, layer, position, new Vector2(defaultSize, defaultSize), defaultrotation);
     }
 
-
+    /// <summary>
+    /// creates an interactable object, uses default size, default rotation and interactable layer
+    /// adds a hitbox component and an interactable component, can be used for npcs, items, etc.
+    /// might need additional modification based on use case
+    /// </summary>
+    /// <param name="owner"> scene owner</param>
+    /// <param name="sprite"> takes an intial sprite/animates sprite </param>
+    /// <param name="position">position in game world use pixels</param>
+    /// <returns></returns>
     static GameObject CreateInteractable(Scene owner, Sprite sprite, Vector2 position) { 
         GameObject item = CreateGameObject(owner, sprite, Layer.Interactable, position);
         item.AddComponent(new HitboxComponent(item));
@@ -49,27 +104,6 @@ public static partial class Prefabs
 
     }
 
-    public static GameObject CreatePickupItem(Scene owner, Vector2 position, ItemInfo info, string instanceId, Sprite sprite = null)
-    {
-        sprite ??= new Sprite(info.sprite.Region);
-        GameObject item = CreateInteractable(owner, sprite, position);
-        item.AddComponent(new PickupItem(item, info, instanceId));
-        return item;
-    }
-
-    public static GameObject CreateTimedPickupItem(Scene owner, Vector2 position, ItemInfo info, string instanceId, float lifecycle, Sprite sprite = null)
-    {
-        sprite ??= new Sprite(info.sprite.Region);
-        GameObject item = CreateInteractable(owner, sprite, position);
-        item.AddComponent(new TimedPickupItem(lifecycle, info, instanceId, item));
-        return item;
-    }
-
-    public static GameObject CreateNPC(Scene owner, Sprite sprite, Vector2 position, NPCInfo info) { 
-        GameObject npc = CreateInteractable(owner, sprite, position);
-        npc.AddComponent(new NPCComponent(npc, info));
-        return npc;
-    }
 
     public static GameObject CreateSolid(Scene owner, Sprite sprite, Vector2 position, bool IsStatic = false) { 
         GameObject gameObject = CreateGameObject(owner, sprite, Layer.Default, position);

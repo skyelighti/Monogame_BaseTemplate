@@ -89,6 +89,12 @@ public class StateMachine
         }//updates current stage;
     }
 
+    /// <summary>
+    /// private validation function
+    /// </summary>
+    /// <param name="state"></param>
+    /// <returns></returns>
+    /// <exception cref="ArgumentOutOfRangeException"></exception>
     private bool ValidState(int state)
     {
         if (state < numOfStates && state >= 0)
@@ -102,6 +108,11 @@ public class StateMachine
             "Not a valid state.");
         }
     }
+
+    /// <summary>
+    /// applies each transition, does not need to immediate gamplay update
+    /// this is useful for loading from a save
+    /// </summary>
     public void ApplyPendingTransition()
     {
         if (currentState == nextState || nextState < 0)
