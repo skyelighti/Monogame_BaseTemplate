@@ -9,6 +9,10 @@ using System.Threading.Tasks;
 
 namespace GameBase.Assets;
 
+/// <summary>
+/// the specific region on a sprite to display
+/// the fundamental block for all the region stuff i have eearlier
+/// </summary>
 public class TextureRegion
 {
     //yoinked from monocode documentation 

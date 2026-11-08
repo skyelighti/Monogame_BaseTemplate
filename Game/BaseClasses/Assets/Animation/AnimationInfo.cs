@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 
 namespace GameBase;
 
+/// <summary>
+/// basic information about an animation, needed for loading from jsons/txt files
+/// </summary>
 public class AnimationInfo
 {
-    //(string n, IReadOnlyList<SpriteSheetAnimationFrame> frames, bool isLooping, bool isReversed, bool isPingPong)
     public List<int> framesindx { get; set; } = new();
     public bool isLooping { get; set; }
     public bool isReversed { get; set; }

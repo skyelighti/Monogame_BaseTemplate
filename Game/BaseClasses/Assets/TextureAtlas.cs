@@ -11,7 +11,11 @@ using System.Xml.Linq;
 
 
 namespace GameBase.Assets;
-
+/// <summary>
+/// stores texture regions on a single sprite
+/// important to create when creating a single sprite or needing to seperate a sprite out, but most of the time
+/// will not be directly referenced in code
+/// </summary>
 public class TextureAtlas
 {
     private Dictionary<string, TextureRegion> _regions;

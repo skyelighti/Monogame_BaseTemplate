@@ -6,12 +6,15 @@ using System.Threading.Tasks;
 
 namespace GameBase.Animations;
 
-public class SpriteSheetAnimationFrame : IAnimationFrame
+/// <summary>
+/// this comprises each frame within an animation
+/// </summary>
+public class AnimationFrame : IAnimationFrame
 {
     public TextureRegion Region { get; }
 
     public TimeSpan Duration { get;}
-    public SpriteSheetAnimationFrame(TextureRegion region, TimeSpan duration) {
+    public AnimationFrame(TextureRegion region, TimeSpan duration) {
         Region = region;
         Duration = duration;
     
