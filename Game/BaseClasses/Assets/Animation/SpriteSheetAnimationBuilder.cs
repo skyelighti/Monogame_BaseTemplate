@@ -13,6 +13,11 @@ using System.Xml.Linq;
 
 namespace GameBase.Animations;
 
+/// <summary>
+/// this is for loading a spritesheet animation, mainly will be loaded through json. examples are locatied in spritesheetanims json
+/// call this in game content loader if needing to load more outside of the ones contained in the current json file or needing to load another
+/// json file
+/// </summary>
 public static class SpriteSheetAnimationBuilder
 {
     public static void FromFile(ContentManager content, string filename, SpriteLibrary sprites)
@@ -44,12 +49,12 @@ public static class SpriteSheetAnimationBuilder
                     string animName = animation.Key;
                     AnimationInfo anim = animation.Value;
 
-                    List<SpriteSheetAnimationFrame> animframes = new();
+                    List<AnimationFrame> animframes = new();
                     foreach (int idx in anim.framesindx) {
-                        SpriteSheetAnimationFrame f = new SpriteSheetAnimationFrame(sheet.GetTextureRegion(idx), TimeSpan.FromSeconds(info.frameDuration));
+                        AnimationFrame f = new AnimationFrame(sheet.GetTextureRegion(idx), TimeSpan.FromSeconds(info.frameDuration));
                         animframes.Add(f);
                     }
-                    SpriteSheetAnimation ssanim = new SpriteSheetAnimation(animName, animframes,anim.isLooping, anim.isReversed, anim.isPingPong);
+                    Animation ssanim = new Animation(animName, animframes,anim.isLooping, anim.isReversed, anim.isPingPong);
                     sprites.AddAnimation($"{info.name}.{animName}", ssanim);
                 }
                 sprites.AddSpriteSheet(info.name, sheet);

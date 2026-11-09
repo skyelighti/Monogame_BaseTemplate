@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace GameBase;
 
+//broad generalizer 
 public interface IItemProperty
 {
     //just so everything is an item property

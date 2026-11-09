@@ -8,7 +8,9 @@ using System.Threading.Tasks;
 
 
 namespace GameBase.Input;
-
+/// <summary>
+/// this is a wrapper for both mouse and key inputs, allowing for mouse and keyboard input to be parsed for actions 
+/// </summary>
 public class InputBinding
 {
     //this is mainly allowing keyboard and mouse presses and releases to be interchangable

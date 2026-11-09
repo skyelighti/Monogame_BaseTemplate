@@ -5,7 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace GameBase;
-
+/// <summary>
+/// anythiing that implements this must be able to take damage
+/// </summary>
 public interface IDamagable
 {
     public (int curr, int max) health { get; }

@@ -27,6 +27,8 @@ public class GameObject : IObject
     public bool ActiveOnSceneEnter = true;
     public Layer layer { get; protected set; } = Layer.Default;
 
+    public HashSet<Tag> tags { get; private set; } = new();
+
     public bool activeSelf => IsActive;
 
     private List<IComponent> components = new();
@@ -199,6 +201,23 @@ public class GameObject : IObject
 
         return c;
     }
+
+
+    public void AddTag(Tag tag)
+    {
+        tags.Add(tag);
+    }
+
+    public void RemoveTag(Tag tag)
+    {
+        tags.Remove(tag);
+    }
+
+    public bool HasTag(Tag tag)
+    {
+        return tags.Contains(tag);
+    }
+
     public virtual void OnDestroy() {
         //object subscription clean up here.
         foreach (Component c in components) {

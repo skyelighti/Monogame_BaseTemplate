@@ -29,6 +29,7 @@ public class PersistenceComponent : Component
         saveData.ScaleY = owner.transform.scale.Y; 
         saveData.IsActive = owner.IsActive;
         saveData.ActiveOnSceneEnter = owner.ActiveOnSceneEnter;
+        saveData.Tags = new HashSet<Tag>(owner.tags);
 
         foreach (IPersistent component in owner.GetComponents<IPersistent>())
         {

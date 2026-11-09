@@ -54,6 +54,7 @@ public static partial class Prefabs
         item.UpdateSize(defaultSize, defaultSize);
         item.UpdateRotation(defaultrotation);
         item.UpdateLayer(Layer.Interactable);
+        item.AddTag(Tag.Item);
 
         return item;
     }
@@ -92,6 +93,7 @@ public static partial class Prefabs
         npc.UpdateLocation(position);
         npc.UpdateSize(defaultSize, defaultSize);
         npc.UpdateLayer(Layer.Interactable);
+        npc.AddTag(Tag.NPC);
         return npc;
     }
 
