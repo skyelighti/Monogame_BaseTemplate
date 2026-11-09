@@ -13,17 +13,14 @@ public class PickupItem : Item
     public string InstanceID { get; }
     public bool RememberCollection { get; }
 
-    public PickupItem(GameObject owner, ItemInfo info, string instanceId, bool rememberCollection = false) : base(owner, info)
+    public PickupItem(Sprite sprite, Scene scene, ItemInfo info, string instanceId, bool rememberCollection = false) : base(sprite, scene, info, instanceId)
     {
         InstanceID = instanceId;
         RememberCollection = rememberCollection;
-    }
 
-    public override void Connect()
-    {
-        base.Connect();
         hitbox.SetTrigger(true);
     }
+
 
     public override void OnCollisionEnter(ICollidable collidable)
     {
@@ -37,8 +34,8 @@ public class PickupItem : Item
     public void Pickup() {
         Services.PlayerInventory.AddItem(Info);
         interact.SetCanInteract(false);
-        owner.ActiveOnSceneEnter = false;
-        owner.SetActive(false);
+        ActiveOnSceneEnter = false;
+        SetActive(false);
         EventSystem.OnPickup(Info, RememberCollection ? InstanceID : null);
     }
 }

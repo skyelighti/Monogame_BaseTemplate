@@ -1,4 +1,4 @@
-﻿
+
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using System;
@@ -10,7 +10,10 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 
 namespace GameBase;
-
+/// <summary>
+/// holds all the information for each npc
+/// this is mainly for loading in npcs
+/// </summary>
 public class NPCInfo
 {
     public Character character;
@@ -46,10 +49,14 @@ public class NPCInfo
                 string sheetName = ((string)npcElement.Element("SpriteSheet"))?.Trim();
                 string animationName = ((string)npcElement.Element("Animation"))?.Trim();
                 List<string> idList = new();
-                foreach (XElement ID in npcElement.Element("DialogueIDs").Elements("ID"))
+                if (npcElement.Element("DialogueIDs") is XElement dialogueIDs)
                 {
-                    idList.Add(((string)ID).Trim());
+                    foreach (XElement ID in dialogueIDs.Elements("ID"))
+                    {
+                        idList.Add(((string)ID).Trim());
+                    }
                 }
+
                 npcDefs.Add(new NPCInfo(ch, idList, spriteName, sheetName, animationName));
             }
         }

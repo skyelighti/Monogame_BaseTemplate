@@ -6,6 +6,10 @@ using System.Threading.Tasks;
 
 namespace GameBase.Animations;
 
+/// <summary>
+/// interface for IAnimation, so any class that implements Ianimation will always have these
+/// this might currently be a little redundant as only Animation implements this
+/// </summary>
 public interface IAnimation
 {
     string name { get; }

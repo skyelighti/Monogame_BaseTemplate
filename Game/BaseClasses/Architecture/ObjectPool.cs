@@ -11,7 +11,9 @@ namespace GameBase;
 public class ObjectPool<T> where T : GameObject
 {
 
-    //generic object pool, 1 for bullets 1 for enemy :P, anything works as long as inherits from gameobject
+    /// <summary>
+    /// Generic object pool
+    /// </summary>
     public int poolSize { get; }
     //readonly, u dont want to modify after created i think
     List<T> objPool;

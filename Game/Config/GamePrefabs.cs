@@ -45,11 +45,16 @@ public static partial class Prefabs
     /// <param name="instanceId">unique identifier for this instance</param>
     /// <param name="sprite">optional sprite for the item. if we dont pass a sprite, it uses the item info's texture region/icon</param>
     /// <returns></returns>
-    public static GameObject CreatePickupItem(Scene owner, Vector2 position, ItemInfo info, string instanceId, Sprite sprite = null)
+    public static GameObject CreatePickupItem(Scene owner, Vector2 position, ItemInfo info, string instanceId, Sprite sprite = null, bool collection = false)
     {
         sprite ??= new Sprite(info.sprite.Region);
-        GameObject item = CreateInteractable(owner, sprite, position);
-        item.AddComponent(new PickupItem(item, info, instanceId));
+        GameObject item = new PickupItem(sprite,owner,info,instanceId, collection);
+
+        item.UpdateLocation(position);
+        item.UpdateSize(defaultSize, defaultSize);
+        item.UpdateRotation(defaultrotation);
+        item.UpdateLayer(Layer.Interactable);
+
         return item;
     }
 
@@ -67,8 +72,8 @@ public static partial class Prefabs
     public static GameObject CreateTimedPickupItem(Scene owner, Vector2 position, ItemInfo info, string instanceId, float lifecycle, Sprite sprite = null)
     {
         sprite ??= new Sprite(info.sprite.Region);
-        GameObject item = CreateInteractable(owner, sprite, position);
-        item.AddComponent(new TimedPickupItem(lifecycle, info, instanceId, item));
+        GameObject item = CreatePickupItem(owner, position, info, instanceId);
+        item.AddComponent(new LifecycleComponent(lifecycle, instanceId, item));
         return item;
     }
 
@@ -83,8 +88,10 @@ public static partial class Prefabs
     /// <returns></returns>
     public static GameObject CreateNPC(Scene owner, Sprite sprite, Vector2 position, NPCInfo info)
     {
-        GameObject npc = CreateInteractable(owner, sprite, position);
-        npc.AddComponent(new NPCComponent(npc, info));
+        GameObject npc = new NPC(sprite, owner, info);
+        npc.UpdateLocation(position);
+        npc.UpdateSize(defaultSize, defaultSize);
+        npc.UpdateLayer(Layer.Interactable);
         return npc;
     }
 

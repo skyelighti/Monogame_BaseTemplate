@@ -57,4 +57,14 @@ public class DamageComponent : Component, IDamagable, IPersistent
     {
         data.SetCurrent((int)sdata.Health);
     }
+
+    public override void OnDestroy()
+    {
+        
+    }
+
+    public override void Connect()
+    {
+        
+    }
 }

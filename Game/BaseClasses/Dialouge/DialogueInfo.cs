@@ -1,4 +1,4 @@
-﻿
+
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using System;
@@ -11,16 +11,29 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 
 namespace GameBase.Dialogue;
-
+/// <summary>
+/// storing a bunch of small dialouge lines, into a section of dialouge
+/// mainly used in loading dialouge from a file
+/// </summary>
 public class DialogueInfo
 {
-    public Character character;
-    List<DialogueLine> dialogue = new();
+    // the specific character that owns this interaction, who do you need to interact with to have this section play?
+    //doesnt always require a character, as items and inspecting the enviroment can also allow for this
+    public Character? character;
+
+    //the lines of dialouge within this single section
+    List<DialogueLine>? dialogue = new();
+
+    //instance ID- eventaully switch towards GUIDs
     public string ID;
-    public bool advancesProgress;
+
+    //do we move on to the next portion of dialouge once this section is finished? ex or do we wait for an external trigger to continue the dialouge
+    public bool advancesProgress = false;
+
+    //index of lines within this specfic sectiono of dialouge
     int indx = 0;
 
-    public DialogueInfo(List<DialogueLine> d, string id, bool advanceafter, Character c)
+    public DialogueInfo(List<DialogueLine> d, string id, bool advanceafter, Character? c = null)
     {
         dialogue = d;
         ID = id;
@@ -37,16 +50,19 @@ public class DialogueInfo
         string dia = indx < dialogue.Count ? dialogue[indx].dialogue : null;
         return dia;
     }
+    //each who says each piece of dialouge and the line
     public string GetName()
     {
         string name = indx < dialogue.Count ? dialogue[indx].Name : null;
         return name;
     }
+    //is there an icon for the current person talking?
     public Sprite GetIcon()
     {
         Sprite icon = indx < dialogue.Count ? dialogue[indx].sprite : null;
         return icon;
     }
+    //does a line have a specific 2d background we want to render while this line is playing?
     public Sprite GetBackground()
     {
         Sprite bg = indx < dialogue.Count ? dialogue[indx].background : null;
@@ -61,6 +77,12 @@ public class DialogueInfo
         indx = 0;
     }
 
+    /// <summary>
+    /// loads the dialouge from an XML file - shift towards jsons eventually
+    /// </summary>
+    /// <param name="content"></param>
+    /// <param name="filename"></param>
+    /// <returns></returns>
     public static List<DialogueInfo> FromFile(ContentManager content, string filename)
     {
         List<DialogueInfo> dialogueDefs = new();
@@ -86,8 +108,9 @@ public class DialogueInfo
                     Sprite bg = string.IsNullOrWhiteSpace(b) ? null : Services.Sprites.CreateSprite(b);
                     dialogueLine.Add(new DialogueLine(n, d, sp, bg));
                 }
-                Character c = Enum.Parse<Character>(character);
-                bool advance = bool.Parse(a);
+                //checks if there is a character, if this isnt use null, otherwise gets the character
+                Character? c = string.IsNullOrWhiteSpace(character) ? null : Enum.Parse<Character>(character.Trim());
+                bool advance = !string.IsNullOrWhiteSpace(a) && bool.Parse(a);
                 dialogueDefs.Add(new DialogueInfo(dialogueLine, ID, advance, c));
             }
         }

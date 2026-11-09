@@ -59,4 +59,8 @@ public class PlayerMovementComponent : MovementComponent
         Services.Input.ActionReleased -= OnKeyReleased;
         //make this an override eventually. all components should implement ondestroy
     }
+
+    public override void Connect()
+    {
+    }
 }

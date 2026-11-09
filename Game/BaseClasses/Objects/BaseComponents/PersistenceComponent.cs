@@ -50,4 +50,12 @@ public class PersistenceComponent : Component
             component.RestoreState(data);
         }
     }
+
+    public override void OnDestroy()
+    {
+    }
+
+    public override void Connect()
+    {
+    }
 }

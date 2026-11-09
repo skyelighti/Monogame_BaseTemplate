@@ -8,6 +8,9 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace GameBase;
+/// <summary>
+/// Icollidable guarentees that anything implemting it will have a hitbox and a couple of functions that allow for like the object to handle what it does next
+/// </summary>
 public interface ICollidable
 {
     bool activeSelf { get; }

@@ -1,9 +1,18 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <ItemInfo>
 	<Item>
-		<Name>ItemName</Name>
+		<Name>Placeholder Document</Name>
 		<ID>itemID</ID>
-		<Type>itemType</Type>
-		<Sprite>itematlas.sprite</Sprite>
+		<Type>Document</Type>
+		<Sprite>placeholder</Sprite>
+		<Properties>
+			<Description>
+				<description>A worn document with an unreadable seal.</description>
+				<DialogueIDs>
+					<ID>placeholder_document_inspect</ID>
+					<ID>placeholder_document_read</ID>
+				</DialogueIDs>
+			</Description>
+		</Properties>
 	</Item>
 </ItemInfo>

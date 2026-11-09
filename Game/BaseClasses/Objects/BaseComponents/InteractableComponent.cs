@@ -37,4 +37,12 @@ public class InteractableComponent : Component, IInteractable
     {
         CanInteract = state;
     }
+
+    public override void OnDestroy()
+    {
+    }
+
+    public override void Connect()
+    {
+    }
 }

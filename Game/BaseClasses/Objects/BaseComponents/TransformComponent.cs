@@ -34,4 +34,11 @@ public class TransformComponent: Component
         transform = new Transform(p);
     }
 
+    public override void OnDestroy()
+    {
+    }
+
+    public override void Connect()
+    {
+    }
 }

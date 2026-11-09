@@ -1,4 +1,4 @@
-﻿using GameBase.Assets;
+using GameBase.Assets;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using SharpCompress.Common;
@@ -22,8 +22,6 @@ public class ItemInfo
 
     public ItemType itemType;
     public string name { get; private set; }
-
-    //public string desc { get; private set; }
     public Sprite sprite { get; private set; }
     public string ID { get; private set; }
     public string spriteName { get; }
@@ -133,8 +131,26 @@ public class ItemInfo
 
                 XElement propertiesElement = itemElement.Element("Properties");
 
+
+                //this adds any additional properties to the iteminfo that gets loaded in
                 if (propertiesElement != null)
                 {
+                    XElement descElement = propertiesElement.Element("Description");
+
+                    if (descElement != null)
+                    {
+                        string desc = (string)descElement.Element("description");
+                        List<string> idList = new();
+                        if (descElement.Element("DialogueIDs") is XElement dialogueIDs)
+                        {
+                            foreach (XElement ID in dialogueIDs.Elements("ID"))
+                            {
+                                idList.Add(((string)ID).Trim());
+                            }
+                        }
+                        x.AddProperty(new DescriptionProperty(idList, desc));
+                    }
+
                     XElement currencyElement = propertiesElement.Element("Currency");
 
                     if (currencyElement != null)

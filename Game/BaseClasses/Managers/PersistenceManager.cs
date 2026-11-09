@@ -55,9 +55,9 @@ public partial class PersistenceManager
         //add to completed dialogue
         //have this pass the dialogue info instead
         completedDialogue.Add(dInfo.ID);
-        if (dInfo.advancesProgress)
+        if (dInfo.advancesProgress && dInfo.character != null)
         {
-            AdvanceDialogue(dInfo.character);
+            AdvanceDialogue((Character)dInfo.character);
         }
     }
     void OnInteract(string ID)

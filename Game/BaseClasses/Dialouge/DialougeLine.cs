@@ -6,6 +6,10 @@ using System.Threading.Tasks;
 
 namespace GameBase.Dialogue;
 
+/// <summary>
+/// a dialouge line that a certain character says, with the dialouge
+/// mainly used in loading in info
+/// </summary>
 public class DialogueLine
 {
     public string Name;

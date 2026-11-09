@@ -50,7 +50,6 @@ public class HitboxComponent : Component, ICollidable
 
     public override void Connect()
     {
-        base.Connect();
         transformComponent = owner.GetComponent<TransformComponent>();
         owner.ownerScene.AddCollider(this, isStatic);
     }
@@ -90,6 +89,5 @@ public class HitboxComponent : Component, ICollidable
     public override void OnDestroy()
     {
         owner.ownerScene.RemoveCollider(this);
-        base.OnDestroy();
     }
 }
