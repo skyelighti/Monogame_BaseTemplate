@@ -64,4 +64,12 @@ public class SpriteComponent : Component, IUpdatable, IDrawable
         sprite.transform.scale.X = (float)x / sprite.Region.Width;
         sprite.transform.scale.Y = (float)y / sprite.Region.Height;
     }
+
+    public override void OnDestroy()
+    {
+    }
+
+    public override void Connect()
+    {
+    }
 }

@@ -8,6 +8,9 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace GameBase.Items;
+/// <summary>
+/// template for how an item might look, with the actual parts not implemented
+/// </summary>
 public abstract class Item : GameObject
 {
     public ItemInfo Info { get; protected set; }
@@ -33,12 +36,11 @@ public abstract class Item : GameObject
         hitbox.CollisionExit += OnCollisionExit;
         interact.Interacted += OnInteract;
     }
-    public virtual void OnInteract(GameObject obj) { 
-        //checking for interaction is already handled by the component
-    }
-    public virtual void OnCollision(ICollidable col)
-    {
-    }
+    //this is marked as virtual void, because oninteract triggers when a player presses a key. Not all item interactions will be button press based
+    public virtual void OnInteract(GameObject obj) { }
+    //because items will most likely have an hitbox for checking interaction radius no matter what, these are marked virtual
+    //there isn't any logic within these for right now, but they exist for ease of access since theres a hitbox component alr
+    public virtual void OnCollision(ICollidable col) { }
     public virtual void OnCollisionEnter(ICollidable col)
     {
     }

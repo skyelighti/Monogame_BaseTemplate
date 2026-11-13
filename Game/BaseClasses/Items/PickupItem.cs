@@ -10,14 +10,14 @@ namespace GameBase;
 
 public class PickupItem : Item
 {
-    public string InstanceID { get; }
-    public bool RememberCollection { get; }
+    /// <summary>
+    /// basic implementation of what an item that can be instantiated within the game world might look like?
+    /// this does item interaction based upon walking into the item. for other items where you dont want to need to directly touch to interact,
+    /// add another trigger hitbox collider
+    /// </summary>
 
-    public PickupItem(Sprite sprite, Scene scene, ItemInfo info, string instanceId, bool rememberCollection = false) : base(sprite, scene, info, instanceId)
+    public PickupItem(Sprite sprite, Scene scene, ItemInfo info) : base(sprite, scene, info)
     {
-        InstanceID = instanceId;
-        RememberCollection = rememberCollection;
-
         hitbox.SetTrigger(true);
     }
 
@@ -36,6 +36,8 @@ public class PickupItem : Item
         interact.SetCanInteract(false);
         ActiveOnSceneEnter = false;
         SetActive(false);
-        EventSystem.OnPickup(Info, RememberCollection ? InstanceID : null);
+        string InstanceID = GetComponent<PersistenceComponent>()?.InstanceId;
+        EventSystem.OnPickup(Info, InstanceID);
     }
+
 }

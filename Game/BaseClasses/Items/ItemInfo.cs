@@ -19,18 +19,28 @@ namespace GameBase.Items;
 
 public class ItemInfo
 {
+    /// <summary>
+    /// contains the information about an item for spawning from a file and inventory purposes
+    /// </summary>
 
+    //lwk redundant right now, but ill figure something out later. this used to be a standin for item tags
     public ItemType itemType;
+
     public string name { get; private set; }
+    //for display in inventory
     public Sprite sprite { get; private set; }
+    //icon in inventory, can supply gameobject item look as well 
     public string ID { get; private set; }
+    //ID for lookup in dictionary, not the specific instance ID
+
     public string spriteName { get; }
+    //storing a texture region for lookup if needed
     public List<IItemProperty> ItemProperties { get; private set; } = new();
+    //additional components that are not global across all items, ex. DMG amount, Currency amount, inflicted status effects
     public ItemInfo(ItemType type, string n, Sprite s, string id, string spriteName = null)
     {
         itemType = type;
         name = n;
-        //desc = d;
         sprite = s;
         ID = id;
         this.spriteName = spriteName;
@@ -47,17 +57,11 @@ public class ItemInfo
             name = n;
     }
 
-    //public void SetDesc(string desc)
-    //{
-    //    if (desc != null)
-    //        this.desc = desc;
-    //}
     public void SetItemType(ItemType itemType)
     {
         this.itemType = itemType;
 
     }
-    // you should be able to load iteminfo from files i think? 
 
 
     public void AddProperty(IItemProperty p)

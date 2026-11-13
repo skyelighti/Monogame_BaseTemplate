@@ -11,10 +11,13 @@ public class PersistenceComponent : Component
 {
     public string InstanceId { get; }
     public string PrefabId { get; }
-    public PersistenceComponent(GameObject o, string prefabID, string instanceID = null) : base(o)
+    //based off prefab ID we can tell what type of info to create/get
+    public string DefinitionId { get; }
+    public PersistenceComponent(GameObject o, string prefabID, string instanceID, string definitionId = null) : base(o)
     {
         PrefabId = prefabID;
         InstanceId = instanceID;
+        DefinitionId = definitionId;
     }
     
     public GameObjectSaveData CaptureState()
@@ -22,6 +25,7 @@ public class PersistenceComponent : Component
         GameObjectSaveData saveData = new GameObjectSaveData();
         saveData.InstanceId = InstanceId;
         saveData.PrefabId = PrefabId;
+        saveData.DefinitionId = DefinitionId;
         saveData.X = owner.transform.position.X;
         saveData.Y = owner.transform.position.Y;
         saveData.Rotation = owner.transform.rotation;
@@ -45,6 +49,11 @@ public class PersistenceComponent : Component
         owner.transform.rotation = data.Rotation;
         owner.ActiveOnSceneEnter = data.ActiveOnSceneEnter;
         owner.SetActive(data.IsActive);
+        if (data.Tags != null)
+        {
+            owner.tags.Clear();
+            owner.tags.UnionWith(data.Tags);
+        }
 
         foreach (IPersistent component in owner.GetComponents<IPersistent>())
         {

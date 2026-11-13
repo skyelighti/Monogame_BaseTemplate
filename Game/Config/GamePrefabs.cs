@@ -45,10 +45,10 @@ public static partial class Prefabs
     /// <param name="instanceId">unique identifier for this instance</param>
     /// <param name="sprite">optional sprite for the item. if we dont pass a sprite, it uses the item info's texture region/icon</param>
     /// <returns></returns>
-    public static GameObject CreatePickupItem(Scene owner, Vector2 position, ItemInfo info, string instanceId, Sprite sprite = null, bool collection = false)
+    public static GameObject CreatePickupItem(Scene owner, Vector2 position, ItemInfo info, Sprite sprite = null)
     {
         sprite ??= new Sprite(info.sprite.Region);
-        GameObject item = new PickupItem(sprite,owner,info,instanceId, collection);
+        GameObject item = new PickupItem(sprite,owner,info);
 
         item.UpdateLocation(position);
         item.UpdateSize(defaultSize, defaultSize);
@@ -70,11 +70,11 @@ public static partial class Prefabs
     /// <param name="lifecycle">duration for which the item will exist</param>
     /// <param name="sprite">optional sprite for the item. if we dont pass a sprite, it uses the item info's texture region/icon</param>
     /// <returns></returns>
-    public static GameObject CreateTimedPickupItem(Scene owner, Vector2 position, ItemInfo info, string instanceId, float lifecycle, Sprite sprite = null)
+    public static GameObject CreateTimedPickupItem(Scene owner, Vector2 position, ItemInfo info, float lifecycle, bool pooled, Sprite sprite = null)
     {
         sprite ??= new Sprite(info.sprite.Region);
-        GameObject item = CreatePickupItem(owner, position, info, instanceId);
-        item.AddComponent(new LifecycleComponent(lifecycle, instanceId, item));
+        GameObject item = CreatePickupItem(owner, position, info);
+        item.AddComponent(new LifecycleComponent(lifecycle, item, pooled));
         return item;
     }
 

@@ -9,6 +9,10 @@ using System.Diagnostics;
 namespace GameBase;
 public class CollisionManager
 {
+    /// <summary>
+    /// handles collisions and movement that should be blocked by collisions
+    /// singleton
+    /// </summary>
     public static CollisionManager Instance { get; private set; } = new();
     public List<ICollidable> CollidableObjects { get; private set; } = new();
     //this is for objects that actually move
@@ -149,6 +153,12 @@ public class CollisionManager
         additionSet.Clear();
         staticAdditionSet.Clear();
     }
+    /// <summary>
+    /// adds a collidable through the component on  gameobject
+    /// if the collider is static. ex a tilemap collider, does not get checked for collisions with other static colliders
+    /// </summary>
+    /// <param name="col"></param>
+    /// <param name="isStatic"> add if static</param>
     public void AddCollidable(ICollidable col, bool isStatic = false)
     {
         if (isStatic) {
@@ -158,11 +168,22 @@ public class CollisionManager
         additionSet.Add(col);
         //CollidableObjects.Add(col);
     }
+    /// <summary>
+    /// removes the collider from the collider list
+    /// </summary>
+    /// <param name="col"></param>
     public void RemoveCollider(ICollidable col)
     {
         removalSet.Add(col);
         //CollidableObjects.Remove(col);
     }
+
+    /// <summary>
+    /// makes it so two collidbale objects are no longer tocuhing each other
+    /// i should add a thing where if the collider is static, only the non static collider moves
+    /// </summary>
+    /// <param name="a"></param>
+    /// <param name="b"></param>
     public void SeperateObjects(ICollidable a, ICollidable b)
     {
         Rectangle boundsA = a.BoxCollider;
@@ -183,7 +204,13 @@ public class CollisionManager
     }
     //i think i could simplify by just pruning everything each call, but im worried about needlessly iterating? 
     //maybe implement a stack? specifically for bullets? idk TT
-    public List<ICollidable> CircleCast(int radius, ICollidable gameobject)
+    /// <summary>
+    /// equivlant of a raycast, can set the radius and the target from where the raycast occurs
+    /// </summary>
+    /// <param name="radius"></param>
+    /// <param name="gameobject"></param>
+    /// <returns></returns>
+    public List<ICollidable> CircleCast(int radius, ICollidable gameobject, Layer? layer = null, Tag? tag = null)
     {
         List<ICollidable> overlap = new List<ICollidable>();
         Rectangle bounds = gameobject.BoxCollider;
@@ -198,6 +225,8 @@ public class CollisionManager
             {
                 continue;
             }
+            if (layer != null && c.layer == (Layer)layer) { continue; }
+            if (tag != null && !c.owner.GetTag((Tag)tag)) { continue; }
 
             //gameobject center, or else everything else is at the top le
 
@@ -212,12 +241,20 @@ public class CollisionManager
         }
         return overlap;
     }
-    public List<ICollidable> CircleCast(int radius, Point pos)
+    /// <summary>
+    /// circlecast drom a spefici point, will return a list of all icollidable obkects in this section
+    /// </summary>
+    /// <param name="radius"></param>
+    /// <param name="pos"></param>
+    /// <returns></returns>
+    public List<ICollidable> CircleCast(int radius, Point pos, Layer? layer = null, Tag? tag = null )
     {
         List<ICollidable> overlap = new List<ICollidable>();
         foreach (ICollidable c in CollidableObjects)
         {
             if (!c.activeSelf || !c.ColliderIsActive) { continue; }
+            if (layer != null && c.layer == (Layer)layer) { continue; }
+            if (tag != null && !c.owner.GetTag((Tag)tag)) { continue; }
 
             //gameobject center, or else everything else is at the top le
 
@@ -232,6 +269,10 @@ public class CollisionManager
         }
         return overlap;
     }
+
+
+
+
     //these methodsd are used mainly for scene loading and unloading
     public void AddCollidableList(List<ICollidable> cols, bool isStatic = false)
     {

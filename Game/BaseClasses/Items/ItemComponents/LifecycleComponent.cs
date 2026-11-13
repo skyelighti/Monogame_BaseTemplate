@@ -6,13 +6,20 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace GameBase;
-
+/// <summary>
+/// if things only appear temporarily and despawn after a period. Destroys upon lifecycle end?
+/// </summary>
 public class LifecycleComponent : Component, IUpdatable, IPersistent
 {
     float lifecycle;
-    public LifecycleComponent(float lifecycle, string instanceId, GameObject owner) : base(owner)
+    public event Action LifecycleComplete;
+
+    public bool pooledObject { get; }
+    //this triggers upon completion. the base gameobject should handle the actual destruction, so like if it should be removed from scene, call remove object, or setactive false if it is pooled
+    public LifecycleComponent(float lifecycle, GameObject owner, bool pooled) : base(owner)
     {
         this.lifecycle = lifecycle;
+        pooledObject = pooled;
 
     }
 
@@ -28,7 +35,8 @@ public class LifecycleComponent : Component, IUpdatable, IPersistent
 
     public override void OnDestroy()
     {
-        owner.ownerScene.RemoveObject(owner);
+        //owner.ownerScene.RemoveObject(owner);
+        //commenting out immediate destruction to allow for more flexibilty, with pooled objects
     }
 
     public void RestoreState(GameObjectSaveData data)
@@ -44,7 +52,14 @@ public class LifecycleComponent : Component, IUpdatable, IPersistent
             lifecycle -= (float)gameTime.ElapsedGameTime.TotalSeconds;
         }
         else {
-            OnDestroy();
+            LifecycleComplete?.Invoke();
+            if (pooledObject)
+            {
+                owner.SetActive(false);
+            }
+            else {
+                owner.ownerScene.RemoveObject(owner);
+            }
         }
     }
 

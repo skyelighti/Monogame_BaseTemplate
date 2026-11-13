@@ -213,7 +213,7 @@ public class GameObject : IObject
         tags.Remove(tag);
     }
 
-    public bool HasTag(Tag tag)
+    public bool GetTag(Tag tag)
     {
         return tags.Contains(tag);
     }

@@ -11,6 +11,7 @@ namespace  GameBase.Animations;
 /// </summary>
 public class SpriteSheet
 {
+    // for storing and reference purposes
     public string Name { get; private set; }
     TextureAtlas textureAtlas;
     public int frameHeight { get; }

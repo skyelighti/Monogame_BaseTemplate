@@ -8,6 +8,9 @@ namespace GameBase;
 
 public class HealthData
 {
+    /// <summary>
+    /// for persistence and loading
+    /// </summary>
     public int current { get; private set; }
     public int max { get; private set; }
 

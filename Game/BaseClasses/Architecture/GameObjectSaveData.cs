@@ -21,7 +21,8 @@ public class GameObjectSaveData
     /// this is for like prefab type, so the game knows what to build, ex enemy, player, etc.
     /// </summary>
     public string PrefabId { get; set; }
-
+    public string DefinitionId { get; set; }
+    public HashSet<Tag> Tags { get; set; }
     public bool IsActive { get; set; } = true;
     public bool ActiveOnSceneEnter { get; set; } = true;
 

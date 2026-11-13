@@ -8,7 +8,10 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace GameBase.Dialogue;
-
+/// <summary>
+/// handles the showing of dialouge on the game screen
+/// connects the UI to the text
+/// </summary>
 public class DialogueManager
 {
     public static DialogueUI dialogueUI;

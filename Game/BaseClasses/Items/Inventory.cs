@@ -5,10 +5,14 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace GameBase.Items;
-
+/// <summary>
+/// holds the defintion for what an inventory looks like within this game
+/// </summary>
 public class Inventory
 {
+    //current collection of items
     public List<ItemInfo> items { get; private set; } = new();
+    // TODO: seperate currency out of inventory
     public int currencyCount { get; private set; } = 0;
 
     public Action OnInvUpdate;

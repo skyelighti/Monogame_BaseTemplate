@@ -112,7 +112,7 @@ public static partial class Prefabs
     }
     public static GameObject CreateFromSave(Scene scene, GameObjectSaveData data) {
         GameObject obj;
-
+        //TODO: specific object handling, and handling based upon dict. base on Prefab ID, we know where to look for def id
         switch (data.PrefabId)
         {
             case "test":
@@ -124,7 +124,13 @@ public static partial class Prefabs
                 throw new InvalidOperationException("Unknown prefab ID: " + data.PrefabId);
         }
         obj.AddComponent(new PersistenceComponent(obj,data.PrefabId, data.InstanceId));
-
+        
         return obj;
+    }
+
+    public static GameObject MakePersistent(GameObject obj, string prefabID, string instanceID, string definitionID = null) {
+        obj.AddComponent(new PersistenceComponent(obj, prefabID, instanceID, definitionID));
+        return obj;
+
     }
 }

@@ -10,6 +10,10 @@ namespace GameBase;
 /// </summary>
 public interface IDamagable
 {
+    /// <summary>
+    /// int max is a useful measure for displaying healthbars, and configuring them through code and acts as top limit to the amount of HP if needed
+    /// curr serves to represent the current amount of health an entity has
+    /// </summary>
     public (int curr, int max) health { get; }
     //have  this be protected set
     public void takeDamage(int dmg);
