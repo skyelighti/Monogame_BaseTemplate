@@ -104,8 +104,8 @@ public class DialogueInfo
                     string s = (string)dLine.Element("Sprite");
                     string b = (string)dLine.Element("Background");
 
-                    Sprite sp = string.IsNullOrWhiteSpace(s) ? null : Services.Sprites.CreateSprite(s);
-                    Sprite bg = string.IsNullOrWhiteSpace(b) ? null : Services.Sprites.CreateSprite(b);
+                    Sprite sp = string.IsNullOrWhiteSpace(s) ? null : Services.Get<SpriteLibrary>().CreateSprite(s);
+                    Sprite bg = string.IsNullOrWhiteSpace(b) ? null : Services.Get<SpriteLibrary>().CreateSprite(b);
                     dialogueLine.Add(new DialogueLine(n, d, sp, bg));
                 }
                 //checks if there is a character, if this isnt use null, otherwise gets the character

@@ -21,17 +21,27 @@ public class Main
     private bool saveRequested;
     private bool loadRequested;
 
+    InputManager input;
+    DialogueManager dialogue;        // optional — null when dialogue is disabled
+    PersistenceManager persistence;
+
     public Main(ContentManager content)
     {
         contentManager = content;
         var sprites = new SpriteLibrary(content);
         var gameD = new GameDefinitions(content);
         //UIManager = new UIManager(content);
-        Services.Initalize( sprites, gameD, true, false);
+        Services.Initialize(sprites, gameD, true, false);
         //simplify sprite loading? 
 
         sceneManager = new SceneManager(content);
-        Services.Input.ActionPressed += OnActionPressed;
+
+        // cache services once; Initialize has already registered them
+        input = Services.Get<InputManager>();
+        persistence = Services.Get<PersistenceManager>();
+        Services.TryGet(out dialogue);
+
+        input.ActionPressed += OnActionPressed;
     }
     //load textures and atlas here for right now? maybe a dedicated asset loader?
     //maybe implement a statemaachine for game state? :P extra work to do if i hate reading!!
@@ -39,7 +49,7 @@ public class Main
     {
         ScreenBounds = screenBounds;
 
-        Services.Input.Update(gameTime);
+        input.Update(gameTime);
 
         if (loadRequested)
         {
@@ -51,7 +61,7 @@ public class Main
         }
 
         sceneManager.Update(gameTime);
-        Services.Dialogue?.Update(gameTime);
+        dialogue?.Update(gameTime);
         CollisionManager.Instance.Update(gameTime);
 
         if (saveRequested)
@@ -70,21 +80,21 @@ public class Main
     {
         SaveData save = sceneManager.CaptureState();
 
-        Services.GamePersistence.CaptureState(save);
-        Services.GamePersistence.WriteSave(save);
+        persistence.CaptureState(save);
+        persistence.WriteSave(save);
     }
 
 
     private void LoadGame()
     {
-        if (!Services.GamePersistence.HasSave())
+        if (!persistence.HasSave())
         {
             return;
         }
 
-        SaveData save = Services.GamePersistence.ReadSave();
+        SaveData save = persistence.ReadSave();
 
-        Services.GamePersistence.RestoreState(save);
+        persistence.RestoreState(save);
         sceneManager.RestoreState(save);
     }
     private void OnActionPressed(GameAction action)

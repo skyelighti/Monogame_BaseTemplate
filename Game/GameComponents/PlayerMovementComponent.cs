@@ -1,4 +1,5 @@
 ﻿using System;
+using GameBase.Input;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,10 +9,11 @@ namespace GameBase;
 
 public class PlayerMovementComponent : MovementComponent
 {
+    InputManager input;
+    PlayerLocatorService playerLocator;
+
     public PlayerMovementComponent(float speed, GameObject o) : base(speed, o)
     {
-        Services.Input.ActionKeyDown += OnKeyDown;
-        Services.Input.ActionReleased += OnKeyReleased;
     }
 
 
@@ -55,12 +57,30 @@ public class PlayerMovementComponent : MovementComponent
     }
 
     public override void OnDestroy() {
-        Services.Input.ActionKeyDown -= OnKeyDown;
-        Services.Input.ActionReleased -= OnKeyReleased;
-        //make this an override eventually. all components should implement ondestroy
+        if (input != null)
+        {
+            input.ActionKeyDown -= OnKeyDown;
+            input.ActionReleased -= OnKeyReleased;
+        }
+
+        if (playerLocator != null)
+        {
+            OnPositionMoved -= playerLocator.UpdatePlayerPosition;
+            playerLocator.ClearPlayer();
+        }
     }
 
     public override void Connect()
     {
+        // wiring belongs here, not in the constructor: Connect runs via GameObject.Init
+        // once the object is fully assembled. cache every service lookup.
+        input = Services.Get<InputManager>();
+        input.ActionKeyDown += OnKeyDown;
+        input.ActionReleased += OnKeyReleased;
+
+        // the locator listens to us; we never hand out a reference to ourselves.
+        playerLocator = Services.Get<PlayerLocatorService>();
+        OnPositionMoved += playerLocator.UpdatePlayerPosition;
+        playerLocator.UpdatePlayerPosition(owner.transform.position);
     }
 }

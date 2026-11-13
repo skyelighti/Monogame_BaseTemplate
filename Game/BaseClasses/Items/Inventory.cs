@@ -21,7 +21,6 @@ public class Inventory
     }
     public void OnEnable()
     {
-        //Services.Input.ActionPressed += InventoryToggle;
     }
 
     public ItemInfo GetItem(ItemInfo info)
@@ -72,7 +71,7 @@ public class Inventory
 
         foreach (string id in itemIds)
         {
-            ItemInfo info = Services.GameDef.GetItemFromDict(id);
+            ItemInfo info = Services.Get<GameDefinitions>().GetItemFromDict(id);
             items.Add(info);
         }
 

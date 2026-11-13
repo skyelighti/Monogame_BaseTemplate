@@ -45,7 +45,7 @@ public class GameObject : IObject
 
     //public bool spriteVisible = true;
     //float invisibilityTimer = 0f;
-    public GameObject(string spriteName, Scene owner, string name = null): this(Services.Sprites.CreateSprite(spriteName), owner, name)
+    public GameObject(string spriteName, Scene owner, string name = null): this(Services.Get<SpriteLibrary>().CreateSprite(spriteName), owner, name)
     { 
     }
     public GameObject(Sprite sprite, Scene owner, string name = null)

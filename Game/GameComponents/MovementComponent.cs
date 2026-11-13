@@ -9,6 +9,8 @@ namespace GameBase;
 
 public abstract class MovementComponent : Component, IUpdatable
 {
+    public event Action<Vector2> OnPositionMoved;
+
     public Vector2 lastDir { get; private set; } = Directions.Down;
     public bool left { get; protected set; } = false;
     public bool right { get; protected set; } = false;
@@ -18,6 +20,8 @@ public abstract class MovementComponent : Component, IUpdatable
     public float speed = 0;
     protected bool onlyCollideWithTiles = false;
 
+    public ICollidable col; 
+
     //there has to be a better way of doing this, i want this to be reusable: should i make this abstract and make playercomponent inherit. 
     public MovementComponent(float speed, GameObject o) : base(o)
     {
@@ -25,6 +29,12 @@ public abstract class MovementComponent : Component, IUpdatable
         //im thinking of keeping this reusable between enemies and the player
         // enemies should pick a direction to move in, and then move until they hit a wall? chose a new direction, remove last direction from pool, unless there is no other way?
         //A* pathfinding? 
+        
+    }
+
+    public override void Connect()
+    {
+        col = owner.GetComponent<ICollidable>();
     }
     public void Update(GameTime gameTime)
     {
@@ -57,7 +67,8 @@ public abstract class MovementComponent : Component, IUpdatable
             //upwards movement always wins in zelda. 
         }
         lastDir = new Vector2(x, y);
-        CollisionManager.Instance.Move(lastDir * speed * (float)gameTime.ElapsedGameTime.TotalSeconds, owner.GetComponent<ICollidable>(), onlyCollideWithTiles);
+        CollisionManager.Instance.Move(lastDir * speed * (float)gameTime.ElapsedGameTime.TotalSeconds, col, onlyCollideWithTiles);
+        OnPositionMoved?.Invoke(owner.transform.position);
     }
     public void SetFacing(Vector2 direction)
     {

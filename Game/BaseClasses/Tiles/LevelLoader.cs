@@ -29,7 +29,7 @@ public static class LevelLoader
 
                 foreach (XElement set in root.Elements("Tileset")) {
                     string n = (string)set.Element("name");
-                    SpriteSheet s = Services.Sprites.GetSpriteSheet((string)set.Element("sheet"));
+                    SpriteSheet s = Services.Get<SpriteLibrary>().GetSpriteSheet((string)set.Element("sheet"));
                     
                     Tileset tileSet = new Tileset(n, s);
                     //creates the base tileset

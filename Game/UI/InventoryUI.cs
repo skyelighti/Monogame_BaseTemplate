@@ -23,9 +23,11 @@ public class InventoryUI
     Panel slotContainer = new();
     Label emptyLabel = new();
     public bool activeSelf { get; private set; } = false;
-    public InventoryUI(Inventory inv)
+    readonly InputManager input;
+    public InventoryUI(Inventory inv, InputManager input)
     {
         inventory = inv;
+        this.input = input;
         Init();
         inv.OnInvUpdate += RefreshInventory;
 
@@ -115,15 +117,15 @@ public class InventoryUI
     {
         if (action == GameAction.ToggleInventory)
         {
-            if (Services.Input.inputActionMap == InputActionMap.Gameplay)
+            if (input.inputActionMap == InputActionMap.Gameplay)
             {
                 SetActive(true);
-                Services.Input.UpdateActionMap(InputActionMap.Inventory);
+                input.UpdateActionMap(InputActionMap.Inventory);
             }
-            else if (Services.Input.inputActionMap == InputActionMap.Inventory)
+            else if (input.inputActionMap == InputActionMap.Inventory)
             {
                 SetActive(false);
-                Services.Input.UpdateActionMap(InputActionMap.Gameplay);
+                input.UpdateActionMap(InputActionMap.Gameplay);
             }
         }
     }

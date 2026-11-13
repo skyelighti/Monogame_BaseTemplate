@@ -45,7 +45,7 @@ public static partial class Prefabs
     /// <returns></returns>
     public static GameObject CreateGameObject(Scene owner, string spritename, Layer layer, Vector2 position, Vector2 size)
     {
-        return CreateGameObject(owner, Services.Sprites.CreateSprite(spritename), layer, position, size, defaultrotation);
+        return CreateGameObject(owner, Services.Get<SpriteLibrary>().CreateSprite(spritename), layer, position, size, defaultrotation);
     }
     /// <summary>
     /// creates sprite with an inital size of 16 x 16 for 2d game, use createGameObject w the size overload if 16 x 16 is too small or modify for purposes
@@ -58,7 +58,7 @@ public static partial class Prefabs
     /// <returns></returns>
     public static GameObject CreateGameObject(Scene owner, string spritename, Layer layer, Vector2 position)
     {
-        return CreateGameObject(owner, Services.Sprites.CreateSprite(spritename), layer, position, new Vector2(defaultSize, defaultSize), defaultrotation);
+        return CreateGameObject(owner, Services.Get<SpriteLibrary>().CreateSprite(spritename), layer, position, new Vector2(defaultSize, defaultSize), defaultrotation);
     }
     /// <summary>
     /// creates w init sprite for game, no intial rotation, use overload if rotation is needed
@@ -116,7 +116,7 @@ public static partial class Prefabs
         switch (data.PrefabId)
         {
             case "test":
-                obj = CreateSolid(scene,Services.Sprites.CreateSprite("placeholder"),new Vector2(data.X, data.Y));
+                obj = CreateSolid(scene,Services.Get<SpriteLibrary>().CreateSprite("placeholder"),new Vector2(data.X, data.Y));
                 obj.AddComponent(new DamageComponent(6, obj));
                 break;
 

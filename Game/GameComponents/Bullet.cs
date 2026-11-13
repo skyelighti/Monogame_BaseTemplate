@@ -24,7 +24,6 @@ public class Bullet : Component, IUpdatable
     }
     public override void Connect()
     {
-        base.Connect();
         hitbox = owner.GetComponent<HitboxComponent>();
         hitbox.CollisionEnter += OnCollisionEnter;
         hitbox.SetTrigger(true);
@@ -74,6 +73,5 @@ public class Bullet : Component, IUpdatable
     public override void OnDestroy()
     {
         hitbox.CollisionEnter -= OnCollisionEnter;
-        base.OnDestroy();
     }
 }

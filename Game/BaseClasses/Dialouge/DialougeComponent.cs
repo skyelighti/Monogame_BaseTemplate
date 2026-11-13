@@ -11,18 +11,20 @@ namespace GameBase.Dialogue;
 /// </summary>
 public class DialougeComponent: Component
 {
+    DialogueManager dialogue; // optional — null when dialogue is disabled
+
     public DialougeComponent(GameObject o) : base(o)
     {
     }
 
     public override void Connect()
     {
-        
+        Services.TryGet(out dialogue);
     }
     public void Play(DialogueInfo info)
     {
-        if (!activeSelf || info == null) return;
-        Services.Dialogue.DialogueSetup(info);
+        if (!activeSelf || info == null || dialogue == null) return;
+        dialogue.DialogueSetup(info);
     }
 
     public override void OnDestroy()

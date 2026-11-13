@@ -15,7 +15,7 @@ public class SpriteComponent : Component, IUpdatable, IDrawable
     public Sprite sprite { get; private set; }
     public SpriteComponent(string spriteName, GameObject o) : base(o)
     {
-        sprite = Services.Sprites.CreateSprite(spriteName);
+        sprite = Services.Get<SpriteLibrary>().CreateSprite(spriteName);
         UpdateSize((int)owner.transform.scale.X,(int)owner.transform.scale.Y);
     }
     public SpriteComponent(Sprite sprite, GameObject o) : base(o)

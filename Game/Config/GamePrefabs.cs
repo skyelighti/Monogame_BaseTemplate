@@ -35,45 +35,41 @@ public static partial class Prefabs
         return bullet;  
     }
     /// <summary>
-    /// creates a pickup item
-    /// uses base interactable prefab, adds a pickup item component
-    /// modify as needed, ex. if pickup happens on collision
+    /// Creates an item the player collects by walking into its trigger.
     /// </summary>
     /// <param name="owner">scene owner of this gameobject</param>
     /// <param name="position">location of this object in the world</param>
     /// <param name="info">item info, supplies the item's properties</param>
-    /// <param name="instanceId">unique identifier for this instance</param>
     /// <param name="sprite">optional sprite for the item. if we dont pass a sprite, it uses the item info's texture region/icon</param>
     /// <returns></returns>
     public static GameObject CreatePickupItem(Scene owner, Vector2 position, ItemInfo info, Sprite sprite = null)
     {
         sprite ??= new Sprite(info.sprite.Region);
-        GameObject item = new PickupItem(sprite,owner,info);
+        GameObject item = CreateGameObject(
+            owner, sprite, Layer.Interactable, position, new Vector2(defaultSize), defaultrotation);
 
-        item.UpdateLocation(position);
-        item.UpdateSize(defaultSize, defaultSize);
-        item.UpdateRotation(defaultrotation);
-        item.UpdateLayer(Layer.Interactable);
+        var hitbox = new HitboxComponent(item);
+        hitbox.SetTrigger(true);
+        item.AddComponent(hitbox);
+        item.AddComponent(new PickupComponent(item, hitbox, info));
         item.AddTag(Tag.Item);
 
         return item;
     }
 
     /// <summary>
-    /// creates a timed pickup, item will despawn after a certain amount of time- controlled by the timed pickup item component
-    /// uses interactable prefab as base, adds a timed pickup item component
+    /// Creates a pickup that expires after the given lifetime.
     /// </summary>
     /// <param name="owner">scene owner of this gameobject</param>
     /// <param name="position">location of this object in the world</param>
     /// <param name="info">item info, supplies the item's properties</param>
-    /// <param name="instanceId">unique identifier for this instance</param>
     /// <param name="lifecycle">duration for which the item will exist</param>
+    /// <param name="pooled">whether to deactivate the object instead of removing it when it expires</param>
     /// <param name="sprite">optional sprite for the item. if we dont pass a sprite, it uses the item info's texture region/icon</param>
     /// <returns></returns>
     public static GameObject CreateTimedPickupItem(Scene owner, Vector2 position, ItemInfo info, float lifecycle, bool pooled, Sprite sprite = null)
     {
-        sprite ??= new Sprite(info.sprite.Region);
-        GameObject item = CreatePickupItem(owner, position, info);
+        GameObject item = CreatePickupItem(owner, position, info, sprite);
         item.AddComponent(new LifecycleComponent(lifecycle, item, pooled));
         return item;
     }
@@ -89,10 +85,10 @@ public static partial class Prefabs
     /// <returns></returns>
     public static GameObject CreateNPC(Scene owner, Sprite sprite, Vector2 position, NPCInfo info)
     {
-        GameObject npc = new NPC(sprite, owner, info);
-        npc.UpdateLocation(position);
-        npc.UpdateSize(defaultSize, defaultSize);
-        npc.UpdateLayer(Layer.Interactable);
+        // assembly, not inheritance: an NPC is just an interactable with dialogue + NPC glue logic
+        GameObject npc = CreateInteractable(owner, sprite, position);
+        npc.AddComponent(new DialougeComponent(npc));
+        npc.AddComponent(new NPCBehavior(npc, info));
         npc.AddTag(Tag.NPC);
         return npc;
     }

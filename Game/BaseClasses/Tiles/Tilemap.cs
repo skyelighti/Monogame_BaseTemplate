@@ -183,7 +183,7 @@ public class Tilemap
         if (animationName == null) {
             return;
         }
-        IAnimation animation = Services.Sprites.GetAnimation($"{sheet.Name}.{animationName}");
+        IAnimation animation = Services.Get<SpriteLibrary>().GetAnimation($"{sheet.Name}.{animationName}");
         if (animation != null)
         {
             if (!tileAnimations.ContainsKey(tileIdx)) {

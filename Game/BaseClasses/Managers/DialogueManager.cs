@@ -21,11 +21,12 @@ public class DialogueManager
     float SecPerChar = 0.05f;
     float typingTimer;
     int visChars;
+    readonly InputManager input;
 
 
     public DialogueManager(InputManager inputManager)
     {
-        //idk init here
+        input = inputManager;
         dialogueUI = new();
         inputManager.ActionPressed += SkipDialogue;
         dialogueUI.SetActive(false);
@@ -35,7 +36,7 @@ public class DialogueManager
         dinfo = info;
         dinfo.ResetIndex();
         dialogueUI.SetActive(true);
-        Services.Input.UpdateActionMap(InputActionMap.Dialogue);
+        input.UpdateActionMap(InputActionMap.Dialogue);
         UpdateDialogue();
 
     }
@@ -51,7 +52,7 @@ public class DialogueManager
         {
             dialogueUI.SetActive(false);
             EventSystem.OnDialogueComplete(dinfo);
-            Services.Input.UpdateActionMap(InputActionMap.Gameplay);
+            input.UpdateActionMap(InputActionMap.Gameplay);
             return;
         }
         else
@@ -107,7 +108,7 @@ public class DialogueManager
     }
     public void SkipDialogue(GameAction action)
     {
-        if (!dialogueUI.activeSelf || Services.Input.inputActionMap != InputActionMap.Dialogue)
+        if (!dialogueUI.activeSelf || input.inputActionMap != InputActionMap.Dialogue)
         {
             return;
         }

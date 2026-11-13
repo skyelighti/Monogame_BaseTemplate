@@ -341,25 +341,38 @@ public class CollisionManager
         return false;
     }
 
-    // AdventureGame uses these existing movement methods to block movement through walls.
-    public Vector2 Move(Vector2 newPos, ICollidable obj,bool onlyCollideWithTiles = false)
+    /// <summary>
+    /// attempts to move the object in a specific direction and returns the new position?
+    /// </summary>
+    /// <param name="newPos"> amount you want to move</param>
+    /// <param name="obj">gameobject to move</param>
+    /// <param name="onlyCollideWithStatic"> only collide w static objects?</param>
+    /// <returns></returns>
+    public Vector2 Move(Vector2 newPos, ICollidable obj,bool onlyCollideWithStatic = false)
     {
         //returns the possible movement
-        float x = MoveHorizontal(newPos.X, obj, onlyCollideWithTiles);
+        float x = MoveHorizontal(newPos.X, obj, onlyCollideWithStatic);
         obj.transform.position.X += x;
         //move horizontal then vert
-        float y = MoveVertical(newPos.Y, obj, onlyCollideWithTiles);
+        float y = MoveVertical(newPos.Y, obj, onlyCollideWithStatic);
         obj.transform.position.Y += y;
         return new Vector2(x, y);
         //not ideal, might need to rework at a later point, but should like be fine for handling collisions right now
     }
-    float MoveHorizontal(float xDist, ICollidable obj, bool onlyCollideWithTiles = false)
+    /// <summary>
+    /// Horizontal movement amount
+    /// </summary>
+    /// <param name="xDist"> distance in the X direction to move</param>
+    /// <param name="obj"> object to move</param>
+    /// <param name="onlyCollideWithStatic"> only collide w static objects?</param>
+    /// <returns></returns>
+    float MoveHorizontal(float xDist, ICollidable obj, bool onlyCollideWithStatic = false)
     {
         float finaldist = xDist;
 
         IEnumerable<ICollidable> colliders = StaticCollidableObjects;
 
-        if (!onlyCollideWithTiles)
+        if (!onlyCollideWithStatic)
         {
             colliders = GetAllColliders();
         }
@@ -408,12 +421,12 @@ public class CollisionManager
         }
         return finaldist;
     }
-    float MoveVertical(float yDist, ICollidable obj, bool onlyCollideWithTiles = false)
+    float MoveVertical(float yDist, ICollidable obj, bool onlyCollideWithStatic = false)
     {
         float finaldist = yDist;
         IEnumerable<ICollidable> colliders = StaticCollidableObjects;
 
-        if (!onlyCollideWithTiles)
+        if (!onlyCollideWithStatic)
         {
             colliders = GetAllColliders();
         }

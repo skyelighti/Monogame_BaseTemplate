@@ -15,6 +15,10 @@ namespace GameBase;
 
 public partial class PersistenceManager
 {
+    /// <summary>
+    /// currently handles most persistence/player informamtion stuff, that needs to be stored.
+    /// most of these things would be informamtion that would nice to use on certain conditions or occasions for quest or dialouge progression
+    /// </summary>
     //finish this tmmrw, but after each thing we should do a specific check for a hardcoded reaction? that gets handled by the game specific portion of this class.
     //move all these managers into base classes after.
     public Dictionary<Character, int> npcDialogueProgress = new Dictionary<Character, int>();
@@ -113,10 +117,6 @@ public partial class PersistenceManager
 
         SaveData data = JsonSerializer.Deserialize<SaveData>(json);
 
-        if (data == null)
-        {
-            throw new InvalidDataException("The save file contains no save data.");
-        }
 
         return data;
     }
@@ -131,9 +131,12 @@ public partial class PersistenceManager
         save.npcDialogueProgress =
             new Dictionary<Character, int>(npcDialogueProgress);
 
-        save.Currency = Services.PlayerInventory.currencyCount;
-
-        save.InventoryItemIds = Services.PlayerInventory.items.Select(item => item.ID).ToList();
+        // inventory is optional (enableItems) — guard instead of assuming it exists
+        if (Services.TryGet(out Inventory inventory))
+        {
+            save.Currency = inventory.currencyCount;
+            save.InventoryItemIds = inventory.items.Select(item => item.ID).ToList();
+        }
     }
 
     public void RestoreState(SaveData save)
@@ -150,6 +153,9 @@ public partial class PersistenceManager
             npcDialogueProgress.Add(entry.Key, entry.Value);
         }
 
-        Services.PlayerInventory.RestoreState(save.InventoryItemIds,save.Currency);
+        if (Services.TryGet(out Inventory inventory))
+        {
+            inventory.RestoreState(save.InventoryItemIds, save.Currency);
+        }
     }
 }

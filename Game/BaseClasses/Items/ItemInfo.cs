@@ -122,14 +122,14 @@ public class ItemInfo
 
                 if (sprite != null)
                 {
-                    s = Services.Sprites.CreateSprite(sprite);
+                    s = Services.Get<SpriteLibrary>().CreateSprite(sprite);
                 }
                 else
                 {
                     string sheetName = (string)icon.Attribute("sheet");
                     int frame = (int)icon.Attribute("frame");
 
-                    s = Services.Sprites.GetSpriteSheet(sheetName).CreateSprite(frame);
+                    s = Services.Get<SpriteLibrary>().GetSpriteSheet(sheetName).CreateSprite(frame);
                 }
                 var x = new ItemInfo(t, name, s, id, sprite);
 

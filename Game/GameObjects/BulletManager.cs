@@ -22,7 +22,7 @@ public class BulletManager
     }
 
     GameObject CreateBullet() {
-        GameObject bullet = Prefabs.CreateBullet(owner, Services.Sprites.CreateSprite(spriteName), Vector2.Zero);
+        GameObject bullet = Prefabs.CreateBullet(owner, Services.Get<SpriteLibrary>().CreateSprite(spriteName), Vector2.Zero);
 
         bullet.UpdateSize(size, size);
         bullet.ActiveOnSceneEnter = false;
